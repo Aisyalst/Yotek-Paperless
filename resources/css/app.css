@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-dot-pattern {
+    background-color: #1e1e1e;
+    background-image: radial-gradient(circle, #333333 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .dark-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .dark-scrollbar::-webkit-scrollbar-track {
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 4px;
+  }
+  .dark-scrollbar::-webkit-scrollbar-thumb {
+    background: #252526;
+    border: 1px solid #3b82f6; /* blue-500 */
+    border-radius: 4px;
+  }
+  .dark-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+  }
+}
