@@ -1,61 +1,37 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, useForm } from '@inertiajs/react';
+import DynamicForm from '@/Components/DynamicForm';
+import { Head, useForm } from '@inertiajs/react';
 
 export default function Create() {
-    // Inisialisasi useForm bawaan Inertia
     const { data, setData, post, processing, errors } = useForm({
         name: '',
     });
 
-    // Fungsi untuk menangani submit form
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Mengirim request POST ke route '/roles'
         post('/roles');
     };
+
+    const formFields = [
+        { name: 'name', label: 'Name', type: 'text', placeholder: 'Name', required: true },
+    ];
 
     return (
         <DashboardLayout judulHalaman="Add Role">
             <Head title="Add Role" />
-
-            <div className="w-full bg-white border border-zinc-200 rounded-lg shadow-sm p-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div>
-                            <h1 className="text-xl font-bold text-zinc-700">Add New Role</h1>
-                            <p className="text-sm text-gray-500 mt-1">Create a new role.</p>
-                        </div>
-                    </div>
-                    
-                    {/* Input Nama */}
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 mb-2">
-                            Name <span className="text-xs text-red-600">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            className="w-full bg-white border border-zinc-300 text-zinc-800 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Name"
-                        />
-                        {/* Menampilkan pesan error validasi dari Laravel jika ada */}
-                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                    </div>
-
-                    {/* Tombol Aksi */}
-                    <div className="flex items-center gap-4 pt-4 border-t border-zinc-200">
-                        <RedirectOutlineButton text="Cancel" href="/roles" className="me-auto" />
-                        
-                        <SubmitOutlineButton text="Create" disabled={processing} />
-                        
-                    </div>
-
-                </form>
-            </div>
+            <DynamicForm
+                title="Add New Role"
+                description="Create a new role."
+                fields={formFields}
+                data={data}
+                setData={setData}
+                errors={errors}
+                onSubmit={handleSubmit}
+                processing={processing}
+                submitText="Create"
+                cancelHref="/roles"
+            />
         </DashboardLayout>
     );
 }

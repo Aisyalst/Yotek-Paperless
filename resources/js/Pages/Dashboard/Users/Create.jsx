@@ -1,8 +1,7 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, useForm } from '@inertiajs/react';
+import DynamicForm from '@/Components/DynamicForm';
+import { Head, useForm } from '@inertiajs/react';
 
 export default function Create({ roles }) {
     // Inisialisasi useForm bawaan Inertia
@@ -20,95 +19,54 @@ export default function Create({ roles }) {
         post('/users');
     };
 
+    // Configuration array for form fields
+    const formFields = [
+        {
+            name: 'name',
+            label: 'Name',
+            type: 'text',
+            placeholder: 'Name',
+            required: true,
+        },
+        {
+            name: 'email',
+            label: 'Email Address',
+            type: 'email',
+            placeholder: 'example@email.com',
+            required: true,
+        },
+        {
+            name: 'role_id',
+            label: 'Role',
+            type: 'select',
+            options: roles.map(role => ({ value: role.id, label: role.name })),
+            placeholder: 'Select Role',
+            required: true,
+        },
+        {
+            name: 'password',
+            label: 'Password',
+            type: 'password',
+            placeholder: 'Minimum 8 Characters',
+            required: true,
+        },
+    ];
+
     return (
         <DashboardLayout judulHalaman="Add User">
             <Head title="Add User" />
-
-            <div className="w-full bg-white border border-zinc-200 rounded-lg shadow-sm p-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div>
-                            <h1 className="text-xl font-bold text-zinc-700">Add New User</h1>
-                            <p className="text-sm text-gray-500 mt-1">Create a new user account.</p>
-                        </div>
-                    </div>
-                    
-                    {/* Input Nama */}
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 mb-2">
-                            Name <span className="text-xs text-red-600">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            className="w-full bg-white border border-zinc-300 text-zinc-800 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Name"
-                        />
-                        {/* Menampilkan pesan error validasi dari Laravel jika ada */}
-                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                    </div>
-
-                    {/* Input Email */}
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 mb-2">
-                            Email Address <span className="text-xs text-red-600">*</span>
-                        </label>
-                        <input
-                            type="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            className="w-full bg-white border border-zinc-300 text-zinc-800 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="example@email.com"
-                        />
-                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-                    </div>
-
-                    {/* Input Role */}
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 mb-2">
-                            Role <span className="text-xs text-red-600">*</span>
-                        </label>
-                        <select
-                            value={data.role_id}
-                            onChange={(e) => setData('role_id', e.target.value)}
-                            className="w-full bg-white border border-zinc-300 text-zinc-800 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="">Select Role</option>
-                            {roles.map((role) => (
-                                <option key={role.id} value={role.id}>
-                                    {role.name}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.role_id && <p className="text-red-500 text-sm mt-1">{errors.role_id}</p>}
-                    </div>
-
-                    {/* Input Password */}
-                    <div>
-                        <label className="block text-sm font-medium text-zinc-700 mb-2">
-                            Password <span className="text-xs text-red-600">*</span>
-                        </label>
-                        <input
-                            type="password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            className="w-full bg-white border border-zinc-300 text-zinc-800 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Minimum 8 Caracters"
-                        />
-                        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-                    </div>
-
-                    {/* Tombol Aksi */}
-                    <div className="flex items-center gap-4 pt-4 border-t border-zinc-200">
-                        <RedirectOutlineButton text="Cancel" href="/users" className="me-auto" />
-                        
-                        <SubmitOutlineButton text="Create" disabled={processing} />
-                        
-                    </div>
-
-                </form>
-            </div>
+                <DynamicForm
+                    title="Add New User"
+                    description="Create a new user account."
+                    fields={formFields}
+                    data={data}
+                    setData={setData}
+                    errors={errors}
+                    onSubmit={handleSubmit}
+                    processing={processing}
+                    submitText="Create"
+                    cancelHref="/users"
+                />
         </DashboardLayout>
     );
 }

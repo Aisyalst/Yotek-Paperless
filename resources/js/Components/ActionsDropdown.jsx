@@ -65,7 +65,7 @@ export default function UserActionsDropdown({ data, baseLink, view }) {
 
             {isOpen && (
                 <div
-                    className="fixed bg-blue-900/80 backdrop-blur-md border border-blue-500 rounded shadow-lg z-50 w-32"
+                    className="fixed bg-[#252526]/5 backdrop-blur-md border border-[#252526] rounded shadow-lg z-50 w-32"
                     style={{
                         top: `${dropdownPos.top}px`,
                         left: `${dropdownPos.left}px`
@@ -74,7 +74,7 @@ export default function UserActionsDropdown({ data, baseLink, view }) {
                     {hasViewPermission && (
                         <Link
                             href={`${baseLink}/${data.id}`}
-                            className={`text-left block px-4 py-2 text-sm text-blue-300 hover:bg-blue-500/20 hover:text-blue-200 transition-colors ${getRoundClass('view')}`}
+                            className={`text-left block px-4 py-2 text-sm text-gray-200 hover:bg-[#252526] hover:text-gray-300 transition-colors ${getRoundClass('view')}`}
                             onClick={closeDropdown}
                         >
                             View
@@ -83,7 +83,7 @@ export default function UserActionsDropdown({ data, baseLink, view }) {
                     {hasEditPermission && (
                         <Link
                             href={`${baseLink}/${data.id}/edit`}
-                            className={`text-left block px-4 py-2 text-sm text-blue-300 hover:bg-blue-500/20 hover:text-blue-200 transition-colors ${getRoundClass('edit')}`}
+                            className={`text-left block px-4 py-2 text-sm text-gray-200 hover:bg-[#252526] hover:text-gray-300 transition-colors ${getRoundClass('edit')}`}
                             onClick={closeDropdown}
                         >
                             Edit
@@ -94,7 +94,7 @@ export default function UserActionsDropdown({ data, baseLink, view }) {
                             <input type="hidden" name="_method" value="DELETE" />
                             <button
                                 type="submit"
-                                className={`block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-blue-500/20 hover:text-red-300 transition-colors ${getRoundClass('delete')}`}
+                                className={`block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-[#252526] hover:text-red-300 transition-colors ${getRoundClass('delete')}`}
                             >
                                 Delete
                             </button>

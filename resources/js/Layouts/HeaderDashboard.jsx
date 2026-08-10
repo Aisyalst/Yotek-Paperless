@@ -43,14 +43,14 @@ export default function Header({ judul, onMenuButtonClick }) {
 
                             {/* Isi Dropdown Profil */}
                             {isProfileOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-blue-900/60 backdrop-blur-md text-blue-200 border border-blue-500 rounded-md shadow-lg py-1 z-50">
-                                    <div className="px-4 py-2 border-b border-blue-500/50">
-                                        <p className="text-sm font-semibold text-blue-300">Halo, {auth.user.name}!</p>
+                                <div className="absolute right-0 mt-2 w-48 bg-[#252526]/60 backdrop-blur-md text-gray-200 border border-zinc-700 rounded-md shadow-lg py-1 z-50">
+                                    <div className="px-4 py-2 border-b border-zinc-700/50">
+                                        <p className="text-sm font-semibold text-gray-200">Halo, {auth.user.name}!</p>
                                     </div>
-                                    <Link href="/profile" className="block px-4 py-2 text-sm text-blue-200 hover:bg-blue-500/20">Edit Profil</Link>
+                                    <Link href="/profile" className="block px-4 py-2 text-sm text-gray-200 hover:bg-zinc-500/20">Edit Profil</Link>
                                     
                                     {/* Contoh tombol Logout (menggunakan method POST Inertia) */}
-                                    <Link href="/logout" method="post" as="button" className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-blue-500/20 border-t border-blue-500/50">
+                                    <Link href="/logout" method="post" as="button" className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-zinc-500/20 border-t border-zinc-700/50">
                                         Keluar
                                     </Link>
                                 </div>

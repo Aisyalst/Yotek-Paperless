@@ -21,6 +21,7 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('routes', [RouteController::class, 'index'])->name('routes.index');
+    Route::get('routes/bulk-create', [RouteController::class, 'bulkCreate'])->name('routes.bulk-create');
     Route::get('routes/create', [RouteController::class, 'create'])->name('routes.create');
     Route::post('routes', [RouteController::class, 'store'])->name('routes.store');
     Route::get('routes/{route}/edit', [RouteController::class, 'edit'])->name('routes.edit');
@@ -50,6 +51,15 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('tokens', [\App\Http\Controllers\TokenController::class, 'index'])->name('tokens.index');
+    Route::get('tokens/create', [\App\Http\Controllers\TokenController::class, 'create'])->name('tokens.create');
+    Route::post('tokens', [\App\Http\Controllers\TokenController::class, 'store'])->name('tokens.store');
+    Route::delete('tokens/{token}', [\App\Http\Controllers\TokenController::class, 'destroy'])->name('tokens.destroy');
+
+    Route::get('participants', [\App\Http\Controllers\ParticipantController::class, 'index'])->name('participants.index');
+    Route::get('participants/{participant}', [\App\Http\Controllers\ParticipantController::class, 'show'])->name('participants.show');
+    Route::delete('participants/{participant}', [\App\Http\Controllers\ParticipantController::class, 'destroy'])->name('participants.destroy');
 });
 
 require __DIR__.'/auth.php';

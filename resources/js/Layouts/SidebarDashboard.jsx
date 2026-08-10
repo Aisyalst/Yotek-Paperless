@@ -108,8 +108,8 @@ export default function Sidebar({ isOpen, onClose }) {
                         onClick={() => toggleDropdown(menu.id)}
                         className={`transition duration-300 ease-in-out block mx-5 my-2 ps-[5%] pe-5 py-2 text-sm font-semibold transition-colors rounded-md hover:translate-x-1 flex items-center justify-between text-left border ${
                             hasActiveChild 
-                                ? 'bg-[#162032] text-white border border-blue-500 font-bold' 
-                                : 'text-white border border-transparent hover:border-blue-500 hover:bg-blue-500/30 hover:text-white'
+                                ? 'bg-[#252526] text-white border border-zinc-700 font-bold' 
+                                : 'text-gray-200 border border-transparent hover:border-zinc-700 hover:bg-[#252526]/60 hover:text-white'
                         }`}
                         style={{ width: 'calc(100% - 40px)' }}
                     >
@@ -122,7 +122,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
                     {/* Collapsible Children List */}
                     {isOpen && (
-                        <ul className="ms-5 pl-2 border-l border-blue-700">
+                        <ul className="ms-5 pl-2 border-l border-zinc-700">
                             {menu.children.map((child) => {
                                 const ChildIcon = HiIcons[child.icon] || HiIcons.HiFolder;
                                 const childLink = child.route ? route(child.route.route_name) : '#';
@@ -154,12 +154,12 @@ export default function Sidebar({ isOpen, onClose }) {
     };
 
     return (
-        <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#252526] border-r border-zinc-700 text-blue-100 flex flex-col transition-transform duration-300 ease-in-out transform ${
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#252526] border-r border-zinc-700 text-gray-200 flex flex-col transition-transform duration-300 ease-in-out transform ${
             isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0`}>
             
             {/* Bagian Logo */}
-            <div className="h-16 flex items-center justify-between px-6 border-b border-blue-500/30">
+            <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-700">
                 <span>
                     <div className="flex items-center">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1280px-Laravel.svg.png" alt="" className="w-10 h-10" />

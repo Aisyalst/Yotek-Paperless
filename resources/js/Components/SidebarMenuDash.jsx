@@ -23,8 +23,8 @@ export default function SidebarMenuDash({ link, label, svg }) {
             <Link
                 href={link}
                 className={`transition duration-300 ease-in-out block mx-5 my-2 ps-[5%] py-2 text-sm font-semibold transition-colors rounded-md hover:translate-x-2 flex items-center ${isActive
-                        ? 'bg-[#162032] text-white border border-blue-500'
-                        : 'text-white border border-transparent hover:border-blue-500 hover:bg-blue-500/30 hover:text-white'
+                        ? 'bg-[#252526] text-gray-200 border border-zinc-700 font-bold'
+                        : 'text-gray-200 border border-transparent hover:border-zinc-700 hover:bg-[#252526]/60 hover:text-white'
                     }`}
             >
                 <span className="flex items-center">

@@ -21,6 +21,11 @@ class RouteController extends Controller
         return inertia('Dashboard/Setting/Routes/Create');
     }
 
+    public function bulkCreate()
+    {
+        return inertia('Dashboard/Setting/Routes/BulkCreate');
+    }
+
     public function store(Request $request)
     {
         if ($request->has('routes') && is_array($request->routes)) {

@@ -39,12 +39,12 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
                 </div>
             </div>
 
-            <div className="w-full bg-blue-500/10 border border-blue-500 rounded-lg shadow-sm overflow-hidden">
+            <div className="w-full bg-[#252526]/10 border border-zinc-700 rounded-lg shadow-sm overflow-hidden">
                 <div className="overflow-x-auto dark-scrollbar">
                     <table className="w-full text-left border-collapse min-w-[800px]">
                         <thead>
-                            <tr className="bg-blue-500/1 border-b border-blue-500">
-                                <th className="px-6 py-4 text-sm font-semibold text-gray-200 w-[200px] sticky left-0 bg-blue-500/1 z-10 border-r border-blue-500">
+                            <tr className="bg-[#252526]/20 border-b border-zinc-700/50">
+                                <th className="px-6 py-4 text-sm font-semibold text-gray-200 w-[200px] sticky left-0 bg-[#252526] z-10 border-r border-zinc-700">
                                     Roles / Routes
                                 </th>
                                 {routes.map((route) => (
@@ -53,15 +53,15 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
                                         className="px-6 py-4 text-xs font-semibold text-gray-200 uppercase tracking-wider text-center min-w-[150px]"
                                     >
                                         <span className="block font-bold">{route.name}</span>
-                                        <span className="block text-blue-300 font-normal mt-0.5 lowercase">{route.route_name}</span>
+                                        <span className="block text-gray-400 font-normal mt-0.5 lowercase">{route.route_name}</span>
                                     </th>
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-blue-500/50">
+                        <tbody className="divide-y divide-zinc-700/50">
                             {roles.map((role) => (
-                                <tr key={role.id} className="hover:bg-blue-500/1 transition-colors">
-                                    <td className="px-6 py-4 text-sm font-bold text-gray-200 sticky left-0 bg-[#252a36] z-10 border-r border-blue-500">
+                                <tr key={role.id} className="hover:bg-[#252526]/20 transition-colors">
+                                    <td className="px-6 py-4 text-sm font-bold text-gray-200 sticky left-0 bg-[#252526] z-10 border-r border-zinc-700">
                                         {role.name}
                                     </td>
                                     {routes.map((route) => {
@@ -83,7 +83,7 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
                                                             type="checkbox"
                                                             checked={isChecked}
                                                             onChange={() => handleToggle(role.id, route.id, existingRp)}
-                                                            className="w-5 h-5 rounded border-blue-500 bg-blue-500/20 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900 cursor-pointer"
+                                                            className="w-5 h-5 rounded border-zinc-700 bg-[#252526] text-zinc-500 focus:ring-zinc-500 focus:ring-offset-[#252526] cursor-pointer"
                                                         />
                                                     )}
                                                 </div>
