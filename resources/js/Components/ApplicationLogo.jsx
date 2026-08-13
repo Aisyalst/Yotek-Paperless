@@ -2,7 +2,7 @@ export default function ApplicationLogo(props) {
     return (
         <img
             {...props}
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1280px-Laravel.svg.png"
+            src="http://127.0.0.1:8000/logo.png"
             alt="Logo"
         />
     );

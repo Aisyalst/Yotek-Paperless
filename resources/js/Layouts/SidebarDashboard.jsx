@@ -12,7 +12,7 @@ export default function Sidebar({ isOpen, onClose }) {
     const filteredMenus = sidebarMenus
         .map(menu => {
             if (menu.type === 'Dropdown' && menu.children && menu.children.length > 0) {
-                const allowedChildren = menu.children.filter(child => 
+                const allowedChildren = menu.children.filter(child =>
                     child.route && permissions.includes(child.route.route_name)
                 );
                 return {
@@ -44,15 +44,15 @@ export default function Sidebar({ isOpen, onClose }) {
             if (link.startsWith('http://') || link.startsWith('https://')) {
                 relativeLink = new URL(link).pathname;
             }
-        } catch (e) {}
-        
+        } catch (e) { }
+
         const cleanUrl = url.split('?')[0];
         const cleanLink = relativeLink.split('?')[0];
-        
+
         if (cleanLink === '/') {
             return cleanUrl === '/';
         }
-        
+
         return cleanUrl === cleanLink || (cleanUrl.startsWith(cleanLink + '/') && !cleanUrl.startsWith(cleanLink + '/create'));
     };
 
@@ -92,7 +92,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
     const renderMenuItem = (menu) => {
         const IconComponent = HiIcons[menu.icon] || HiIcons.HiFolder;
-        
+
         if (menu.type === 'Dropdown' && menu.children && menu.children.length > 0) {
             const isOpen = !!openDropdowns[menu.id];
             const hasActiveChild = menu.children.some(child => {
@@ -106,11 +106,10 @@ export default function Sidebar({ isOpen, onClose }) {
                     {/* Parent Menu Toggle Button */}
                     <button
                         onClick={() => toggleDropdown(menu.id)}
-                        className={`transition duration-300 ease-in-out block mx-5 my-2 ps-[5%] pe-5 py-2 text-sm font-semibold transition-colors rounded-md hover:translate-x-1 flex items-center justify-between text-left border ${
-                            hasActiveChild 
-                                ? 'bg-[#252526] text-white border border-zinc-700 font-bold' 
+                        className={`transition duration-300 ease-in-out block mx-5 my-2 ps-[5%] pe-5 py-2 text-sm font-semibold transition-colors rounded-md hover:translate-x-1 flex items-center justify-between text-left border ${hasActiveChild
+                                ? 'bg-[#252526] text-white border border-zinc-700 font-bold'
                                 : 'text-gray-200 border border-transparent hover:border-zinc-700 hover:bg-[#252526]/60 hover:text-white'
-                        }`}
+                            }`}
                         style={{ width: 'calc(100% - 40px)' }}
                     >
                         <span className="flex items-center">
@@ -144,30 +143,29 @@ export default function Sidebar({ isOpen, onClose }) {
         // Standalone Single Menu Item
         const link = menu.route ? route(menu.route.route_name) : '#';
         return (
-            <Menu 
-                key={menu.id} 
-                link={link} 
-                label={menu.name} 
-                svg={<IconComponent className="inline me-2 w-5 h-5" />} 
+            <Menu
+                key={menu.id}
+                link={link}
+                label={menu.name}
+                svg={<IconComponent className="inline me-2 w-5 h-5" />}
             />
         );
     };
 
     return (
-        <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#252526] border-r border-zinc-700 text-gray-200 flex flex-col transition-transform duration-300 ease-in-out transform ${
-            isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0`}>
-            
+        <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#252526] border-r border-zinc-700 text-gray-200 flex flex-col transition-transform duration-300 ease-in-out transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+            } lg:translate-x-0 lg:static lg:h-screen lg:flex-shrink-0`}>
+
             {/* Bagian Logo */}
             <div className="h-16 flex items-center justify-between px-6 border-b border-zinc-700">
                 <span>
                     <div className="flex items-center">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1280px-Laravel.svg.png" alt="" className="w-10 h-10" />
+                        <img src="http://127.0.0.1:8000/logo.png" alt="" className="w-10 h-10" />
                         <span className="text-xl font-bold text-blue-500"></span>
                         <p className="text-gray-200 font-semibold"></p>
                     </div>
                 </span>
-                <button 
+                <button
                     onClick={onClose}
                     className="lg:hidden p-1.5 rounded-md text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 focus:outline-none"
                     aria-label="Close Sidebar"
@@ -180,12 +178,11 @@ export default function Sidebar({ isOpen, onClose }) {
             <nav className="flex-1 overflow-y-auto h-full">
                 <ul className="h-full flex flex-col pt-5">
                     <Menu link="/" label="Dashboard" svg={<HiHome className="inline me-2 w-5 h-5" />} />
-                    
+
                     {Object.entries(groupedMenus).map(([sectionName, items]) => (
                         <React.Fragment key={sectionName}>
-                            <div className={`px-4 py-2 text-xs font-semibold text-white uppercase ${
-                                sectionName === 'Settings' ? 'mt-auto' : 'mt-4'
-                            }`}>
+                            <div className={`px-4 py-2 text-xs font-semibold text-white uppercase ${sectionName === 'Settings' ? 'mt-auto' : 'mt-4'
+                                }`}>
                                 {sectionName}
                             </div>
                             {items.map((menu) => renderMenuItem(menu))}

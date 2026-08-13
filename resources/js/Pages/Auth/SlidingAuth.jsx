@@ -42,22 +42,22 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#1e1e1e] bg-dot-pattern p-4">
+        <div className="min-h-screen flex items-center justify-center bg-[#f8f8f8] bg-dot-pattern p-4">
             <Head title={isRightPanelActive ? 'Register' : 'Log in'} />
             
             <div className={`auth-container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
                 {/* Register Form Panel */}
-                <div className={`form-container sign-up-container bg-[#252526] text-gray-200 ${isRightPanelActive ? 'block' : 'hidden'} md:block`}>
+                <div className={`form-container sign-up-container bg-white text-[#1a1a1a] ${isRightPanelActive ? 'block' : 'hidden'} md:block`}>
                     <form onSubmit={submitRegister} className="flex flex-col justify-center h-full px-10 py-12">
-                        <h1 className="text-3xl font-bold text-white mb-6 text-center">Create Account</h1>
+                        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-6 text-center">Create Account</h1>
                         
                         <div>
-                            <InputLabel htmlFor="reg_name" value="Name" className="text-gray-300" />
+                            <InputLabel htmlFor="reg_name" value="Name" className="text-gray-700" />
                             <TextInput
                                 id="reg_name"
                                 name="name"
                                 value={registerForm.data.name}
-                                className="mt-1 block w-full bg-[#1e1e1e] border-zinc-700 text-white focus:border-gray-500 focus:ring-gray-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="name"
                                 isFocused={isRightPanelActive}
                                 onChange={(e) => registerForm.setData('name', e.target.value)}
@@ -67,13 +67,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="reg_email" value="Email" className="text-gray-300" />
+                            <InputLabel htmlFor="reg_email" value="Email" className="text-gray-700" />
                             <TextInput
                                 id="reg_email"
                                 type="email"
                                 name="email"
                                 value={registerForm.data.email}
-                                className="mt-1 block w-full bg-[#1e1e1e] border-zinc-700 text-white focus:border-gray-500 focus:ring-gray-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="username"
                                 onChange={(e) => registerForm.setData('email', e.target.value)}
                                 required
@@ -82,13 +82,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="reg_password" value="Password" className="text-gray-300" />
+                            <InputLabel htmlFor="reg_password" value="Password" className="text-gray-700" />
                             <TextInput
                                 id="reg_password"
                                 type="password"
                                 name="password"
                                 value={registerForm.data.password}
-                                className="mt-1 block w-full bg-[#1e1e1e] border-zinc-700 text-white focus:border-gray-500 focus:ring-gray-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="new-password"
                                 onChange={(e) => registerForm.setData('password', e.target.value)}
                                 required
@@ -97,13 +97,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="reg_password_confirmation" value="Confirm Password" className="text-gray-300" />
+                            <InputLabel htmlFor="reg_password_confirmation" value="Confirm Password" className="text-gray-700" />
                             <TextInput
                                 id="reg_password_confirmation"
                                 type="password"
                                 name="password_confirmation"
                                 value={registerForm.data.password_confirmation}
-                                className="mt-1 block w-full bg-[#1e1e1e] border-zinc-700 text-white focus:border-gray-500 focus:ring-gray-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="new-password"
                                 onChange={(e) => registerForm.setData('password_confirmation', e.target.value)}
                                 required
@@ -112,13 +112,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-6">
-                            <PrimaryButton className="w-full justify-center bg-gray-600 hover:bg-gray-700 py-3" disabled={registerForm.processing}>
+                            <PrimaryButton className="w-full justify-center bg-[#1a1a1a] hover:bg-[#eaae36] py-3" disabled={registerForm.processing}>
                                 Sign Up
                             </PrimaryButton>
                         </div>
                         
                         <div className="mt-6 text-center md:hidden">
-                            <Link href={route('login')} className="text-sm text-gray-400 underline hover:text-gray-200">
+                            <Link href={route('login')} className="text-sm text-gray-600 underline hover:text-gray-200">
                                 Already have an account? Sign In
                             </Link>
                         </div>
@@ -126,20 +126,20 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                 </div>
 
                 {/* Login Form Panel */}
-                <div className={`form-container sign-in-container bg-[#252526] text-gray-200 ${!isRightPanelActive ? 'block' : 'hidden'} md:block`}>
+                <div className={`form-container sign-in-container bg-white text-[#1a1a1a] ${!isRightPanelActive ? 'block' : 'hidden'} md:block`}>
                     <form onSubmit={submitLogin} className="flex flex-col justify-center h-full px-10 py-12">
-                        <h1 className="text-3xl font-bold text-white mb-6 text-center">Sign In</h1>
+                        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-6 text-center">Sign In</h1>
                         
                         {status && <div className="mb-4 text-sm font-medium text-green-500 text-center">{status}</div>}
 
                         <div>
-                            <InputLabel htmlFor="login_email" value="Email" className="text-gray-300" />
+                            <InputLabel htmlFor="login_email" value="Email" className="text-gray-700" />
                             <TextInput
                                 id="login_email"
                                 type="email"
                                 name="email"
                                 value={loginForm.data.email}
-                                className="mt-1 block w-full bg-[#1e1e1e] border-zinc-700 text-white focus:border-gray-500 focus:ring-gray-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="username"
                                 isFocused={!isRightPanelActive}
                                 onChange={(e) => loginForm.setData('email', e.target.value)}
@@ -148,13 +148,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="login_password" value="Password" className="text-gray-300" />
+                            <InputLabel htmlFor="login_password" value="Password" className="text-gray-700" />
                             <TextInput
                                 id="login_password"
                                 type="password"
                                 name="password"
                                 value={loginForm.data.password}
-                                className="mt-1 block w-full bg-[#1e1e1e] border-zinc-700 text-white focus:border-gray-500 focus:ring-gray-500 rounded-md shadow-sm"
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="current-password"
                                 onChange={(e) => loginForm.setData('password', e.target.value)}
                             />
@@ -168,27 +168,27 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                                     checked={loginForm.data.remember}
                                     onChange={(e) => loginForm.setData('remember', e.target.checked)}
                                 />
-                                <span className="ms-2 text-sm text-gray-400">Remember me</span>
+                                <span className="ms-2 text-sm text-gray-600">Remember me</span>
                             </label>
                         </div>
 
                         <div className="mt-6 flex flex-col items-center">
-                            <PrimaryButton className="w-full justify-center bg-gray-600 hover:bg-gray-700 py-3 mb-4" disabled={loginForm.processing}>
+                            <PrimaryButton className="w-full justify-center bg-[#1a1a1a] hover:bg-yellow-500 py-3 mb-4" disabled={loginForm.processing}>
                                 Sign In
                             </PrimaryButton>
                             
-                            {canResetPassword && (
+                            {/* {canResetPassword && (
                                 <Link
                                     href={route('password.request')}
-                                    className="text-sm text-gray-400 underline hover:text-gray-200"
+                                    className="text-sm text-gray-600 underline hover:text-gray-200"
                                 >
                                     Forgot your password?
                                 </Link>
-                            )}
+                            )} */}
                         </div>
 
                         <div className="mt-2 text-center md:hidden">
-                            <Link href={route('register')} className="text-sm text-gray-400 underline hover:text-gray-200">
+                            <Link href={route('register')} className="text-sm text-gray-600 underline hover:text-gray-200">
                                 Don't have an account? Sign Up
                             </Link>
                         </div>
@@ -198,7 +198,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                 {/* Overlay Panel */}
                 <div className="overlay-container hidden md:block">
                     <div className="overlay">
-                        <div className="overlay-panel overlay-left">
+                        <div className="overlay-panel overlay-left bg-[#1a1a1a]">
                             <ApplicationLogo 
                                 className="w-20 h-20 object-contain mx-auto fill-current text-white mb-6" 
                                 style={{ maxWidth: '80px', maxHeight: '80px' }}
@@ -214,7 +214,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                                 Sign In
                             </button>
                         </div>
-                        <div className="overlay-panel overlay-right">
+                        <div className="overlay-panel overlay-right bg-[#1a1a1a]">
                             <ApplicationLogo 
                                 className="w-20 h-20 object-contain mx-auto fill-current text-white mb-6" 
                                 style={{ maxWidth: '80px', maxHeight: '80px' }}
