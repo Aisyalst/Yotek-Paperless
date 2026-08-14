@@ -11,7 +11,7 @@ export default function Show({ user }) {
             {/* Top Section: Title & Back Button */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h1 className="text-xl font-bold text-zinc-700">User Detail</h1>
+                    <h1 className="text-xl font-bold text-[#1a1a1a]">User Detail</h1>
                     <p className="text-sm text-gray-500 mt-1">Complete information about this user.</p>
                 </div>
 
@@ -38,7 +38,7 @@ export default function Show({ user }) {
                             <span className="inline-block px-2 py-1 text-xs font-semibold text-white bg-blue-800 rounded-full">
                                 {user.role.name}
                             </span>
-                            {user.is_active ? (
+                            {Number(user.is_active) === 1 ? (
                                 <span className="ml-2 inline-block px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">
                                     Active
                                 </span>
@@ -59,6 +59,11 @@ export default function Show({ user }) {
                             <div>
                                 <label className="text-xs font-semibold text-zinc-500 uppercase">Full Name</label>
                                 <p className="text-zinc-800 mt-1">{user.name}</p>
+                            </div>
+                            
+                            <div>
+                                <label className="text-xs font-semibold text-zinc-500 uppercase">Phone</label>
+                                <p className="text-zinc-800 mt-1">{user.phone || '-'}</p>
                             </div>
                         </div>
 
@@ -110,3 +115,4 @@ export default function Show({ user }) {
         </DashboardLayout>
     );
 }
+

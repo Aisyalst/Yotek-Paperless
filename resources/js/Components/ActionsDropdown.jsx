@@ -74,7 +74,7 @@ export default function UserActionsDropdown({ data, baseLink, view }) {
                     {hasViewPermission && (
                         <Link
                             href={`${baseLink}/${data.id}`}
-                            className={`text-left block px-4 py-2 text-sm text-gray-200 hover:bg-[#252526] hover:text-gray-300 transition-colors ${getRoundClass('view')}`}
+                            className={`text-left block px-4 py-2 text-sm text-[#1a1a1a] hover:bg-[#252526] hover:text-gray-300 transition-colors ${getRoundClass('view')}`}
                             onClick={closeDropdown}
                         >
                             View
@@ -83,7 +83,7 @@ export default function UserActionsDropdown({ data, baseLink, view }) {
                     {hasEditPermission && (
                         <Link
                             href={`${baseLink}/${data.id}/edit`}
-                            className={`text-left block px-4 py-2 text-sm text-gray-200 hover:bg-[#252526] hover:text-gray-300 transition-colors ${getRoundClass('edit')}`}
+                            className={`text-left block px-4 py-2 text-sm text-[#1a1a1a] hover:bg-[#252526] hover:text-gray-300 transition-colors ${getRoundClass('edit')}`}
                             onClick={closeDropdown}
                         >
                             Edit

@@ -6,7 +6,7 @@ export default function ThankYou() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#121212] bg-dot-pattern p-4 relative overflow-hidden">
             {/* Glowing background blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-[#eaae36]/30 rounded-full blur-[100px] pointer-events-none"></div>
 
             <Head title="Thank You!" />
 
@@ -14,8 +14,8 @@ export default function ThankYou() {
                 <div className="flex justify-center mb-8">
                     <div className="p-5 bg-zinc-800/50 rounded-2xl border border-zinc-600/30 shadow-inner flex items-center justify-center">
                         <ApplicationLogo 
-                            className="w-20 h-20 object-contain drop-shadow-xl mx-auto" 
-                            style={{ maxWidth: '80px', maxHeight: '80px' }}
+                            className="w-[150px] h-[150px] object-contain drop-shadow-xl mx-auto" 
+                            style={{ maxWidth: '150px', maxHeight: '150px' }}
                         />
                     </div>
                 </div>

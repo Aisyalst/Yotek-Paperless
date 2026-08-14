@@ -8,7 +8,7 @@ export default function Header({ judul, onMenuButtonClick }) {
     const { auth } = usePage().props;
 
     return (
-        <nav className="bg-[#252526] border-b border-zinc-700 text-gray-200 shadow-sm relative z-50 w-full">
+        <nav className="bg-[#ffffff] border-b border-zinc-200 text-[#1a1a1a] shadow-sm relative z-50 w-full">
             <div className="px-0 mx-0">
                 <div className="flex justify-between h-16 items-center">
                     {/* BAGIAN KIRI: Logo dan Navigasi */}
@@ -22,7 +22,7 @@ export default function Header({ judul, onMenuButtonClick }) {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
-                        <span className="ms-3 lg:ms-5 text-xl font-bold text-gray-200">{judul}</span>
+                        <span className="ms-3 lg:ms-5 text-xl font-bold text-[#1a1a1a]">{judul}</span>
                     </div>
 
                     {/* BAGIAN KANAN: Profile Dropdown */}
@@ -37,20 +37,20 @@ export default function Header({ judul, onMenuButtonClick }) {
                                     src={auth.user.avatar || "https://i.pinimg.com/236x/6c/1a/49/6c1a495a071c97a638b21fc5bfabebf7.jpg"} 
                                     alt="Profile" 
                                 />
-                                <span className="text-sm font-medium text-gray-200 hidden md:block">{auth.user.name}</span>
+                                <span className="text-sm font-medium text-[#1a1a1a] hidden md:block">{auth.user.name}</span>
                                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
 
                             {/* Isi Dropdown Profil */}
                             {isProfileOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-[#252526]/60 backdrop-blur-md text-gray-200 border border-zinc-700 rounded-md shadow-lg py-1 z-50">
-                                    <div className="px-4 py-2 border-b border-zinc-700/50">
-                                        <p className="text-sm font-semibold text-gray-200">Halo, {auth.user.name}!</p>
+                                <div className="absolute right-0 mt-2 w-48 bg-white backdrop-blur-md text-[#1a1a1a] border border-zinc-200 rounded-md shadow-lg py-1 z-50">
+                                    <div className="px-4 py-2 border-b border-zinc-200">
+                                        <p className="text-sm font-semibold text-[#1a1a1a]">Halo, {auth.user.name}!</p>
                                     </div>
-                                    <Link href="/profile" className="block px-4 py-2 text-sm text-gray-200 hover:bg-zinc-500/20">Edit Profil</Link>
+                                    <Link href="/profile" className="block px-4 py-2 text-sm text-[#1a1a1a] hover:bg-gray-100">Edit Profil</Link>
                                     
                                     {/* Contoh tombol Logout (menggunakan method POST Inertia) */}
-                                    <Link href="/logout" method="post" as="button" className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-zinc-500/20 border-t border-zinc-700/50">
+                                    <Link href="/logout" method="post" as="button" className="w-full text-left block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 border-t border-zinc-200">
                                         Keluar
                                     </Link>
                                 </div>

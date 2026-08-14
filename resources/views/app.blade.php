@@ -4,10 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Yotek Integrated System') }}</title>
         
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="http://127.0.0.1:8000/logo.png">
+        <link rel="icon" type="image/png" href="https://yogura.com/wp-content/uploads/2026/08/yotek2.png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

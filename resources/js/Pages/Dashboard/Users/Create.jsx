@@ -8,6 +8,7 @@ export default function Create({ roles }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
+        phone: '',
         role_id: '',
         password: '',
     });
@@ -33,6 +34,13 @@ export default function Create({ roles }) {
             label: 'Email Address',
             type: 'email',
             placeholder: 'example@email.com',
+            required: true,
+        },
+        {
+            name: 'phone',
+            label: 'Phone',
+            type: 'text',
+            placeholder: '0812xxxxxx',
             required: true,
         },
         {
@@ -70,3 +78,4 @@ export default function Create({ roles }) {
         </DashboardLayout>
     );
 }
+

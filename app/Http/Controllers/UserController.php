@@ -9,15 +9,37 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->with('role')->get();
-        $users->each(function($user) {
+        $search = $request->query('search');
+        $perPage = $request->query('per_page', 10);
+
+        $query = User::latest()->with('role');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate($perPage)->withQueryString();
+
+        $users->getCollection()->transform(function($user) {
             $role = $user->role;
             $user->permissions_count = $role->permissions->count();
+            return $user;
         });
+
         return inertia('Dashboard/Users/Index', 
-            ['users' => $users]
+            [
+                'users' => $users,
+                'filters' => [
+                    'search' => $search,
+                    'per_page' => $perPage,
+                ]
+            ]
         );
     }
 
@@ -42,6 +64,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:20',
             'role_id' => 'required|exists:roles,id',
             'password' => 'required|string|min:8',
         ]);
@@ -50,6 +73,7 @@ class UserController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'role_id' => $request->role_id,
             'password' => Hash::make($request->password),
         ]);
@@ -73,14 +97,18 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'required|string|max:20',
             'role_id' => 'required|exists:roles,id',
+            'is_active' => 'required|in:0,1',
             'password' => 'nullable|string|min:8',
         ]);
 
         // 2. Update data di database
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->role_id = $request->role_id;
+        $user->is_active = $request->is_active;
         // Hanya update password jika field password tidak kosong
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);

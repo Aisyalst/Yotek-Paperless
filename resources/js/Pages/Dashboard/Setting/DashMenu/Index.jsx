@@ -128,32 +128,32 @@ export default function Index({ dashboardMenus = [] }) {
                     onDragEnd={hasReorderPermission ? handleDragEnd : undefined}
                     onDragOver={hasReorderPermission ? (e) => handleDragOver(e, menu, parentId, sectionName) : undefined}
                     onDrop={hasReorderPermission ? (e) => handleDrop(e, menu, parentId, sectionName) : undefined}
-                    className={`flex items-center justify-between bg-[#252526]/10 border border-zinc-700 rounded-md p-4 transition-all duration-200 hover:border-zinc-500 hover:bg-[#252526]/20 group ${
+                    className={`flex items-center justify-between bg-[#ffffff] border border-gray-200 rounded-md p-4 transition-all duration-200 hover:border-gray-300 hover:bg-[#f8f8f8] group ${
                         parentId !== null ? 'ml-8 relative border-dashed' : ''
                     }`}
                 >
                     {/* Visual dashed connector for child items */}
                     {parentId !== null && (
-                        <div className="absolute left-[-2rem] top-0 bottom-1/2 w-8 border-l border-b border-zinc-700 border-dashed rounded-bl-lg"></div>
+                        <div className="absolute left-[-2rem] top-0 bottom-1/2 w-8 border-l border-b border-gray-200 border-dashed rounded-bl-lg"></div>
                     )}
 
                     <div className="flex items-center gap-3">
                         {/* Drag Handle */}
                         {hasReorderPermission && (
-                            <div className="cursor-grab active:cursor-grabbing text-gray-600 hover:text-gray-400 p-1">
+                            <div className="cursor-grab active:cursor-grabbing text-gray-600 hover:text-gray-600 p-1">
                                 <DragIcon className="w-5 h-5" />
                             </div>
                         )}
 
                         {/* Menu Icon */}
-                        <div className="p-2 bg-[#252526]/20 border border-zinc-700 rounded-md text-gray-300">
+                        <div className="p-2 bg-[#f8f8f8] border border-gray-200 rounded-md text-gray-600">
                             <DynamicIcon iconName={menu.icon} />
                         </div>
 
                         {/* Details */}
                         <div>
                             <div className="flex items-center gap-2">
-                                <span className="font-bold text-gray-200 text-sm">{menu.name}</span>
+                                <span className="font-bold text-[#1a1a1a] text-sm">{menu.name}</span>
                                 <span className="text-xs text-gray-500 font-mono">Pos: {menu.position}</span>
                             </div>
                             <div className="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
@@ -176,7 +176,7 @@ export default function Index({ dashboardMenus = [] }) {
                         {hasEditPermission && (
                             <Link
                                 href={`/dashboard-menus/${menu.id}/edit`}
-                                className="px-3 py-1.5 text-xs font-semibold text-gray-200 border border-zinc-700 rounded hover:bg-[#252526] transition-colors"
+                                className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
                             >
                                 Edit
                             </Link>
@@ -209,8 +209,8 @@ export default function Index({ dashboardMenus = [] }) {
             {/* Bagian Atas: Judul & Tombol Tambah */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h1 className="text-xl font-bold text-gray-200">List Dashboard Menus</h1>
-                    <p className="text-sm text-gray-400 mt-1">Manage and drag-and-drop to reorder all dashboard menus.</p>
+                    <h1 className="text-xl font-bold text-[#1a1a1a]">List Dashboard Menus</h1>
+                    <p className="text-sm text-gray-600 mt-1">Manage and drag-and-drop to reorder all dashboard menus.</p>
                 </div>
 
                 <RedirectOutlineButton
@@ -223,9 +223,9 @@ export default function Index({ dashboardMenus = [] }) {
             {/* Bagian Bawah: Menu Tree Lists */}
             <div className="space-y-8">
                 {Object.entries(menuTree).map(([sectionName, items]) => (
-                    <div key={sectionName} className="bg-[#252526]/10 border border-zinc-700 rounded-lg p-6 shadow-sm">
-                        <div className="flex items-center justify-between border-b border-zinc-700/50 pb-3 mb-4">
-                            <h2 className="text-md font-bold text-gray-200 uppercase tracking-wider">
+                    <div key={sectionName} className="bg-[#ffffff] border border-gray-200 rounded-lg p-6 shadow-sm">
+                        <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+                            <h2 className="text-md font-bold text-[#1a1a1a] uppercase tracking-wider">
                                 {sectionName} Section
                             </h2>
                             <span className="text-xs text-gray-500 font-normal">
@@ -246,3 +246,4 @@ export default function Index({ dashboardMenus = [] }) {
         </DashboardLayout>
     );
 }
+

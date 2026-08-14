@@ -8,11 +8,17 @@ use App\Http\Controllers\RouteController;
 use App\Http\Controllers\DashboardMenuController;
 use App\Http\Controllers\RolePermissionController;
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('maintenance', function () {
+    return Inertia::render('Maintenance');
+})->name('maintenance');
+
 Route::middleware(['auth', 'role.permission'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('roles', [RoleController::class, 'store'])->name('roles.store');

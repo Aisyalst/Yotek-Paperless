@@ -19,6 +19,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
     const registerForm = useForm({
         name: '',
         email: '',
+        phone: '',
         password: '',
         password_confirmation: '',
     });
@@ -43,16 +44,16 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#f8f8f8] bg-dot-pattern p-4">
-            <Head title={isRightPanelActive ? 'Register' : 'Log in'} />
+            <Head title={isRightPanelActive ? 'Daftar' : 'Masuk'} />
             
             <div className={`auth-container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
                 {/* Register Form Panel */}
                 <div className={`form-container sign-up-container bg-white text-[#1a1a1a] ${isRightPanelActive ? 'block' : 'hidden'} md:block`}>
                     <form onSubmit={submitRegister} className="flex flex-col justify-center h-full px-10 py-12">
-                        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-6 text-center">Create Account</h1>
+                        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-6 text-center">Buat Akun</h1>
                         
                         <div>
-                            <InputLabel htmlFor="reg_name" value="Name" className="text-gray-700" />
+                            <InputLabel htmlFor="reg_name" value="Nama Lengkap" className="text-gray-700" />
                             <TextInput
                                 id="reg_name"
                                 name="name"
@@ -82,7 +83,22 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="reg_password" value="Password" className="text-gray-700" />
+                            <InputLabel htmlFor="reg_phone" value="Nomor Telepon" className="text-gray-700" />
+                            <TextInput
+                                id="reg_phone"
+                                type="text"
+                                name="phone"
+                                value={registerForm.data.phone}
+                                className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
+                                autoComplete="tel"
+                                onChange={(e) => registerForm.setData('phone', e.target.value)}
+                                required
+                            />
+                            <InputError message={registerForm.errors.phone} className="mt-2" />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="reg_password" value="Kata Sandi" className="text-gray-700" />
                             <TextInput
                                 id="reg_password"
                                 type="password"
@@ -97,7 +113,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="reg_password_confirmation" value="Confirm Password" className="text-gray-700" />
+                            <InputLabel htmlFor="reg_password_confirmation" value="Konfirmasi Kata Sandi" className="text-gray-700" />
                             <TextInput
                                 id="reg_password_confirmation"
                                 type="password"
@@ -113,13 +129,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
 
                         <div className="mt-6">
                             <PrimaryButton className="w-full justify-center bg-[#1a1a1a] hover:bg-[#eaae36] py-3" disabled={registerForm.processing}>
-                                Sign Up
+                                Daftar
                             </PrimaryButton>
                         </div>
                         
                         <div className="mt-6 text-center md:hidden">
                             <Link href={route('login')} className="text-sm text-gray-600 underline hover:text-gray-200">
-                                Already have an account? Sign In
+                                Sudah punya akun? Masuk
                             </Link>
                         </div>
                     </form>
@@ -128,7 +144,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                 {/* Login Form Panel */}
                 <div className={`form-container sign-in-container bg-white text-[#1a1a1a] ${!isRightPanelActive ? 'block' : 'hidden'} md:block`}>
                     <form onSubmit={submitLogin} className="flex flex-col justify-center h-full px-10 py-12">
-                        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-6 text-center">Sign In</h1>
+                        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-6 text-center">Masuk</h1>
                         
                         {status && <div className="mb-4 text-sm font-medium text-green-500 text-center">{status}</div>}
 
@@ -148,7 +164,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="login_password" value="Password" className="text-gray-700" />
+                            <InputLabel htmlFor="login_password" value="Kata Sandi" className="text-gray-700" />
                             <TextInput
                                 id="login_password"
                                 type="password"
@@ -168,13 +184,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                                     checked={loginForm.data.remember}
                                     onChange={(e) => loginForm.setData('remember', e.target.checked)}
                                 />
-                                <span className="ms-2 text-sm text-gray-600">Remember me</span>
+                                <span className="ms-2 text-sm text-gray-600">Ingat saya</span>
                             </label>
                         </div>
 
                         <div className="mt-6 flex flex-col items-center">
                             <PrimaryButton className="w-full justify-center bg-[#1a1a1a] hover:bg-yellow-500 py-3 mb-4" disabled={loginForm.processing}>
-                                Sign In
+                                Masuk
                             </PrimaryButton>
                             
                             {/* {canResetPassword && (
@@ -189,7 +205,7 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
 
                         <div className="mt-2 text-center md:hidden">
                             <Link href={route('register')} className="text-sm text-gray-600 underline hover:text-gray-200">
-                                Don't have an account? Sign Up
+                                Belum punya akun? Daftar
                             </Link>
                         </div>
                     </form>
@@ -200,34 +216,34 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                     <div className="overlay">
                         <div className="overlay-panel overlay-left bg-[#1a1a1a]">
                             <ApplicationLogo 
-                                className="w-20 h-20 object-contain mx-auto fill-current text-white mb-6" 
-                                style={{ maxWidth: '80px', maxHeight: '80px' }}
+                                className="w-200 h-200 object-contain mx-auto fill-current text-white mb-6" 
+                                style={{ maxWidth: '150px', maxHeight: '150px' }}
                             />
-                            <h1 className="text-3xl font-bold mb-4">Hello Friend!</h1>
+                            <h1 className="text-3xl font-bold mb-4">Hello Guys!</h1>
                             <p className="text-gray-100 mb-8 text-sm px-4">
-                                Enter your personal details and start journey with us
+                                Masukkan data diri Anda dan mulai perjalanan kedunia yang baru!!
                             </p>
                             <button
                                 className="border-2 border-white rounded-full px-12 py-3 text-white font-bold uppercase tracking-widest hover:bg-white hover:text-gray-600 transition-colors duration-300"
                                 onClick={() => setIsRightPanelActive(false)}
                             >
-                                Sign In
+                                Masuk
                             </button>
                         </div>
                         <div className="overlay-panel overlay-right bg-[#1a1a1a]">
                             <ApplicationLogo 
-                                className="w-20 h-20 object-contain mx-auto fill-current text-white mb-6" 
-                                style={{ maxWidth: '80px', maxHeight: '80px' }}
+                                className="w-200 h-200 object-contain mx-auto fill-current text-white mb-6" 
+                                style={{ maxWidth: '200px', maxHeight: '200px' }}
                             />
-                            <h1 className="text-3xl font-bold mb-4">Welcome Back!</h1>
+                            <h1 className="text-3xl font-bold mb-4">Selamat Datang Kembali!</h1>
                             <p className="text-gray-100 mb-8 text-sm px-4">
-                                To keep connected with us please login with your personal info
+                                Untuk tetap terhubung dengan kami, silakan masuk dengan informasi pribadi Anda
                             </p>
                             <button
                                 className="border-2 border-white rounded-full px-12 py-3 text-white font-bold uppercase tracking-widest hover:bg-white hover:text-gray-600 transition-colors duration-300"
                                 onClick={() => setIsRightPanelActive(true)}
                             >
-                                Sign Up
+                                Daftar
                             </button>
                         </div>
                     </div>

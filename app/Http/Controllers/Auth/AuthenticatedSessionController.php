@@ -32,9 +32,14 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        if ((int) $request->user()->is_active === 0) {
+            $request->session()->regenerate();
+            return redirect()->route('maintenance');
+        }
+
         $request->session()->regenerate();
 
-        return redirect()->intended(route('users.index', absolute: false));
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

@@ -36,11 +36,11 @@ export default function BulkCreate() {
         <DashboardLayout judulHalaman="Bulk Add Routes">
             <Head title="Bulk Add Routes" />
             
-            <div className="w-full bg-[#252526] border border-zinc-700 text-gray-200 rounded-lg shadow-sm p-6">
+            <div className="w-full bg-[#252526] border border-zinc-700 text-[#1a1a1a] rounded-lg shadow-sm p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
-                            <h1 className="text-xl font-bold text-gray-200">Bulk Add Routes</h1>
+                            <h1 className="text-xl font-bold text-[#1a1a1a]">Bulk Add Routes</h1>
                             <p className="text-sm text-gray-500 mt-1">Create multiple routes at once.</p>
                         </div>
                     </div>
@@ -49,12 +49,12 @@ export default function BulkCreate() {
                         {data.routes.map((route, index) => (
                             <div key={index} className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
                                 <div className="flex-1 w-full">
-                                    <label className="block text-sm font-medium text-gray-200 mb-2">
+                                    <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
                                         Name <span className="text-xs text-red-600">*</span>
                                     </label>
                                     <input
                                         type="text"
-                                        className="w-full bg-[#252526] border border-zinc-700 text-gray-200 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
+                                        className="w-full bg-[#252526] border border-zinc-700 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
                                         value={route.name}
                                         onChange={(e) => handleChange(index, 'name', e.target.value)}
                                         placeholder="e.g. Users List"
@@ -65,12 +65,12 @@ export default function BulkCreate() {
                                     )}
                                 </div>
                                 <div className="flex-1 w-full">
-                                    <label className="block text-sm font-medium text-gray-200 mb-2">
+                                    <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
                                         Route Name (System) <span className="text-xs text-red-600">*</span>
                                     </label>
                                     <input
                                         type="text"
-                                        className="w-full bg-[#252526] border border-zinc-700 text-gray-200 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
+                                        className="w-full bg-[#252526] border border-zinc-700 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
                                         value={route.route_name}
                                         onChange={(e) => handleChange(index, 'route_name', e.target.value)}
                                         placeholder="e.g. users.index"
@@ -98,7 +98,7 @@ export default function BulkCreate() {
                         <button
                             type="button"
                             onClick={handleAddRow}
-                            className="bg-[#252526] border border-zinc-700 text-gray-200 hover:bg-zinc-800 px-4 py-2 rounded-md transition"
+                            className="bg-[#252526] border border-zinc-700 text-[#1a1a1a] hover:bg-zinc-800 px-4 py-2 rounded-md transition"
                         >
                             + Add Row
                         </button>
@@ -113,3 +113,4 @@ export default function BulkCreate() {
         </DashboardLayout>
     );
 }
+

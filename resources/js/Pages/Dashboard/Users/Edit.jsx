@@ -8,7 +8,9 @@ export default function Edit({ user, roles }) {
     const { data, setData, put, processing, errors } = useForm({
         name: user.name || '',
         email: user.email || '',
+        phone: user.phone || '',
         role_id: user.role_id || '',
+        is_active: user.is_active !== undefined ? user.is_active : 1,
         password: '',
     });
 
@@ -36,11 +38,29 @@ export default function Edit({ user, roles }) {
             required: true,
         },
         {
+            name: 'phone',
+            label: 'Phone',
+            type: 'text',
+            placeholder: '0812xxxxxx',
+            required: true,
+        },
+        {
             name: 'role_id',
             label: 'Role',
             type: 'select',
             options: roles.map(role => ({ value: role.id, label: role.name })),
             placeholder: 'Select Role',
+            required: true,
+        },
+        {
+            name: 'is_active',
+            label: 'Status',
+            type: 'select',
+            options: [
+                { value: 1, label: 'Active' },
+                { value: 0, label: 'Inactive' }
+            ],
+            placeholder: 'Select Status',
             required: true,
         },
         {

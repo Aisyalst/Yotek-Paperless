@@ -8,7 +8,7 @@ export default function DashboardLayout({ children, judulHalaman }) {
 
     return (
         // flex & h-screen memastikan tampilan mengambil seluruh layar tanpa scroll pada body utama
-        <div className="flex h-screen bg-[#1e1e1e] bg-dot-pattern text-gray-200 overflow-hidden">
+        <div className="flex h-screen bg-[#f8f8f8] text-[#1a1a1a] overflow-hidden">
             <Alert />
             
             {/* Kiri: SidebarDashboard mengambil tinggi penuh */}

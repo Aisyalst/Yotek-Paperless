@@ -44,8 +44,8 @@ export default function Index({ routes }) {
             {/* Bagian Atas: Judul & Tombol Tambah */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <div>
-                    <h1 className="text-xl font-bold text-gray-200">List Routes</h1>
-                    <p className="text-sm text-gray-400 mt-1">Manage all routes in the system.</p>
+                    <h1 className="text-xl font-bold text-[#1a1a1a]">List Routes</h1>
+                    <p className="text-sm text-gray-600 mt-1">Manage all routes in the system.</p>
                 </div>
 
                 <div className="flex gap-2">
