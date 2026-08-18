@@ -13,7 +13,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::redirect('/', '/register');
+Route::redirect('/', '/login');
 
 Route::get('maintenance', function () {
     return Inertia::render('Maintenance');
