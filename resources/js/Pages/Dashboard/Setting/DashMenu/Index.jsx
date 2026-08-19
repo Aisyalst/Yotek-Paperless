@@ -13,7 +13,7 @@ const DynamicIcon = ({ iconName }) => {
   return <IconComponent className="text-gray-500 w-5 h-5" />;
 };
 
-export default function Index({ dashboardMenus = [] }) {
+export default function Index({ dashboardMenus = [], sections = [] }) {
     const { auth } = usePage().props;
     const permissions = auth?.permissions || [];
 
@@ -23,11 +23,19 @@ export default function Index({ dashboardMenus = [] }) {
 
     // Helper function to group dashboardMenus by section
     const groupMenus = (menus) => {
-        const grouped = { Tables: [], Settings: [] };
+        const grouped = {};
+        sections.forEach(sec => {
+            grouped[sec.id] = { name: sec.name, order: sec.order, items: [] };
+        });
         menus.forEach(menu => {
-            const sec = menu.section || 'Tables';
-            if (!grouped[sec]) grouped[sec] = [];
-            grouped[sec].push(menu);
+            const secId = menu.section_id;
+            if (grouped[secId]) {
+                grouped[secId].items.push(menu);
+            } else {
+                // fallback if section not found (shouldn't happen)
+                if(!grouped['other']) grouped['other'] = { name: 'Other', order: 9999, items: [] };
+                grouped['other'].items.push(menu);
+            }
         });
         return grouped;
     };
@@ -76,20 +84,21 @@ export default function Index({ dashboardMenus = [] }) {
         const updatedTree = { ...menuTree };
 
         if (parentId === null) {
-            const list = [...updatedTree[section]];
+            const list = [...updatedTree[section].items];
             const draggedIndex = list.findIndex(i => i.id === draggedItem.id);
             const targetIndex = list.findIndex(i => i.id === targetItem.id);
 
             const [removed] = list.splice(draggedIndex, 1);
             list.splice(targetIndex, 0, removed);
 
-            updatedTree[section] = list;
+            updatedTree[section].items = list;
             setMenuTree(updatedTree);
 
             const ids = list.map(item => item.id);
             router.post('/dashboard-menus/reorder', { ids }, { preserveScroll: true });
         } else {
-            const sectionList = [...updatedTree[section]];
+            const sectionData = { ...updatedTree[section] };
+            const sectionList = [...sectionData.items];
             const parentIndex = sectionList.findIndex(i => i.id === parentId);
             if (parentIndex !== -1) {
                 const childList = [...sectionList[parentIndex].children];
@@ -100,7 +109,8 @@ export default function Index({ dashboardMenus = [] }) {
                 childList.splice(targetIndex, 0, removed);
 
                 sectionList[parentIndex].children = childList;
-                updatedTree[section] = sectionList;
+                sectionData.items = sectionList;
+                updatedTree[section] = sectionData;
                 setMenuTree(updatedTree);
 
                 const ids = childList.map(item => item.id);
@@ -222,28 +232,28 @@ export default function Index({ dashboardMenus = [] }) {
 
             {/* Bagian Bawah: Menu Tree Lists */}
             <div className="space-y-8">
-                {Object.entries(menuTree).map(([sectionName, items]) => (
-                    <div key={sectionName} className="bg-[#ffffff] border border-gray-200 rounded-lg p-6 shadow-sm">
-                        <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
-                            <h2 className="text-md font-bold text-[#1a1a1a] uppercase tracking-wider">
-                                {sectionName} Section
+                {Object.entries(menuTree)
+                    .sort(([, a], [, b]) => a.order - b.order)
+                    .map(([sectionId, sectionData]) => (
+                    <div key={sectionId} className="bg-[#ffffff] border border-gray-200 rounded-lg p-6 shadow-sm">
+                        <div className="flex items-center justify-between mb-4 border-b pb-3">
+                            <h2 className="text-lg font-semibold text-[#1a1a1a]">
+                                {sectionData.name} Section
                             </h2>
-                            <span className="text-xs text-gray-500 font-normal">
+                            <p className="text-sm text-gray-500">
                                 Drag handles to reorder menus inside this section
-                            </span>
+                            </p>
                         </div>
-
-                        {items.length === 0 ? (
+                        <div className="space-y-3">
+                            {sectionData.items.length === 0 ? (
                             <p className="text-sm text-gray-500 py-4 text-center">No menus in this section.</p>
-                        ) : (
-                            <ul className="space-y-3 pl-0">
-                                {items.map((menu) => renderRow(menu, null, sectionName))}
-                            </ul>
-                        )}
+                            ) : (
+                                sectionData.items.map((menu) => renderRow(menu, null, sectionId))
+                            )}
+                        </div>
                     </div>
                 ))}
             </div>
         </DashboardLayout>
     );
 }
-

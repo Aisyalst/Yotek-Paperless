@@ -3,12 +3,12 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Edit({ dashboardMenu, routes = [], parentMenus = [] }) {
+export default function Edit({ dashboardMenu, routes = [], parentMenus = [], sections = [] }) {
     const { data, setData, put, processing, errors } = useForm({
         name: dashboardMenu.name || '',
         icon: dashboardMenu.icon || '',
         type: dashboardMenu.type || 'Single',
-        section: dashboardMenu.section || 'Tables',
+        section_id: dashboardMenu.section_id || (sections.length > 0 ? sections[0].id : ''),
         parent_id: dashboardMenu.parent_id || '',
         route_id: dashboardMenu.route_id || '',
         position: dashboardMenu.position || '1',
@@ -23,7 +23,7 @@ export default function Edit({ dashboardMenu, routes = [], parentMenus = [] }) {
         { name: 'name', label: 'Name', type: 'text', placeholder: 'Name', required: true },
         { name: 'icon', label: 'Icon (Optional)', type: 'text', placeholder: 'Icon name (e.g. HiCog, HiUser)', required: false },
         { name: 'type', label: 'Type', type: 'select', options: [{value: 'Single', label: 'Single Link'}, {value: 'Dropdown', label: 'Collapsible Dropdown Parent'}], required: true },
-        { name: 'section', label: 'Section', type: 'select', options: [{value: 'Tables', label: 'Tables'}, {value: 'Settings', label: 'Settings'}], required: true },
+        { name: 'section_id', label: 'Section', type: 'select', options: sections.map(s => ({ value: s.id, label: s.name })), required: true },
         ...(data.type === 'Single' ? [
             { name: 'route_id', label: 'Route', type: 'select', options: routes.map(route => ({value: route.id, label: `${route.name} (${route.route_name})`})), placeholder: 'Select Route', required: true },
             { name: 'parent_id', label: 'Parent Menu (Optional)', type: 'select', options: parentMenus.map(parent => ({value: parent.id, label: parent.name})), placeholder: 'No Parent (Top Level)', required: false },

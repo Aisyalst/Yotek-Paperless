@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class DashboardMenu extends Model
 {
-    protected $fillable = ['name', 'icon', 'parent_id', 'section', 'type', 'route_id'];
+    protected $fillable = ['name', 'icon', 'parent_id', 'section_id', 'type', 'route_id'];
+
+    public function section()
+    {
+        return $this->belongsTo(DashboardMenuSection::class, 'section_id');
+    }
 
     public function route()
     {

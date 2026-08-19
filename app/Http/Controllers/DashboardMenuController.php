@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DashboardMenu;
+use App\Models\DashboardMenuSection;
 use App\Models\Route;
 use Illuminate\Http\Request;
 
@@ -10,15 +11,20 @@ class DashboardMenuController extends Controller
 {
     public function index()
     {
-        $dashboardMenus = DashboardMenu::with(['route', 'parent', 'children' => function($q) {
+        $dashboardMenus = DashboardMenu::with(['route', 'parent', 'section', 'children' => function($q) {
             $q->orderBy('position');
         }])
         ->whereNull('parent_id')
         ->orderBy('position')
         ->get();
 
+        $sections = DashboardMenuSection::orderBy('order')->get();
+
         return inertia('Dashboard/Setting/DashMenu/Index', 
-            ['dashboardMenus' => $dashboardMenus]
+            [
+                'dashboardMenus' => $dashboardMenus,
+                'sections' => $sections
+            ]
         );
     }
 
@@ -26,9 +32,11 @@ class DashboardMenuController extends Controller
     {
         $routes = Route::orderBy('name')->get();
         $parentMenus = DashboardMenu::where('type', 'Dropdown')->whereNull('parent_id')->orderBy('name')->get();
+        $sections = DashboardMenuSection::orderBy('order')->get();
         return inertia('Dashboard/Setting/DashMenu/Create', [
             'routes' => $routes,
             'parentMenus' => $parentMenus,
+            'sections' => $sections,
         ]);
     }
 
@@ -39,10 +47,27 @@ class DashboardMenuController extends Controller
             'name' => 'required|string|max:255|unique:dashboard_menus,name',
             'icon' => 'nullable|string|max:255',
             'type' => 'required|in:Single,Dropdown',
-            'section' => 'required|in:Tables,Settings',
+            'section_id' => 'required|exists:dashboard_menu_sections,id',
             'parent_id' => 'nullable|exists:dashboard_menus,id',
             'route_id' => 'nullable|required_if:type,Single|exists:routes,id',
             'position' => 'required|integer|min:1',
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+            'name.max' => 'Nama maksimal 255 karakter.',
+            'name.unique' => 'Nama sudah digunakan.',
+            'icon.string' => 'Ikon harus berupa string.',
+            'icon.max' => 'Ikon maksimal 255 karakter.',
+            'type.required' => 'Tipe wajib diisi.',
+            'type.in' => 'Tipe tidak valid.',
+            'section_id.required' => 'Bagian wajib diisi.',
+            'section_id.exists' => 'Bagian tidak valid.',
+            'parent_id.exists' => 'Induk tidak valid.',
+            'route_id.required_if' => 'Rute wajib diisi jika tipe adalah Single.',
+            'route_id.exists' => 'Rute tidak valid.',
+            'position.required' => 'Posisi wajib diisi.',
+            'position.integer' => 'Posisi harus berupa angka.',
+            'position.min' => 'Posisi minimal 1.',
         ]);
 
         $parentId = $request->type === 'Single' ? $request->parent_id : null;
@@ -55,7 +80,7 @@ class DashboardMenuController extends Controller
             'name' => $request->name,
             'icon' => $request->icon,
             'type' => $request->type,
-            'section' => $request->section,
+            'section_id' => $request->section_id,
             'parent_id' => $parentId,
             'route_id' => $request->type === 'Single' ? $request->route_id : null,
             'position' => $request->position,
@@ -72,10 +97,12 @@ class DashboardMenuController extends Controller
             ->where('id', '!=', $dashboardMenu->id)
             ->orderBy('name')
             ->get();
+        $sections = DashboardMenuSection::orderBy('order')->get();
         return inertia('Dashboard/Setting/DashMenu/Edit', [
             'dashboardMenu' => $dashboardMenu,
             'routes' => $routes,
             'parentMenus' => $parentMenus,
+            'sections' => $sections,
         ]);
     }
 
@@ -85,10 +112,27 @@ class DashboardMenuController extends Controller
             'name' => 'required|string|max:255|unique:dashboard_menus,name,' . $dashboardMenu->id,
             'icon' => 'nullable|string|max:255',
             'type' => 'required|in:Single,Dropdown',
-            'section' => 'required|in:Tables,Settings',
+            'section_id' => 'required|exists:dashboard_menu_sections,id',
             'parent_id' => 'nullable|exists:dashboard_menus,id',
             'route_id' => 'nullable|required_if:type,Single|exists:routes,id',
             'position' => 'required|integer|min:1',
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+            'name.max' => 'Nama maksimal 255 karakter.',
+            'name.unique' => 'Nama sudah digunakan.',
+            'icon.string' => 'Ikon harus berupa string.',
+            'icon.max' => 'Ikon maksimal 255 karakter.',
+            'type.required' => 'Tipe wajib diisi.',
+            'type.in' => 'Tipe tidak valid.',
+            'section_id.required' => 'Bagian wajib diisi.',
+            'section_id.exists' => 'Bagian tidak valid.',
+            'parent_id.exists' => 'Induk tidak valid.',
+            'route_id.required_if' => 'Rute wajib diisi jika tipe adalah Single.',
+            'route_id.exists' => 'Rute tidak valid.',
+            'position.required' => 'Posisi wajib diisi.',
+            'position.integer' => 'Posisi harus berupa angka.',
+            'position.min' => 'Posisi minimal 1.',
         ]);
 
         $parentId = $request->type === 'Single' ? $request->parent_id : null;
@@ -102,7 +146,7 @@ class DashboardMenuController extends Controller
             'name' => $request->name,
             'icon' => $request->icon,
             'type' => $request->type,
-            'section' => $request->section,
+            'section_id' => $request->section_id,
             'parent_id' => $parentId,
             'route_id' => $request->type === 'Single' ? $request->route_id : null,
             'position' => $request->position,
@@ -116,6 +160,10 @@ class DashboardMenuController extends Controller
         $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'exists:dashboard_menus,id',
+        ], [
+            'ids.required' => 'Data ID wajib diisi.',
+            'ids.array' => 'Data ID harus berupa array.',
+            'ids.*.exists' => 'Data ID tidak valid.',
         ]);
 
         foreach ($request->ids as $index => $id) {

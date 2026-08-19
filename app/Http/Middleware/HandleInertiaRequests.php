@@ -43,6 +43,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarMenus' => \App\Models\DashboardMenu::with([
                 'route',
+                'section',
                 'children' => function ($query) {
                     $query->orderBy('position');
                 },
