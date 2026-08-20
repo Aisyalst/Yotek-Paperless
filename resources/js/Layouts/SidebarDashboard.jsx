@@ -81,14 +81,20 @@ export default function Sidebar({ isOpen, onClose }) {
     };
 
     // Group menus by section
-    const groupedMenus = filteredMenus.reduce((acc, menu) => {
-        const section = menu.section || 'General';
-        if (!acc[section]) {
-            acc[section] = [];
+    const groupedMenusMap = filteredMenus.reduce((acc, menu) => {
+        const sectionName = menu.section?.name || 'General';
+        const sectionOrder = menu.section?.order || 999;
+        
+        if (!acc[sectionName]) {
+            acc[sectionName] = { order: sectionOrder, items: [] };
         }
-        acc[section].push(menu);
+        acc[sectionName].items.push(menu);
         return acc;
     }, {});
+
+    const sortedSections = Object.entries(groupedMenusMap)
+        .sort((a, b) => a[1].order - b[1].order)
+        .map(([name, data]) => ({ name, items: data.items }));
 
     const renderMenuItem = (menu) => {
         const IconComponent = HiIcons[menu.icon] || HiIcons.HiFolder;
@@ -179,13 +185,12 @@ export default function Sidebar({ isOpen, onClose }) {
                 <ul className="h-full flex flex-col pt-5">
                     <Menu link="/dashboard" label="Dashboard" svg={<HiHome className="inline me-2 w-5 h-5" />} />
 
-                    {Object.entries(groupedMenus).map(([sectionName, items]) => (
-                        <React.Fragment key={sectionName}>
-                            <div className={`px-4 py-2 text-xs font-semibold text-gray-500 uppercase ${sectionName === 'Settings' ? 'mt-auto' : 'mt-4'
-                                }`}>
-                                {sectionName}
+                    {sortedSections.map((section) => (
+                        <React.Fragment key={section.name}>
+                            <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase mt-4">
+                                {section.name}
                             </div>
-                            {items.map((menu) => renderMenuItem(menu))}
+                            {section.items.map((menu) => renderMenuItem(menu))}
                         </React.Fragment>
                     ))}
                 </ul>

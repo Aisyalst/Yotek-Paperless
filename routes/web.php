@@ -45,6 +45,14 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::put('dashboard-menus/{dashboardMenu}', [DashboardMenuController::class, 'update'])->name('dashboard-menus.update');
     Route::delete('dashboard-menus/{dashboardMenu}', [DashboardMenuController::class, 'destroy'])->name('dashboard-menus.destroy');
 
+    Route::get('dashboard-menu-sections', [App\Http\Controllers\DashboardMenuSectionController::class, 'index'])->name('dashboard-menu-sections.index');
+    Route::get('dashboard-menu-sections/create', [App\Http\Controllers\DashboardMenuSectionController::class, 'create'])->name('dashboard-menu-sections.create');
+    Route::post('dashboard-menu-sections', [App\Http\Controllers\DashboardMenuSectionController::class, 'store'])->name('dashboard-menu-sections.store');
+    Route::post('dashboard-menu-sections/reorder', [App\Http\Controllers\DashboardMenuSectionController::class, 'reorder'])->name('dashboard-menu-sections.reorder');
+    Route::get('dashboard-menu-sections/{dashboardMenuSection}/edit', [App\Http\Controllers\DashboardMenuSectionController::class, 'edit'])->name('dashboard-menu-sections.edit');
+    Route::put('dashboard-menu-sections/{dashboardMenuSection}', [App\Http\Controllers\DashboardMenuSectionController::class, 'update'])->name('dashboard-menu-sections.update');
+    Route::delete('dashboard-menu-sections/{dashboardMenuSection}', [App\Http\Controllers\DashboardMenuSectionController::class, 'destroy'])->name('dashboard-menu-sections.destroy');
+
     Route::get('role-permissions', [RolePermissionController::class, 'index'])->name('role-permissions.index');
     Route::get('role-permissions/create', [RolePermissionController::class, 'create'])->name('role-permissions.create');
     Route::post('role-permissions', [RolePermissionController::class, 'store'])->name('role-permissions.store');
@@ -59,6 +67,20 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('urgencies', [App\Http\Controllers\UrgencyController::class, 'index'])->name('urgencies.index');
+    Route::get('urgencies/create', [App\Http\Controllers\UrgencyController::class, 'create'])->name('urgencies.create');
+    Route::post('urgencies', [App\Http\Controllers\UrgencyController::class, 'store'])->name('urgencies.store');
+    Route::get('urgencies/{urgency}/edit', [App\Http\Controllers\UrgencyController::class, 'edit'])->name('urgencies.edit');
+    Route::put('urgencies/{urgency}', [App\Http\Controllers\UrgencyController::class, 'update'])->name('urgencies.update');
+    Route::delete('urgencies/{urgency}', [App\Http\Controllers\UrgencyController::class, 'destroy'])->name('urgencies.destroy');
+
+    Route::get('statuses', [App\Http\Controllers\StatusController::class, 'index'])->name('statuses.index');
+    Route::get('statuses/create', [App\Http\Controllers\StatusController::class, 'create'])->name('statuses.create');
+    Route::post('statuses', [App\Http\Controllers\StatusController::class, 'store'])->name('statuses.store');
+    Route::get('statuses/{status}/edit', [App\Http\Controllers\StatusController::class, 'edit'])->name('statuses.edit');
+    Route::put('statuses/{status}', [App\Http\Controllers\StatusController::class, 'update'])->name('statuses.update');
+    Route::delete('statuses/{status}', [App\Http\Controllers\StatusController::class, 'destroy'])->name('statuses.destroy');
 
 });
 
