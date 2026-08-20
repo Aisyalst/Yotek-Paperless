@@ -3,9 +3,10 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Create() {
+export default function Create({ devisions = [] }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
+        devision_id: '',
     });
 
     const handleSubmit = (e) => {
@@ -15,6 +16,16 @@ export default function Create() {
 
     const formFields = [
         { name: 'name', label: 'Name', type: 'text', placeholder: 'Name', required: true },
+        { 
+            name: 'devision_id', 
+            label: 'Divisi', 
+            type: 'select', 
+            options: [
+                { value: '', label: 'Pilih Divisi (Opsional)' },
+                ...devisions.map(d => ({ value: d.id, label: d.name }))
+            ], 
+            required: false 
+        },
     ];
 
     return (

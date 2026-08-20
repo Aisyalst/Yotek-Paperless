@@ -10,6 +10,8 @@ Make sure the design is consistent.
 
 So This project is Internal System for Employee and make them feel comfortable to use it.
 
-Every addding new Route also make the seeder to insert that route into database, if its done run php artisan db:seed --class={name}Seeder.
-After done running the seeder pleace delete it.
+Every addding new Route also make the seeder to insert that route into database.
 And Create seeder for creating new dashboard menu , but its just for if we create the new table, and create the dashbaord menu by the index route that table.
+If its done run php artisan db:seed --class={name}Seeder and copy the route seeder to Route Setting Seeder.
+After done running the seeder pleace delete it.
+Do not create route for existing table or route that already in database.

@@ -82,6 +82,13 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::put('statuses/{status}', [App\Http\Controllers\StatusController::class, 'update'])->name('statuses.update');
     Route::delete('statuses/{status}', [App\Http\Controllers\StatusController::class, 'destroy'])->name('statuses.destroy');
 
+    Route::get('devisions', [App\Http\Controllers\DevisionController::class, 'index'])->name('devisions.index');
+    Route::get('devisions/create', [App\Http\Controllers\DevisionController::class, 'create'])->name('devisions.create');
+    Route::post('devisions', [App\Http\Controllers\DevisionController::class, 'store'])->name('devisions.store');
+    Route::get('devisions/{devision}/edit', [App\Http\Controllers\DevisionController::class, 'edit'])->name('devisions.edit');
+    Route::put('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'update'])->name('devisions.update');
+    Route::delete('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'destroy'])->name('devisions.destroy');
+
 });
 
 require __DIR__.'/auth.php';

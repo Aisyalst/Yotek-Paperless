@@ -15,10 +15,12 @@ export default function Index({ roles }) {
         { 
             header: 'Name', 
             accessor: 'name' 
-            // Kita bisa pakai 'accessor' biasa atau 'render' untuk styling khusus
-            // render: (user) => (
-            //     <div className="font-medium text-white">{user.name}</div>
-            // )
+        },
+        {
+            header: 'Divisi',
+            render: (role) => (
+                role.devision ? role.devision.name : '-'
+            )
         },
         { 
             header: 'Total Permissions', 

@@ -73,7 +73,7 @@ class DashboardMenuController extends Controller
         $parentId = $request->type === 'Single' ? $request->parent_id : null;
 
         // Shift positions to handle collisions
-        $this->shiftPositions($request->position, $parentId);
+        $this->shiftPositions($request->position, $parentId, $request->section_id);
 
         // 2. Simpan ke database
         DashboardMenu::create([
@@ -137,9 +137,11 @@ class DashboardMenuController extends Controller
 
         $parentId = $request->type === 'Single' ? $request->parent_id : null;
 
-        // Only shift if position or parent_id has changed
-        if ($dashboardMenu->position != $request->position || $dashboardMenu->parent_id != $parentId) {
-            $this->shiftPositions($request->position, $parentId, $dashboardMenu->id);
+        // Only shift if position, parent_id, or section_id has changed
+        if ($dashboardMenu->position != $request->position || 
+            $dashboardMenu->parent_id != $parentId ||
+            $dashboardMenu->section_id != $request->section_id) {
+            $this->shiftPositions($request->position, $parentId, $request->section_id, $dashboardMenu->id);
         }
 
         $dashboardMenu->update([
@@ -179,13 +181,14 @@ class DashboardMenuController extends Controller
         return redirect()->route('dashboard-menus.index')->with('success', 'Dashboard menu deleted successfully.');
     }
 
-    private function shiftPositions($newPosition, $parentId, $excludeId = null)
+    private function shiftPositions($newPosition, $parentId, $sectionId, $excludeId = null)
     {
         $query = DashboardMenu::where('position', '>=', $newPosition);
         if ($parentId) {
             $query->where('parent_id', $parentId);
         } else {
             $query->whereNull('parent_id');
+            $query->where('section_id', $sectionId);
         }
         if ($excludeId) {
             $query->where('id', '!=', $excludeId);

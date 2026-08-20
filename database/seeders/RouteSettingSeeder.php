@@ -68,6 +68,13 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Menu Sections Edit', 'route_name' => 'dashboard-menu-sections.edit'], // 47
             ['name' => 'Menu Sections Update', 'route_name' => 'dashboard-menu-sections.update'], // 48
             ['name' => 'Menu Sections Delete', 'route_name' => 'dashboard-menu-sections.destroy'], // 49
+            // Devision Routes
+            ['name' => 'Devisions', 'route_name' => 'devisions.index'], // 50
+            ['name' => 'Devisions Create', 'route_name' => 'devisions.create'], // 51
+            ['name' => 'Devisions Store', 'route_name' => 'devisions.store'], // 52
+            ['name' => 'Devisions Edit', 'route_name' => 'devisions.edit'], // 53
+            ['name' => 'Devisions Update', 'route_name' => 'devisions.update'], // 54
+            ['name' => 'Devisions Delete', 'route_name' => 'devisions.destroy'], // 55
         ];
 
         foreach ($routes as $route) {
@@ -177,6 +184,16 @@ class RouteSettingSeeder extends Seeder
             'type' => 'Single',
             'parent_id' => $masterDataParent->id,
             'position' => 2,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Devisions',
+            'icon' => 'HiOfficeBuilding',
+            'route_id' => 50, // Based on route index
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterDataParent->id,
+            'position' => 3,
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)
