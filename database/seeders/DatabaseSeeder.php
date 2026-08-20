@@ -37,7 +37,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RouteSettingSeeder::class,
-            ]);
+            StatusSeeder::class,
+            UrgencySeeder::class,
+        ]);
 
     }
 }

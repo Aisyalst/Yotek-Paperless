@@ -44,20 +44,49 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Roles Store', 'route_name' => 'roles.store'], // 17
             ['name' => 'Roles Edit', 'route_name' => 'roles.edit'], // 18
             ['name' => 'Roles Update', 'route_name' => 'roles.update'], // 19
-            ['name' => 'Roles Delete', 'route_name' => 'roles.destroy'], // 20
-            ['name' => 'Menu Drag', 'route_name' => 'dashboard-menus.reorder'], // 20
+            ['name' => 'Roles Delete', 'route_name' => 'roles.destroy'], // 29
+            ['name' => 'Menu Drag', 'route_name' => 'dashboard-menus.reorder'], // 30
+            // Urgency Routes
+            ['name' => 'Urgencies', 'route_name' => 'urgencies.index'], // 31
+            ['name' => 'Urgencies Create', 'route_name' => 'urgencies.create'], // 32
+            ['name' => 'Urgencies Store', 'route_name' => 'urgencies.store'], // 33
+            ['name' => 'Urgencies Edit', 'route_name' => 'urgencies.edit'], // 34
+            ['name' => 'Urgencies Update', 'route_name' => 'urgencies.update'], // 35
+            ['name' => 'Urgencies Delete', 'route_name' => 'urgencies.destroy'], // 36
+            // Status Routes
+            ['name' => 'Statuses', 'route_name' => 'statuses.index'], // 37
+            ['name' => 'Statuses Create', 'route_name' => 'statuses.create'], // 38
+            ['name' => 'Statuses Store', 'route_name' => 'statuses.store'], // 39
+            ['name' => 'Statuses Edit', 'route_name' => 'statuses.edit'], // 40
+            ['name' => 'Statuses Update', 'route_name' => 'statuses.update'], // 41
+            ['name' => 'Statuses Delete', 'route_name' => 'statuses.destroy'], // 42
+            // Dashboard Menu Section Routes
+            ['name' => 'Menu Sections', 'route_name' => 'dashboard-menu-sections.index'], // 43
+            ['name' => 'Menu Sections Create', 'route_name' => 'dashboard-menu-sections.create'], // 44
+            ['name' => 'Menu Sections Store', 'route_name' => 'dashboard-menu-sections.store'], // 45
+            ['name' => 'Menu Sections Drag', 'route_name' => 'dashboard-menu-sections.reorder'], // 46
+            ['name' => 'Menu Sections Edit', 'route_name' => 'dashboard-menu-sections.edit'], // 47
+            ['name' => 'Menu Sections Update', 'route_name' => 'dashboard-menu-sections.update'], // 48
+            ['name' => 'Menu Sections Delete', 'route_name' => 'dashboard-menu-sections.destroy'], // 49
         ];
 
         foreach ($routes as $route) {
             Route::create($route);
         }
 
+        // First make sure we have the sections, or rely on DashboardMenuSectionSeeder being called first.
+        // Assuming Tables is ID 1 and Settings is ID 2 if seeded in order. Let's just fetch them to be safe.
+        $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Tables'], ['order' => 1]);
+        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Master Data'], ['order' => 2]);
+        $masterDataSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Master Data'], ['order' => 3]);
+        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Settings'], ['order' => 4]);
+
         // 1. Tables Section
         DashboardMenu::create([
             'name' => 'Users',
             'icon' => 'HiUser',
             'route_id' => 1,
-            'section' => 'Tables',
+            'section_id' => $tablesSection->id,
             'type' => 'Single',
             'position' => 1,
         ]);
@@ -66,7 +95,7 @@ class RouteSettingSeeder extends Seeder
         $settingsParent = DashboardMenu::create([
             'name' => 'Settings',
             'icon' => 'HiCog',
-            'section' => 'Settings',
+            'section_id' => $settingsSection->id,
             'type' => 'Dropdown',
             'position' => 1,
         ]);
@@ -75,7 +104,7 @@ class RouteSettingSeeder extends Seeder
             'name' => 'Roles',
             'icon' => 'HiShieldCheck',
             'route_id' => 2,
-            'section' => 'Settings',
+            'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
             'position' => 1,
@@ -85,7 +114,7 @@ class RouteSettingSeeder extends Seeder
             'name' => 'Routes',
             'icon' => 'HiLink',
             'route_id' => 3,
-            'section' => 'Settings',
+            'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
             'position' => 2,
@@ -95,7 +124,7 @@ class RouteSettingSeeder extends Seeder
             'name' => 'Permissions',
             'icon' => 'HiOutlineLogin',
             'route_id' => 8,
-            'section' => 'Settings',
+            'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
             'position' => 3,
@@ -105,10 +134,49 @@ class RouteSettingSeeder extends Seeder
             'name' => 'Menu',
             'icon' => 'HiMenuAlt2',
             'route_id' => 14,
-            'section' => 'Settings',
+            'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
             'position' => 4,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Menu Sections',
+            'icon' => 'HiViewGrid',
+            'route_id' => 43,
+            'section_id' => $settingsSection->id,
+            'type' => 'Single',
+            'parent_id' => $settingsParent->id,
+            'position' => 5,
+        ]);
+
+        // Master Data Section (Parent & Children)
+        $masterDataParent = DashboardMenu::create([
+            'name' => 'Master Data',
+            'icon' => 'HiDatabase',
+            'section_id' => $masterDataSection->id,
+            'type' => 'Dropdown',
+            'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Urgencies',
+            'icon' => 'HiExclamation',
+            'route_id' => 31, // Based on route index
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterDataParent->id,
+            'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Statuses',
+            'icon' => 'HiAdjustments',
+            'route_id' => 37, // Based on route index
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterDataParent->id,
+            'position' => 2,
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)
