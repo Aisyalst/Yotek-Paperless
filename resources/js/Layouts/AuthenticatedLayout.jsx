@@ -25,12 +25,13 @@ export default function AuthenticatedLayout({ header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route('profile.index')}
+                                    active={route().current('profile.index')}
                                 >
-                                    Dashboard
+                                    Profile
                                 </NavLink>
                             </div>
+
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
@@ -62,9 +63,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route('profile.index')}
                                         >
                                             Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('dashboard')}
+                                        >
+                                            Dashboard
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
@@ -147,7 +153,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route('profile.index')}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink

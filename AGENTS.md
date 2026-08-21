@@ -16,7 +16,7 @@ So This project is Internal System for Employee and make them feel comfortable t
 Every addding new Route also make the seeder to insert that route into database.
 And Create seeder for creating new dashboard menu , but its just for if we create the new table, and create the dashbaord menu by the index route that table.
 If its done run php artisan db:seed --class={name}Seeder and copy the route seeder to Route Setting Seeder.
-After done running the seeder pleace delete it.
+After done running the seeder pleace delete it and merge the seeder to route setting seeder.
 Do not create route for existing table or route that already in database.
 
 Every create a migraion for editing table pleace check first if the table is already exists, if the table is exists pleace edit the table using edit migration not create new migration. and help me create a migartion editing table combined with migration create table so as not to multiply files

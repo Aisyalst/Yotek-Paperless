@@ -75,6 +75,8 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Devisions Edit', 'route_name' => 'devisions.edit'], // 53
             ['name' => 'Devisions Update', 'route_name' => 'devisions.update'], // 54
             ['name' => 'Devisions Delete', 'route_name' => 'devisions.destroy'], // 55
+            ['name' => 'Dashboard', 'route_name' => 'dashboard'],
+            ['name' => 'Profile - Index', 'route_name' => 'profile.index'],
         ];
 
         foreach ($routes as $route) {
