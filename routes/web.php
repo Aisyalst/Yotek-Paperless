@@ -68,19 +68,6 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-    Route::get('urgencies', [App\Http\Controllers\UrgencyController::class, 'index'])->name('urgencies.index');
-    Route::get('urgencies/create', [App\Http\Controllers\UrgencyController::class, 'create'])->name('urgencies.create');
-    Route::post('urgencies', [App\Http\Controllers\UrgencyController::class, 'store'])->name('urgencies.store');
-    Route::get('urgencies/{urgency}/edit', [App\Http\Controllers\UrgencyController::class, 'edit'])->name('urgencies.edit');
-    Route::put('urgencies/{urgency}', [App\Http\Controllers\UrgencyController::class, 'update'])->name('urgencies.update');
-    Route::delete('urgencies/{urgency}', [App\Http\Controllers\UrgencyController::class, 'destroy'])->name('urgencies.destroy');
-
-    Route::get('statuses', [App\Http\Controllers\StatusController::class, 'index'])->name('statuses.index');
-    Route::get('statuses/create', [App\Http\Controllers\StatusController::class, 'create'])->name('statuses.create');
-    Route::post('statuses', [App\Http\Controllers\StatusController::class, 'store'])->name('statuses.store');
-    Route::get('statuses/{status}/edit', [App\Http\Controllers\StatusController::class, 'edit'])->name('statuses.edit');
-    Route::put('statuses/{status}', [App\Http\Controllers\StatusController::class, 'update'])->name('statuses.update');
-    Route::delete('statuses/{status}', [App\Http\Controllers\StatusController::class, 'destroy'])->name('statuses.destroy');
 
     Route::get('devisions', [App\Http\Controllers\DevisionController::class, 'index'])->name('devisions.index');
     Route::get('devisions/create', [App\Http\Controllers\DevisionController::class, 'create'])->name('devisions.create');
@@ -88,6 +75,10 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('devisions/{devision}/edit', [App\Http\Controllers\DevisionController::class, 'edit'])->name('devisions.edit');
     Route::put('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'update'])->name('devisions.update');
     Route::delete('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'destroy'])->name('devisions.destroy');
+
+    Route::get('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'index'])->name('leave-requests.index');
+    Route::get('leave-requests/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('leave-requests.create');
+    Route::post('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'store'])->name('leave-requests.store');
 
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

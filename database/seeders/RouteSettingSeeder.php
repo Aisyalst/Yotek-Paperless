@@ -46,20 +46,7 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Roles Update', 'route_name' => 'roles.update'], // 19
             ['name' => 'Roles Delete', 'route_name' => 'roles.destroy'], // 29
             ['name' => 'Menu Drag', 'route_name' => 'dashboard-menus.reorder'], // 30
-            // Urgency Routes
-            ['name' => 'Urgencies', 'route_name' => 'urgencies.index'], // 31
-            ['name' => 'Urgencies Create', 'route_name' => 'urgencies.create'], // 32
-            ['name' => 'Urgencies Store', 'route_name' => 'urgencies.store'], // 33
-            ['name' => 'Urgencies Edit', 'route_name' => 'urgencies.edit'], // 34
-            ['name' => 'Urgencies Update', 'route_name' => 'urgencies.update'], // 35
-            ['name' => 'Urgencies Delete', 'route_name' => 'urgencies.destroy'], // 36
-            // Status Routes
-            ['name' => 'Statuses', 'route_name' => 'statuses.index'], // 37
-            ['name' => 'Statuses Create', 'route_name' => 'statuses.create'], // 38
-            ['name' => 'Statuses Store', 'route_name' => 'statuses.store'], // 39
-            ['name' => 'Statuses Edit', 'route_name' => 'statuses.edit'], // 40
-            ['name' => 'Statuses Update', 'route_name' => 'statuses.update'], // 41
-            ['name' => 'Statuses Delete', 'route_name' => 'statuses.destroy'], // 42
+
             // Dashboard Menu Section Routes
             ['name' => 'Menu Sections', 'route_name' => 'dashboard-menu-sections.index'], // 43
             ['name' => 'Menu Sections Create', 'route_name' => 'dashboard-menu-sections.create'], // 44
@@ -77,6 +64,9 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Devisions Delete', 'route_name' => 'devisions.destroy'], // 55
             ['name' => 'Dashboard', 'route_name' => 'dashboard'],
             ['name' => 'Profile - Index', 'route_name' => 'profile.index'],
+            ['name' => 'Leave Request Index', 'route_name' => 'leave-requests.index'],
+            ['name' => 'Leave Request Create', 'route_name' => 'leave-requests.create'],
+            ['name' => 'Leave Request Store', 'route_name' => 'leave-requests.store'],
         ];
 
         foreach ($routes as $route) {
@@ -98,6 +88,15 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $tablesSection->id,
             'type' => 'Single',
             'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Pengajuan Izin',
+            'icon' => 'HiDocumentText',
+            'route_id' => 46,
+            'section_id' => $tablesSection->id,
+            'type' => 'Single',
+            'position' => 2,
         ]);
 
         // 2. Settings Section (Parent & Children)
@@ -152,7 +151,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Menu Sections',
             'icon' => 'HiViewGrid',
-            'route_id' => 43,
+            'route_id' => 31,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -168,30 +167,11 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
-            'name' => 'Urgencies',
-            'icon' => 'HiExclamation',
-            'route_id' => 31, // Based on route index
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'parent_id' => $masterDataParent->id,
-            'position' => 1,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Statuses',
-            'icon' => 'HiAdjustments',
-            'route_id' => 37, // Based on route index
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'parent_id' => $masterDataParent->id,
-            'position' => 2,
-        ]);
 
         DashboardMenu::create([
             'name' => 'Devisions',
             'icon' => 'HiOfficeBuilding',
-            'route_id' => 50, // Based on route index
+            'route_id' => 38, // Based on route index
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterDataParent->id,
