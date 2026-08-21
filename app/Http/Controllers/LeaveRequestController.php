@@ -22,7 +22,7 @@ class LeaveRequestController extends Controller
     public function create(Request $request)
     {
         $user = clone $request->user();
-        $user->load(['employeeInformation']);
+        $user->load(['employeeInformation', 'role.devision']);
 
         return Inertia::render('LeaveRequest/Create', [
             'userData' => $user

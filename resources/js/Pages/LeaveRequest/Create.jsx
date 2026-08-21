@@ -1,6 +1,6 @@
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, useForm, usePage } from '@inertiajs/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -24,6 +24,30 @@ export default function Create({ auth, userData }) {
         reason: '',
         work_delegation: '',
     });
+
+    useEffect(() => {
+        if (data.start_date) {
+            if (data.end_date) {
+                const start = new Date(data.start_date);
+                const end = new Date(data.end_date);
+                
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
+
+                if (end >= start) {
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                    setData('duration_days', diffDays);
+                } else {
+                    setData('duration_days', 0);
+                }
+            } else {
+                setData('duration_days', 1);
+            }
+        } else {
+            setData('duration_days', '');
+        }
+    }, [data.start_date, data.end_date]);
 
     const handleJenisChange = (e) => {
         const val = e.target.value;
@@ -76,11 +100,11 @@ export default function Create({ auth, userData }) {
                         </div>
                         <div>
                             <p className="text-sm text-gray-500 font-semibold">Posisi / Jabatan</p>
-                            <p className="font-bold text-[#1a1a1a]">{getEmployeeData().level || '-'}</p>
+                            <p className="font-bold text-[#1a1a1a]">{userData.role?.name || '-'}</p>
                         </div>
                         <div>
                             <p className="text-sm text-gray-500 font-semibold">Divisi / Department</p>
-                            <p className="font-bold text-[#1a1a1a]">{getEmployeeData().department || '-'}</p>
+                            <p className="font-bold text-[#1a1a1a]">{userData.role?.devision?.name || '-'}</p>
                         </div>
                     </div>
 
@@ -135,8 +159,9 @@ export default function Create({ auth, userData }) {
                                 <TextInput
                                     id="duration_days"
                                     type="number"
-                                    className={inputClasses}
+                                    className={`${inputClasses} bg-gray-100 cursor-not-allowed`}
                                     value={data.duration_days}
+                                    readOnly
                                     onChange={(e) => setData('duration_days', e.target.value)}
                                 />
                                 <InputError message={errors.duration_days} className="mt-2" />
