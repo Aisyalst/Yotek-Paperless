@@ -16,13 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->enum('section', ['Tables', 'Settings']);
+            $table->unsignedBigInteger('section_id')->nullable();
             $table->enum('type', ['Single', 'Dropdown'])->default('Single');
             $table->unsignedBigInteger('route_id')->nullable();
             $table->integer('position')->default(0);
             $table->timestamps();
 
             $table->foreign('parent_id')->references('id')->on('dashboard_menus')->onDelete('cascade');
+            $table->foreign('section_id')->references('id')->on('dashboard_menu_sections')->onDelete('cascade');
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('set null');
         });
     }
