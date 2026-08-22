@@ -1,0 +1,1 @@
+import{t as e}from"./app-DCGcwNaI.js";var t=e();function n(e){return(0,t.jsx)(`img`,{...e,src:`https://yogura.com/wp-content/uploads/2026/08/yotek_logo_v3-01.png`,alt:`Logo`})}export{n as t};

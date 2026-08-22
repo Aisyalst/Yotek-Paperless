@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->string('branch')->nullable();
             $table->string('department')->nullable();
-            $table->string('division')->nullable();
             $table->string('level')->nullable();
             $table->string('direct_supervisor')->nullable();
             $table->string('employment_status')->nullable();
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('nik')->references('nik')->on('users')->onDelete('cascade');
+            $table->foreign('direct_supervisor')->references('nik')->on('users')->onDelete('set null');
         });
     }
 

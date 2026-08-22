@@ -80,6 +80,9 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('leave-requests/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('leave-requests.create');
     Route::post('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'store'])->name('leave-requests.store');
 
+    Route::resource('employee-registrations', \App\Http\Controllers\EmployeeRegistrationController::class)->except(['show']);
+    Route::resource('contracts', \App\Http\Controllers\ContractController::class)->except(['show']);
+
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');

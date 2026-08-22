@@ -67,6 +67,18 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Leave Request Index', 'route_name' => 'leave-requests.index'],
             ['name' => 'Leave Request Create', 'route_name' => 'leave-requests.create'],
             ['name' => 'Leave Request Store', 'route_name' => 'leave-requests.store'],
+            ['name' => 'Employee Registrations Index', 'route_name' => 'employee-registrations.index'],
+            ['name' => 'Employee Registrations Create', 'route_name' => 'employee-registrations.create'],
+            ['name' => 'Employee Registrations Store', 'route_name' => 'employee-registrations.store'],
+            ['name' => 'Employee Registrations Edit', 'route_name' => 'employee-registrations.edit'],
+            ['name' => 'Employee Registrations Update', 'route_name' => 'employee-registrations.update'],
+            ['name' => 'Employee Registrations Delete', 'route_name' => 'employee-registrations.destroy'],
+            ['name' => 'Contracts Index', 'route_name' => 'contracts.index'],
+            ['name' => 'Contracts Create', 'route_name' => 'contracts.create'],
+            ['name' => 'Contracts Store', 'route_name' => 'contracts.store'],
+            ['name' => 'Contracts Edit', 'route_name' => 'contracts.edit'],
+            ['name' => 'Contracts Update', 'route_name' => 'contracts.update'],
+            ['name' => 'Contracts Delete', 'route_name' => 'contracts.destroy'],
         ];
 
         foreach ($routes as $route) {
@@ -176,6 +188,36 @@ class RouteSettingSeeder extends Seeder
             'type' => 'Single',
             'parent_id' => $masterDataParent->id,
             'position' => 3,
+        ]);
+
+        $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 5]);
+
+        $hrParent = DashboardMenu::create([
+            'name' => 'HR Management',
+            'icon' => 'HiUsers',
+            'section_id' => $hrSection->id,
+            'type' => 'Dropdown',
+            'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Registrasi Karyawan',
+            'icon' => 'HiIdentification',
+            'route_id' => \App\Models\Route::where('route_name', 'employee-registrations.index')->first()->id,
+            'section_id' => $hrSection->id,
+            'type' => 'Single',
+            'parent_id' => $hrParent->id,
+            'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Manajemen Kontrak',
+            'icon' => 'HiDocumentDuplicate',
+            'route_id' => \App\Models\Route::where('route_name', 'contracts.index')->first()->id,
+            'section_id' => $hrSection->id,
+            'type' => 'Single',
+            'parent_id' => $hrParent->id,
+            'position' => 2,
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)
