@@ -1,1 +1,0 @@
-import{t as e}from"./app-YgxIYA0q.js";var t=e();function n({text:e,disabled:n,className:r=``}){return(0,t.jsx)(`button`,{type:`submit`,className:`px-3 py-1 border border-green-500 text-green-500 rounded hover:bg-green-500 hover:text-white transition-colors rounded-md text-xs font-medium transition-colors shadow-sm ${r}`,disabled:n,children:e})}export{n as t};
