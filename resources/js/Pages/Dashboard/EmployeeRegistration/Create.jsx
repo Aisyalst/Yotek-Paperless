@@ -3,7 +3,7 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Create({ users, allUsers }) {
+export default function Create({ users, allUsers, companies }) {
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
         nik: '',
@@ -16,6 +16,15 @@ export default function Create({ users, allUsers }) {
         join_date: '',
         effective_date: ''
     });
+
+    React.useEffect(() => {
+        if (data.user_id) {
+            const selectedUser = users.find(u => String(u.id) === String(data.user_id));
+            if (selectedUser?.role?.devision?.name) {
+                setData('department', selectedUser.role.devision.name);
+            }
+        }
+    }, [data.user_id]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,14 +50,24 @@ export default function Create({ users, allUsers }) {
         {
             name: 'company',
             label: 'Perusahaan',
-            type: 'text',
-            placeholder: 'Nama Perusahaan',
+            type: 'select',
+            options: (companies || []).map(c => ({ value: c.name, label: c.name })),
+            placeholder: 'Pilih Perusahaan',
         },
         {
             name: 'branch',
             label: 'Cabang',
-            type: 'text',
-            placeholder: 'Cabang',
+            type: 'select',
+            options: (() => {
+                if (!data.company || !companies) return [];
+                const selectedCompany = companies.find(c => c.name === data.company);
+                if (!selectedCompany || !Array.isArray(selectedCompany.branch)) return [];
+                return selectedCompany.branch.map(b => {
+                    const label = `${b.region}, ${b.province}, ${b.city}`;
+                    return { value: label, label: label };
+                });
+            })(),
+            placeholder: 'Pilih Cabang',
         },
         {
             name: 'department',

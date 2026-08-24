@@ -14,7 +14,7 @@ export default function Index({ auth, userData }) {
                     </div>
                     <h3 className="text-xl font-bold text-[#1a1a1a]">{title}</h3>
                 </div>
-                
+
                 {data ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
                         {Object.entries(data).map(([key, value]) => {
@@ -58,11 +58,11 @@ export default function Index({ auth, userData }) {
 
             <div className="py-12 bg-[#f8f8f8] min-h-screen">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-                    
+
                     {/* User Summary Card */}
                     <div className="bg-gradient-to-r from-[#1a1a1a] to-gray-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 -mt-16 -mr-16 text-white/5">
-                            <svg className="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <svg className="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
                         </div>
                         <div className="relative z-10 flex items-center space-x-6">
                             <div className="h-24 w-24 rounded-full bg-[#eaae36] flex items-center justify-center text-3xl font-bold text-white shadow-lg ring-4 ring-white/20">
@@ -87,7 +87,7 @@ export default function Index({ auth, userData }) {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {renderCard('Informasi Pribadi', personal_information, personalIcon)}
                         {renderCard('Informasi Karyawan', employee_information, employeeIcon)}
-                        
+
                         <div className="lg:col-span-2">
                             {renderCard('Informasi Kontrak (Terbaru)', contract_information && contract_information.length > 0 ? contract_information[contract_information.length - 1] : null, contractIcon)}
                         </div>

@@ -19,20 +19,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'Admin']);
-        $role2 = Role::create(['name' => 'User']);
+        $role = Role::create(['name' => 'Developers']);
+        $role2 = Role::create(['name' => 'Administrators']);
+        $role3 = Role::create(['name' => 'Staff']);
 
         User::create([
-            'name' => 'Admin',
-            'email' => 'test@example.com',
+            'name' => 'Aisyal',
+            'email' => 'workeealaisyaln@gmail.com',
             'role_id' => $role->id,
-            'password' => Hash::make('123'),
+            'password' => Hash::make('123123123'),
         ]);
         User::create([
-            'name' => 'User',
-            'email' => 'user@example.com',
+            'name' => 'Administrator',
+            'email' => 'admin@example.com',
             'role_id' => $role2->id,
-            'password' => Hash::make('123'),
+            'password' => Hash::make('123123123'),
+        ]);
+        User::create([
+            'name' => 'Staff',
+            'email' => 'staff@example.com',
+            'role_id' => $role3->id,
+            'password' => Hash::make('123123123'),
         ]);
 
         $this->call([

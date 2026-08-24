@@ -3,7 +3,7 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Edit({ employee, users, allUsers }) {
+export default function Edit({ employee, users, allUsers, companies }) {
     const { data, setData, put, processing, errors } = useForm({
         nik: employee.nik || '',
         company: employee.company || '',
@@ -32,14 +32,24 @@ export default function Edit({ employee, users, allUsers }) {
         {
             name: 'company',
             label: 'Perusahaan',
-            type: 'text',
-            placeholder: 'Nama Perusahaan',
+            type: 'select',
+            options: (companies || []).map(c => ({ value: c.name, label: c.name })),
+            placeholder: 'Pilih Perusahaan',
         },
         {
             name: 'branch',
             label: 'Cabang',
-            type: 'text',
-            placeholder: 'Cabang',
+            type: 'select',
+            options: (() => {
+                if (!data.company || !companies) return [];
+                const selectedCompany = companies.find(c => c.name === data.company);
+                if (!selectedCompany || !Array.isArray(selectedCompany.branch)) return [];
+                return selectedCompany.branch.map(b => {
+                    const label = `${b.region}, ${b.province}, ${b.city}`;
+                    return { value: label, label: label };
+                });
+            })(),
+            placeholder: 'Pilih Cabang',
         },
         {
             name: 'department',

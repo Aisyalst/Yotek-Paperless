@@ -30,6 +30,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Profile
                                 </NavLink>
+                                <NavLink
+                                    href={route('profile.personal.edit')}
+                                    active={route().current('profile.personal.edit')}
+                                >
+                                    Data Personal
+                                </NavLink>
                             </div>
 
                         </div>

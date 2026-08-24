@@ -36,12 +36,14 @@ class EmployeeRegistrationController extends Controller
     public function create()
     {
         // Users who don't have an NIK yet
-        $users = User::whereNull('nik')->get(['id', 'name']);
+        $users = User::with('role.devision')->whereNull('nik')->get(['id', 'name', 'role_id']);
         $allUsers = User::all(['nik', 'name']);
+        $companies = \App\Models\Company::all(['id', 'name', 'branch']);
         
         return inertia('Dashboard/EmployeeRegistration/Create', [
             'users' => $users,
-            'allUsers' => $allUsers
+            'allUsers' => $allUsers,
+            'companies' => $companies
         ]);
     }
 
@@ -69,6 +71,12 @@ class EmployeeRegistrationController extends Controller
         $user->nik = $request->nik;
         $user->save();
 
+        // Sync NIK to personal_information if exists and is currently null
+        if ($user->personalInformation && is_null($user->personalInformation->nik)) {
+            $user->personalInformation->nik = $request->nik;
+            $user->personalInformation->save();
+        }
+
         // 2. Simpan informasi karyawan
         $employeeData = $request->except('user_id');
         EmployeeInformation::create($employeeData);
@@ -81,11 +89,13 @@ class EmployeeRegistrationController extends Controller
         $employeeRegistration->load('user');
         $users = User::where('nik', $employeeRegistration->nik)->get(['nik', 'name']);
         $allUsers = User::all(['nik', 'name']);
+        $companies = \App\Models\Company::all(['id', 'name', 'branch']);
 
         return inertia('Dashboard/EmployeeRegistration/Edit', [
             'employee' => $employeeRegistration,
             'users' => $users,
-            'allUsers' => $allUsers
+            'allUsers' => $allUsers,
+            'companies' => $companies
         ]);
     }
 

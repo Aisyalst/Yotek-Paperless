@@ -79,36 +79,34 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Contracts Edit', 'route_name' => 'contracts.edit'],
             ['name' => 'Contracts Update', 'route_name' => 'contracts.update'],
             ['name' => 'Contracts Delete', 'route_name' => 'contracts.destroy'],
+            ['name' => 'Profile Personal Edit', 'route_name' => 'profile.personal.edit'],
+            ['name' => 'Profile Personal Update', 'route_name' => 'profile.personal.update'],
+            ['name' => 'Companies Index', 'route_name' => 'companies.index'],
+            ['name' => 'Companies Create', 'route_name' => 'companies.create'],
+            ['name' => 'Companies Store', 'route_name' => 'companies.store'],
+            ['name' => 'Companies Edit', 'route_name' => 'companies.edit'],
+            ['name' => 'Companies Update', 'route_name' => 'companies.update'],
+            ['name' => 'Companies Delete', 'route_name' => 'companies.destroy'],
         ];
 
         foreach ($routes as $route) {
-            Route::create($route);
+            Route::firstOrCreate(['route_name' => $route['route_name']], $route);
         }
 
         // First make sure we have the sections, or rely on DashboardMenuSectionSeeder being called first.
         // Assuming Tables is ID 1 and Settings is ID 2 if seeded in order. Let's just fetch them to be safe.
-        $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Tables'], ['order' => 1]);
-        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Master Data'], ['order' => 2]);
+        $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Form'], ['order' => 1]);
         $masterDataSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Master Data'], ['order' => 3]);
         $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Settings'], ['order' => 4]);
 
-        // 1. Tables Section
-        DashboardMenu::create([
-            'name' => 'Users',
-            'icon' => 'HiUser',
-            'route_id' => 1,
-            'section_id' => $tablesSection->id,
-            'type' => 'Single',
-            'position' => 1,
-        ]);
-
+        // 1. Forms Section
         DashboardMenu::create([
             'name' => 'Pengajuan Izin',
             'icon' => 'HiDocumentText',
             'route_id' => 46,
             'section_id' => $tablesSection->id,
             'type' => 'Single',
-            'position' => 2,
+            'position' => 1,
         ]);
 
         // 2. Settings Section (Parent & Children)
@@ -176,6 +174,15 @@ class RouteSettingSeeder extends Seeder
             'icon' => 'HiDatabase',
             'section_id' => $masterDataSection->id,
             'type' => 'Dropdown',
+            'position' => 2,
+        ]);
+        
+        DashboardMenu::create([
+            'name' => 'Users',
+            'icon' => 'HiUser',
+            'route_id' => 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
             'position' => 1,
         ]);
 
@@ -183,14 +190,24 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Devisions',
             'icon' => 'HiOfficeBuilding',
-            'route_id' => 38, // Based on route index
+            'route_id' => 38, // Based on route index, wait, better use exact query
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterDataParent->id,
+            'position' => 2,
+        ]);
+        
+        DashboardMenu::create([
+            'name' => 'Companies',
+            'icon' => 'HiLibrary',
+            'route_id' => \App\Models\Route::where('route_name', 'companies.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterDataParent->id,
             'position' => 3,
         ]);
 
-        $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 5]);
+        $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 
         $hrParent = DashboardMenu::create([
             'name' => 'HR Management',

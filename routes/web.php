@@ -82,7 +82,11 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
 
     Route::resource('employee-registrations', \App\Http\Controllers\EmployeeRegistrationController::class)->except(['show']);
     Route::resource('contracts', \App\Http\Controllers\ContractController::class)->except(['show']);
+    Route::resource('companies', \App\Http\Controllers\CompanyController::class)->except(['show']);
 
+    Route::get('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'edit'])->name('profile.personal.edit');
+    Route::post('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'update'])->name('profile.personal.update');
+    
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
