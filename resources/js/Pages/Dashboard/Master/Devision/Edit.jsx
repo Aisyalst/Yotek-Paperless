@@ -3,9 +3,10 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Edit({ devision }) {
+export default function Edit({ devision, employees = [] }) {
     const { data, setData, put, processing, errors } = useForm({
         name: devision.name || '',
+        head: devision.head || '',
     });
 
     const handleSubmit = (e) => {
@@ -15,6 +16,16 @@ export default function Edit({ devision }) {
 
     const formFields = [
         { name: 'name', label: 'Nama Divisi', type: 'text', placeholder: 'Judul (contoh: IT)', required: true },
+        { 
+            name: 'head', 
+            label: 'Ketua Divisi', 
+            type: 'select', 
+            options: [
+                { value: '', label: 'Pilih Ketua Divisi (Opsional)' },
+                ...employees.map(e => ({ value: e.nik, label: `${e.user?.name || '-'} (${e.nik})` }))
+            ],
+            placeholder: 'Pilih Ketua Divisi' 
+        },
     ];
 
     return (

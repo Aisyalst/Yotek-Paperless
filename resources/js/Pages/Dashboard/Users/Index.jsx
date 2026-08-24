@@ -86,9 +86,14 @@ export default function Index({ users, filters }) {
         { 
             header: 'Role', 
             render: (user) => (
-                <span className="px-2 py-1 rounded-md text-xs font-semibold text-blue-500 border border-blue-500">
-                    {user.role.name}
-                </span>
+                <div className="flex flex-col gap-1">
+                    <span className="text-gray-700 font-semibold">
+                        {user.role?.name || '-'}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                        {user.role?.devision?.name || '-'}
+                    </span>
+                </div>
             )
         },
         { 
@@ -119,7 +124,7 @@ export default function Index({ users, filters }) {
             </div>
 
             {/* Search Bar & Per Page */}
-            <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Show</span>
                     <select

@@ -27,6 +27,10 @@ return new class extends Migration
             $table->foreign('nik')->references('nik')->on('users')->onDelete('cascade');
             $table->foreign('direct_supervisor')->references('nik')->on('users')->onDelete('set null');
         });
+
+        Schema::table('devisions', function (Blueprint $table) {
+            $table->foreign('head')->references('nik')->on('users')->onDelete('set null');
+        });
     }
 
     /**
@@ -34,6 +38,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('devisions', function (Blueprint $table) {
+            $table->dropForeign(['head']);
+        });
+
         Schema::dropIfExists('employee_information');
     }
 };

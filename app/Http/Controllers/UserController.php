@@ -14,7 +14,7 @@ class UserController extends Controller
         $search = $request->query('search');
         $perPage = $request->query('per_page', 10);
 
-        $query = User::latest()->with('role');
+        $query = User::latest()->with('role.devision');
 
         if ($search) {
             $query->where(function($q) use ($search) {

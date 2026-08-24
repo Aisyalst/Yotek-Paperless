@@ -38,13 +38,14 @@ export default function Index({ devisions = [] }) {
                     <thead>
                         <tr className="bg-[#f8f8f8] border-b border-gray-200 text-sm text-[#1a1a1a]">
                             <th className="p-4 font-semibold">Nama Divisi</th>
+                            <th className="p-4 font-semibold">Ketua Divisi</th>
                             <th className="p-4 font-semibold w-32">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {devisions.length === 0 ? (
                             <tr>
-                                <td colSpan="2" className="p-4 text-center text-gray-500">
+                                <td colSpan="3" className="p-4 text-center text-gray-500">
                                     Tidak ada data divisi.
                                 </td>
                             </tr>
@@ -52,6 +53,7 @@ export default function Index({ devisions = [] }) {
                             devisions.map((devision) => (
                                 <tr key={devision.id} className="border-b border-gray-100 hover:bg-[#f8f8f8] transition-colors">
                                     <td className="p-4 text-[#1a1a1a] font-medium">{devision.name}</td>
+                                    <td className="p-4 text-[#1a1a1a]">{devision.head_employee?.user?.name || '-'}</td>
                                     <td className="p-4">
                                         <div className="flex items-center gap-2">
                                             {hasEditPermission && (

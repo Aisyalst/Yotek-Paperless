@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'Developers']);
+        $role = Role::create(['name' => 'Web Developers']);
         $role2 = Role::create(['name' => 'Administrators']);
         $role3 = Role::create(['name' => 'Staff']);
 
