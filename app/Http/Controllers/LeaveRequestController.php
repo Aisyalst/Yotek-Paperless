@@ -12,7 +12,7 @@ class LeaveRequestController extends Controller
     {
         // For now, load all requests with their user data. 
         // In the future, this might be filtered by role (e.g. employee sees their own, HR sees all).
-        $leaveRequests = LeaveRequest::with('user.employeeInformation')->orderBy('created_at', 'desc')->get();
+        $leaveRequests = LeaveRequest::with('employee.user')->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('LeaveRequest/Index', [
             'leaveRequests' => $leaveRequests
@@ -23,6 +23,10 @@ class LeaveRequestController extends Controller
     {
         $user = clone $request->user();
         $user->load(['employeeInformation', 'role.devision']);
+
+        if (!$user->nik || !$user->employeeInformation) {
+            return redirect()->back()->with('error', 'Anda harus terdaftar sebagai karyawan dan memiliki NIK sebelum dapat mengajukan izin/cuti.');
+        }
 
         return Inertia::render('LeaveRequest/Create', [
             'userData' => $user
@@ -59,7 +63,12 @@ class LeaveRequestController extends Controller
             'deduction_type.in' => 'Pilihan potong gaji/cuti tidak valid.'
         ]);
 
-        $validated['user_id'] = $request->user()->id;
+        $user = $request->user();
+        if (!$user->nik) {
+            return redirect()->back()->with('error', 'Informasi NIK tidak ditemukan.');
+        }
+
+        $validated['employee_nik'] = $user->nik;
         $validated['request_date'] = now()->toDateString();
         $validated['status'] = 'Pending';
 

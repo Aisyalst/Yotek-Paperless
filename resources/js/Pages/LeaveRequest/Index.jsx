@@ -1,5 +1,5 @@
 import DashboardLayout from '@/Layouts/Dashboard';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import React from 'react';
 import PremiumTable from '@/Components/PremiumTable';
 
@@ -60,11 +60,11 @@ export default function Index({ leaveRequests }) {
             render: (request) => (
                 <div className="flex items-center gap-3">
                     <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 flex items-center justify-center text-[#1a1a1a] font-bold shadow-inner">
-                        {request.user?.name?.charAt(0) || '?'}
+                        {request.employee?.user?.name?.charAt(0) || '?'}
                     </div>
                     <div>
-                        <p className="font-bold text-[#1a1a1a]">{request.user?.name}</p>
-                        <p className="text-xs text-gray-500 font-medium mt-0.5">{request.user?.employee_information?.department || 'Tidak ada departemen'}</p>
+                        <p className="font-bold text-[#1a1a1a]">{request.employee?.user?.name}</p>
+                        <p className="text-xs text-gray-500 font-medium mt-0.5">{request.employee?.department || 'Tidak ada departemen'}</p>
                     </div>
                 </div>
             )
@@ -120,6 +120,17 @@ export default function Index({ leaveRequests }) {
 
             <div className="py-10 bg-[#f8f8f8] min-h-screen">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+                    {usePage().props.flash?.success && (
+                        <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
+                            <span className="font-medium">Berhasil!</span> {usePage().props.flash.success}
+                        </div>
+                    )}
+                    {usePage().props.flash?.error && (
+                        <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                            <span className="font-medium">Gagal!</span> {usePage().props.flash.error}
+                        </div>
+                    )}
                     
                     {/* Premium Header Card */}
                     <div className="relative overflow-hidden bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:rounded-2xl border border-white/50 p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
