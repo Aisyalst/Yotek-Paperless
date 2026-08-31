@@ -87,6 +87,13 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Companies Edit', 'route_name' => 'companies.edit'],
             ['name' => 'Companies Update', 'route_name' => 'companies.update'],
             ['name' => 'Companies Delete', 'route_name' => 'companies.destroy'],
+            ['name' => 'Employee Ranks Index', 'route_name' => 'employee-ranks.index'],
+            ['name' => 'Employee Ranks Create', 'route_name' => 'employee-ranks.create'],
+            ['name' => 'Employee Ranks Store', 'route_name' => 'employee-ranks.store'],
+            ['name' => 'Employee Ranks Edit', 'route_name' => 'employee-ranks.edit'],
+            ['name' => 'Employee Ranks Update', 'route_name' => 'employee-ranks.update'],
+            ['name' => 'Employee Ranks Delete', 'route_name' => 'employee-ranks.destroy'],
+            ['name' => 'Employee Ranks Reorder', 'route_name' => 'employee-ranks.reorder'],
         ];
 
         foreach ($routes as $route) {
@@ -97,7 +104,7 @@ class RouteSettingSeeder extends Seeder
         // Assuming Tables is ID 1 and Settings is ID 2 if seeded in order. Let's just fetch them to be safe.
         $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Form'], ['order' => 1]);
         $masterDataSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Master Data'], ['order' => 3]);
-        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Settings'], ['order' => 4]);
+        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Web Setting'], ['order' => 4]);
 
         // 1. Forms Section
         DashboardMenu::create([
@@ -109,22 +116,12 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        // 2. Settings Section (Parent & Children)
+        // 2. Web Setting Section (Parent & Children)
         $settingsParent = DashboardMenu::create([
-            'name' => 'Settings',
+            'name' => 'Web Setting',
             'icon' => 'HiCog',
             'section_id' => $settingsSection->id,
             'type' => 'Dropdown',
-            'position' => 1,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Roles',
-            'icon' => 'HiShieldCheck',
-            'route_id' => 2,
-            'section_id' => $settingsSection->id,
-            'type' => 'Single',
-            'parent_id' => $settingsParent->id,
             'position' => 1,
         ]);
 
@@ -135,17 +132,7 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
-            'position' => 2,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Permissions',
-            'icon' => 'HiOutlineLogin',
-            'route_id' => 8,
-            'section_id' => $settingsSection->id,
-            'type' => 'Single',
-            'parent_id' => $settingsParent->id,
-            'position' => 3,
+            'position' => 1,
         ]);
 
         DashboardMenu::create([
@@ -155,7 +142,7 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
-            'position' => 4,
+            'position' => 2,
         ]);
 
         DashboardMenu::create([
@@ -165,18 +152,10 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
-            'position' => 5,
+            'position' => 3,
         ]);
 
-        // Master Data Section (Parent & Children)
-        $masterDataParent = DashboardMenu::create([
-            'name' => 'Master Data',
-            'icon' => 'HiDatabase',
-            'section_id' => $masterDataSection->id,
-            'type' => 'Dropdown',
-            'position' => 2,
-        ]);
-        
+        // 3. Master Data Section (Flat)
         DashboardMenu::create([
             'name' => 'Users',
             'icon' => 'HiUser',
@@ -186,14 +165,12 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-
         DashboardMenu::create([
             'name' => 'Devisions',
             'icon' => 'HiOfficeBuilding',
-            'route_id' => 38, // Based on route index, wait, better use exact query
+            'route_id' => 38,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
-            'parent_id' => $masterDataParent->id,
             'position' => 2,
         ]);
         
@@ -203,14 +180,40 @@ class RouteSettingSeeder extends Seeder
             'route_id' => \App\Models\Route::where('route_name', 'companies.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
-            'parent_id' => $masterDataParent->id,
             'position' => 3,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Employee Ranks',
+            'icon' => 'HiIdentification',
+            'route_id' => \App\Models\Route::where('route_name', 'employee-ranks.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 4,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Roles',
+            'icon' => 'HiShieldCheck',
+            'route_id' => 2,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 5,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Permissions',
+            'icon' => 'HiOutlineLogin',
+            'route_id' => 8,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 6,
         ]);
 
         $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 
         $hrParent = DashboardMenu::create([
-            'name' => 'HR Management',
+            'name' => 'Karyawan',
             'icon' => 'HiUsers',
             'section_id' => $hrSection->id,
             'type' => 'Dropdown',

@@ -54,7 +54,7 @@ export default function Index({ employees, filters }) {
         },
         { 
             header: 'Jabatan', 
-            accessor: 'level' 
+            render: (emp) => emp.employee_rank ? emp.employee_rank.title : '-'
         },
         { 
             header: 'Atasan', 

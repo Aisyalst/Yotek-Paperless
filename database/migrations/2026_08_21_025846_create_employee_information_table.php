@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('company')->nullable();
             $table->string('branch')->nullable();
             $table->string('department')->nullable();
-            $table->string('level')->nullable();
+            $table->foreignId('employee_rank_id')->nullable()->constrained('employee_ranks')->nullOnDelete();
             $table->string('direct_supervisor')->nullable();
             $table->string('employment_status')->nullable();
             $table->date('join_date')->nullable();
