@@ -94,6 +94,16 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Employee Ranks Update', 'route_name' => 'employee-ranks.update'],
             ['name' => 'Employee Ranks Delete', 'route_name' => 'employee-ranks.destroy'],
             ['name' => 'Employee Ranks Reorder', 'route_name' => 'employee-ranks.reorder'],
+            ['name' => 'Approval Workflows Index', 'route_name' => 'approval-workflows.index'],
+            ['name' => 'Approval Workflows Create', 'route_name' => 'approval-workflows.create'],
+            ['name' => 'Approval Workflows Store', 'route_name' => 'approval-workflows.store'],
+            ['name' => 'Approval Workflows Edit', 'route_name' => 'approval-workflows.edit'],
+            ['name' => 'Approval Workflows Update', 'route_name' => 'approval-workflows.update'],
+            ['name' => 'Approval Workflows Delete', 'route_name' => 'approval-workflows.destroy'],
+            ['name' => 'Approval Workflow Steps Store', 'route_name' => 'approval-workflow-steps.store'],
+            ['name' => 'Approval Workflow Steps Delete', 'route_name' => 'approval-workflow-steps.destroy'],
+            ['name' => 'Leave Request Approvals Index', 'route_name' => 'leave-request-approvals.index'],
+            ['name' => 'Leave Request Approvals Update', 'route_name' => 'leave-request-approvals.update'],
         ];
 
         foreach ($routes as $route) {
@@ -210,6 +220,15 @@ class RouteSettingSeeder extends Seeder
             'position' => 6,
         ]);
 
+        DashboardMenu::create([
+            'name' => 'Approval Workflow',
+            'icon' => 'HiClipboardCheck',
+            'route_id' => \App\Models\Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 7,
+        ]);
+
         $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 
         $hrParent = DashboardMenu::create([
@@ -223,7 +242,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Registrasi Karyawan',
             'icon' => 'HiIdentification',
-            'route_id' => \App\Models\Route::where('route_name', 'employee-registrations.index')->first()->id,
+            'route_id' => \App\Models\Route::where('route_name', 'employee-registrations.index')->first()->id ?? 1,
             'section_id' => $hrSection->id,
             'type' => 'Single',
             'parent_id' => $hrParent->id,
@@ -233,11 +252,21 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Manajemen Kontrak',
             'icon' => 'HiDocumentDuplicate',
-            'route_id' => \App\Models\Route::where('route_name', 'contracts.index')->first()->id,
+            'route_id' => \App\Models\Route::where('route_name', 'contracts.index')->first()->id ?? 1,
             'section_id' => $hrSection->id,
             'type' => 'Single',
             'parent_id' => $hrParent->id,
             'position' => 2,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Approval Cuti',
+            'icon' => 'HiCheckCircle',
+            'route_id' => \App\Models\Route::where('route_name', 'leave-request-approvals.index')->first()?->id ?? 1,
+            'section_id' => $hrSection->id,
+            'type' => 'Single',
+            'parent_id' => $hrParent->id,
+            'position' => 3,
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)

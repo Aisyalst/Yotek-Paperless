@@ -84,6 +84,14 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::resource('contracts', \App\Http\Controllers\ContractController::class)->except(['show']);
     Route::resource('companies', \App\Http\Controllers\CompanyController::class)->except(['show']);
 
+    Route::resource('approval-workflows', \App\Http\Controllers\ApprovalWorkflowController::class);
+    Route::post('/approval-workflow-steps', [\App\Http\Controllers\ApprovalWorkflowStepController::class, 'store'])->name('approval-workflow-steps.store');
+    Route::delete('/approval-workflow-steps/{step}', [\App\Http\Controllers\ApprovalWorkflowStepController::class, 'destroy'])->name('approval-workflow-steps.destroy');
+
+    // Leave Request Approval routes
+    Route::get('/leave-request-approvals', [App\Http\Controllers\LeaveRequestApprovalController::class, 'index'])->name('leave-request-approvals.index');
+    Route::put('/leave-request-approvals/{leaveRequestApproval}', [App\Http\Controllers\LeaveRequestApprovalController::class, 'update'])->name('leave-request-approvals.update');
+
     Route::post('employee-ranks/reorder', [\App\Http\Controllers\EmployeeRankController::class, 'reorder'])->name('employee-ranks.reorder');
     Route::resource('employee-ranks', \App\Http\Controllers\EmployeeRankController::class)->except(['show']);
     Route::get('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'edit'])->name('profile.personal.edit');
