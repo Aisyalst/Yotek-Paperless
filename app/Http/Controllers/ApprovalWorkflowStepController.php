@@ -44,9 +44,9 @@ class ApprovalWorkflowStepController extends Controller
         return redirect()->back()->with('success', 'Langkah approval berhasil ditambahkan.');
     }
 
-    public function destroy(ApprovalWorkflowStep $approvalWorkflowStep)
+    public function destroy(ApprovalWorkflowStep $step)
     {
-        $approvalWorkflowStep->delete();
+        $step->delete();
         return redirect()->back()->with('success', 'Langkah approval berhasil dihapus.');
     }
 }
