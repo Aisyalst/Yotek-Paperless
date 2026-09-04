@@ -19,7 +19,7 @@ class LeaveRequestApprovalController extends Controller
         
         // Asumsi admin bisa melihat semua, user biasa hanya melihat approval miliknya
         // Di sini kita tampilkan semua yang berhubungan dengan NIK login
-        $query = LeaveRequestApproval::with('leaveRequest', 'approver');
+        $query = LeaveRequestApproval::with('leaveRequest.employee.user', 'approver');
         
         if ($user && $user->nik) {
             $query->where('approver_nik', $user->nik);
@@ -71,14 +71,32 @@ class LeaveRequestApprovalController extends Controller
     {
         $request->validate([
             'status' => 'required|in:Pending,Approved,Rejected',
+            'signature' => 'required|string',
         ], [
             'status.required' => 'Status wajib dipilih.',
             'status.in' => 'Status tidak valid.',
+            'signature.required' => 'Tanda tangan wajib diisi.',
+            'signature.string' => 'Tanda tangan tidak valid.',
         ]);
 
         $leaveRequestApproval->update([
             'status' => $request->status,
+            'signature' => $request->signature,
         ]);
+
+        $leaveRequest = $leaveRequestApproval->leaveRequest;
+        
+        if ($request->status === 'Rejected') {
+            $leaveRequest->update(['status' => 'Rejected']);
+        } elseif ($request->status === 'Approved') {
+            $allApproved = !LeaveRequestApproval::where('leave_request_id', $leaveRequestApproval->leave_request_id)
+                ->where('status', '!=', 'Approved')
+                ->exists();
+                
+            if ($allApproved) {
+                $leaveRequest->update(['status' => 'Approved']);
+            }
+        }
 
         return redirect()->back()->with('success', 'Status approval berhasil diperbarui.');
     }

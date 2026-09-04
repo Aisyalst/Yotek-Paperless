@@ -72,8 +72,66 @@ class LeaveRequestController extends Controller
         $validated['request_date'] = now()->toDateString();
         $validated['status'] = 'Pending';
 
-        LeaveRequest::create($validated);
+        $leaveRequest = LeaveRequest::create($validated);
+
+        // Auto-generate approvals based on workflow
+        $user->load('role.devision');
+        
+        // Find matching workflow
+        // Get all workflows of type 'Cuti' and check if role_id JSON contains the user's role_id
+        $workflows = \App\Models\ApprovalWorkflow::where('workflow_type', 'Cuti')->get();
+        $matchedWorkflow = null;
+        
+        foreach ($workflows as $wf) {
+            $roleIds = is_array($wf->role_id) ? $wf->role_id : (json_decode($wf->role_id, true) ?? []);
+            if (in_array((string)$user->role_id, $roleIds) || in_array($user->role_id, $roleIds)) {
+                $matchedWorkflow = $wf;
+                break;
+            }
+        }
+
+        if ($matchedWorkflow) {
+            $steps = \App\Models\ApprovalWorkflowStep::where('approval_workflow_id', $matchedWorkflow->id)
+                ->orderBy('approval_level', 'asc')
+                ->get();
+
+            foreach ($steps as $step) {
+                $approverNik = null;
+                $approverRole = null;
+
+                if ($step->approver_type === 'specific_user') {
+                    $approverNik = $step->approver_nik;
+                    $approverRole = $step->employee_role;
+                } elseif ($step->approver_type === 'division_head') {
+                    $devision = $user->role ? $user->role->devision : null;
+                    if ($devision && $devision->head) {
+                        $approverNik = $devision->head;
+                        $headUser = \App\Models\User::with('role')->where('nik', $approverNik)->first();
+                        $approverRole = $headUser && $headUser->role ? $headUser->role->name : 'Head of Division';
+                    }
+                }
+
+                if ($approverNik) {
+                    \App\Models\LeaveRequestApproval::create([
+                        'leave_request_id' => $leaveRequest->id,
+                        'approver_level' => $step->approval_level,
+                        'approver_nik' => $approverNik,
+                        'approver_role' => $approverRole,
+                        'status' => 'Pending',
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('leave-requests.index')->with('success', 'Pengajuan berhasil dikirim.');
+    }
+
+    public function show(Request $request, LeaveRequest $leaveRequest)
+    {
+        $leaveRequest->load(['employee.user.personalInformation', 'approvals.approver']);
+
+        return Inertia::render('LeaveRequest/Show', [
+            'leaveRequest' => $leaveRequest
+        ]);
     }
 }

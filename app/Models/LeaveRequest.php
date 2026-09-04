@@ -17,4 +17,9 @@ class LeaveRequest extends Model
     {
         return $this->belongsTo(EmployeeInformation::class, 'employee_nik', 'nik');
     }
+
+    public function approvals()
+    {
+        return $this->hasMany(LeaveRequestApproval::class, 'leave_request_id');
+    }
 }

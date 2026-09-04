@@ -67,6 +67,7 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Leave Request Index', 'route_name' => 'leave-requests.index'],
             ['name' => 'Leave Request Create', 'route_name' => 'leave-requests.create'],
             ['name' => 'Leave Request Store', 'route_name' => 'leave-requests.store'],
+            ['name' => 'Leave Request Show', 'route_name' => 'leave-requests.show'],
             ['name' => 'Employee Registrations Index', 'route_name' => 'employee-registrations.index'],
             ['name' => 'Employee Registrations Create', 'route_name' => 'employee-registrations.create'],
             ['name' => 'Employee Registrations Store', 'route_name' => 'employee-registrations.store'],

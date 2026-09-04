@@ -12,6 +12,7 @@ class LeaveRequestApproval extends Model
         'approver_nik',
         'approver_role',
         'status',
+        'signature',
     ];
 
     public function leaveRequest()
