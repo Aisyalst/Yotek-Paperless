@@ -12,7 +12,7 @@ class LeaveRequestController extends Controller
     {
         // For now, load all requests with their user data. 
         // In the future, this might be filtered by role (e.g. employee sees their own, HR sees all).
-        $leaveRequests = LeaveRequest::with('employee.user')->orderBy('created_at', 'desc')->get();
+        $leaveRequests = LeaveRequest::with(['employee.user', 'approvals'])->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('LeaveRequest/Index', [
             'leaveRequests' => $leaveRequests
@@ -109,6 +109,9 @@ class LeaveRequestController extends Controller
                         $headUser = \App\Models\User::with('role')->where('nik', $approverNik)->first();
                         $approverRole = $headUser && $headUser->role ? $headUser->role->name : 'Head of Division';
                     }
+                } elseif ($step->approver_type === 'creator') {
+                    $approverNik = $user->nik;
+                    $approverRole = $user->role ? $user->role->name : 'Pembuat Pengajuan (Self)';
                 }
 
                 if ($approverNik) {
@@ -127,7 +130,7 @@ class LeaveRequestController extends Controller
                 ->orderBy('approver_level', 'asc')
                 ->first();
 
-            if ($firstApproval && $firstApproval->approver_nik) {
+            if ($firstApproval && $firstApproval->approver_nik && $firstApproval->approver_nik !== $user->nik) {
                 $approverUser = \App\Models\User::where('nik', $firstApproval->approver_nik)->first();
                 if ($approverUser) {
                     app(\App\Services\NotificationService::class)->send([

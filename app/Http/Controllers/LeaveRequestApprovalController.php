@@ -129,15 +129,17 @@ class LeaveRequestApprovalController extends Controller
                 if ($nextApproval && $nextApproval->approver_nik) {
                     $nextApproverUser = \App\Models\User::where('nik', $nextApproval->approver_nik)->first();
                     if ($nextApproverUser && $employeeUser) {
-                        app(\App\Services\NotificationService::class)->send([
-                            'title' => 'Pengajuan Izin/Cuti Baru',
-                            'body' => $employeeUser->name . ' mengajukan izin/cuti yang membutuhkan persetujuan Anda.',
-                            'type' => 'info',
-                            'url' => route('leave-request-approvals.index'),
-                            'target_type' => 'user',
-                            'target_value' => (string) $nextApproverUser->id,
-                            'created_by' => null,
-                        ]);
+                        if ($nextApproverUser->id !== $employeeUser->id) {
+                            app(\App\Services\NotificationService::class)->send([
+                                'title' => 'Pengajuan Izin/Cuti Baru',
+                                'body' => $employeeUser->name . ' mengajukan izin/cuti yang membutuhkan persetujuan Anda.',
+                                'type' => 'info',
+                                'url' => route('leave-request-approvals.index'),
+                                'target_type' => 'user',
+                                'target_value' => (string) $nextApproverUser->id,
+                                'created_by' => null,
+                            ]);
+                        }
                     }
                 }
             }

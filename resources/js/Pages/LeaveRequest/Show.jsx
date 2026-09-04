@@ -1,8 +1,56 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage, router } from '@inertiajs/react';
+import SignatureCanvas from 'react-signature-canvas';
 
 export default function Show({ leaveRequest }) {
+    const { auth } = usePage().props;
+    const currentUser = auth.user;
+    
+    const sigCanvas = useRef({});
+    const [signatureError, setSignatureError] = useState('');
+    const [processing, setProcessing] = useState(false);
+
+    let needsApproval = false;
+    let activeApproval = null;
+
+    if (leaveRequest.approvals && leaveRequest.approvals.length > 0) {
+        activeApproval = leaveRequest.approvals
+            .filter(a => a.status === 'Pending')
+            .sort((a, b) => a.approver_level - b.approver_level)[0];
+        if (activeApproval && activeApproval.approver_nik === currentUser.nik) {
+            needsApproval = true;
+        }
+    }
+
+    const clearSignature = () => {
+        sigCanvas.current.clear();
+        setSignatureError('');
+    };
+
+    const handleApproveReject = (action) => {
+        if (sigCanvas.current.isEmpty()) {
+            setSignatureError('Tanda tangan wajib diisi.');
+            return;
+        }
+
+        const signatureData = sigCanvas.current.getCanvas().toDataURL('image/png');
+        setProcessing(true);
+
+        router.put(route('leave-request-approvals.update', activeApproval.id), {
+            status: action,
+            signature: signatureData
+        }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setProcessing(false);
+                setSignatureError('');
+            },
+            onError: () => setProcessing(false),
+            onFinish: () => setProcessing(false)
+        });
+    };
+
     return (
         <DashboardLayout judulHalaman="Detail Pengajuan Cuti">
             <Head title={`Detail Pengajuan Cuti #${leaveRequest.id}`} />
@@ -178,6 +226,49 @@ export default function Show({ leaveRequest }) {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                        )}
+
+                        {needsApproval && (
+                            <div className="mt-8 pt-6 border-t border-gray-200">
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">Aksi Persetujuan Anda</h3>
+                                <p className="text-sm text-gray-500 mb-4">
+                                    Silakan bubuhkan tanda tangan Anda di bawah ini sebagai validasi persetujuan pengajuan ini.
+                                </p>
+                                
+                                <div className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 flex justify-center relative mb-4">
+                                    <SignatureCanvas 
+                                        penColor="black"
+                                        canvasProps={{width: 400, height: 200, className: 'sigCanvas'}}
+                                        ref={sigCanvas}
+                                    />
+                                    <button 
+                                        onClick={clearSignature}
+                                        className="absolute top-2 right-2 text-xs bg-white border border-gray-300 rounded px-2 py-1 text-gray-600 hover:bg-gray-100 shadow-sm transition"
+                                    >
+                                        Hapus Tanda Tangan
+                                    </button>
+                                </div>
+                                {signatureError && (
+                                    <p className="text-red-500 text-xs mb-4 font-medium">{signatureError}</p>
+                                )}
+
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => handleApproveReject('Approved')}
+                                        disabled={processing}
+                                        className={`flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors shadow-sm ${processing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    >
+                                        {processing ? 'Memproses...' : 'Setujui Pengajuan'}
+                                    </button>
+                                    <button
+                                        onClick={() => handleApproveReject('Rejected')}
+                                        disabled={processing}
+                                        className={`flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors shadow-sm ${processing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    >
+                                        {processing ? 'Memproses...' : 'Tolak Pengajuan'}
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>

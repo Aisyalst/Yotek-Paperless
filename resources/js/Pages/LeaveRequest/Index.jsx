@@ -4,6 +4,8 @@ import React from 'react';
 import PremiumTable from '@/Components/PremiumTable';
 
 export default function Index({ leaveRequests }) {
+    const { auth } = usePage().props;
+    const currentUser = auth.user;
     
     // Helper for Status Badge
     const getStatusBadge = (status) => {
@@ -39,21 +41,41 @@ export default function Index({ leaveRequests }) {
     const tableColumns = [
         {
             header: "Informasi Pengajuan",
-            render: (request) => (
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[#f8f8f8] rounded-lg text-gray-400 group-hover:text-[#eaae36] group-hover:bg-[#eaae36]/10 transition-colors">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
+            render: (request) => {
+                let needsApproval = false;
+                if (request.approvals && request.approvals.length > 0) {
+                    const activeApproval = request.approvals
+                        .filter(a => a.status === 'Pending')
+                        .sort((a, b) => a.approver_level - b.approver_level)[0];
+                    if (activeApproval && activeApproval.approver_nik === currentUser.nik) {
+                        needsApproval = true;
+                    }
+                }
+
+                return (
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-[#f8f8f8] rounded-lg text-gray-400 group-hover:text-[#eaae36] group-hover:bg-[#eaae36]/10 transition-colors">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p className="font-bold text-[#1a1a1a] group-hover:text-[#eaae36] transition-colors">
+                                    {new Date(request.request_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                </p>
+                                <p className="text-xs text-gray-400 mt-0.5">#{String(request.id).padStart(5, '0')}</p>
+                            </div>
+                        </div>
+                        {needsApproval && (
+                            <span className="inline-flex w-fit items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-red-50 text-red-600 border border-red-200">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                                Perlu Tanda Tangan Anda
+                            </span>
+                        )}
                     </div>
-                    <div>
-                        <p className="font-bold text-[#1a1a1a] group-hover:text-[#eaae36] transition-colors">
-                            {new Date(request.request_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-0.5">#{String(request.id).padStart(5, '0')}</p>
-                    </div>
-                </div>
-            )
+                );
+            }
         },
         {
             header: "Karyawan",

@@ -13,7 +13,7 @@ class ApprovalWorkflowStepController extends Controller
         $request->validate([
             'approval_workflow_id' => 'required|exists:approval_workflows,id',
             'approval_level' => 'required|integer|min:1',
-            'approver_type' => 'required|in:specific_user,division_head',
+            'approver_type' => 'required|in:specific_user,division_head,creator',
             'approver_nik' => 'required_if:approver_type,specific_user',
         ], [
             'approval_workflow_id.required' => 'Workflow ID wajib diisi.',

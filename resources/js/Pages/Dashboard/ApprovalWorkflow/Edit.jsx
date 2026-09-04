@@ -143,6 +143,8 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                             <div className="text-xs font-bold text-gray-500 uppercase">Level {step.approval_level}</div>
                                             {step.approver_type === 'division_head' ? (
                                                 <div className="text-sm font-semibold text-[#eaae36]">Dinamis: Kepala Divisi</div>
+                                            ) : step.approver_type === 'creator' ? (
+                                                <div className="text-sm font-semibold text-[#eaae36]">Dinamis: Pembuat Pengajuan (Self)</div>
                                             ) : (
                                                 <>
                                                     <div className="text-sm font-semibold text-[#1a1a1a]">NIK: {step.approver_nik}</div>
@@ -190,6 +192,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                 >
                                     <option value="specific_user">User Spesifik</option>
                                     <option value="division_head">Kepala Divisi (Dinamis)</option>
+                                    <option value="creator">Pembuat Pengajuan (Self)</option>
                                 </select>
                             </div>
                         </div>
