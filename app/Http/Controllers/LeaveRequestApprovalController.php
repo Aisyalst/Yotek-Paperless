@@ -85,9 +85,22 @@ class LeaveRequestApprovalController extends Controller
         ]);
 
         $leaveRequest = $leaveRequestApproval->leaveRequest;
+        $employeeUser = $leaveRequest->employee ? $leaveRequest->employee->user : null;
         
         if ($request->status === 'Rejected') {
             $leaveRequest->update(['status' => 'Rejected']);
+
+            if ($employeeUser) {
+                app(\App\Services\NotificationService::class)->send([
+                    'title' => 'Pengajuan Izin/Cuti Ditolak',
+                    'body' => 'Pengajuan izin/cuti Anda telah ditolak oleh ' . Auth::user()->name . '.',
+                    'type' => 'error',
+                    'url' => route('leave-requests.show', $leaveRequest->id),
+                    'target_type' => 'user',
+                    'target_value' => (string) $employeeUser->id,
+                    'created_by' => null,
+                ]);
+            }
         } elseif ($request->status === 'Approved') {
             $allApproved = !LeaveRequestApproval::where('leave_request_id', $leaveRequestApproval->leave_request_id)
                 ->where('status', '!=', 'Approved')
@@ -95,6 +108,38 @@ class LeaveRequestApprovalController extends Controller
                 
             if ($allApproved) {
                 $leaveRequest->update(['status' => 'Approved']);
+
+                if ($employeeUser) {
+                    app(\App\Services\NotificationService::class)->send([
+                        'title' => 'Pengajuan Izin/Cuti Disetujui',
+                        'body' => 'Pengajuan izin/cuti Anda telah disetujui sepenuhnya.',
+                        'type' => 'success',
+                        'url' => route('leave-requests.show', $leaveRequest->id),
+                        'target_type' => 'user',
+                        'target_value' => (string) $employeeUser->id,
+                        'created_by' => null,
+                    ]);
+                }
+            } else {
+                $nextApproval = LeaveRequestApproval::where('leave_request_id', $leaveRequestApproval->leave_request_id)
+                    ->where('approver_level', '>', $leaveRequestApproval->approver_level)
+                    ->orderBy('approver_level', 'asc')
+                    ->first();
+
+                if ($nextApproval && $nextApproval->approver_nik) {
+                    $nextApproverUser = \App\Models\User::where('nik', $nextApproval->approver_nik)->first();
+                    if ($nextApproverUser && $employeeUser) {
+                        app(\App\Services\NotificationService::class)->send([
+                            'title' => 'Pengajuan Izin/Cuti Baru',
+                            'body' => $employeeUser->name . ' mengajukan izin/cuti yang membutuhkan persetujuan Anda.',
+                            'type' => 'info',
+                            'url' => route('leave-request-approvals.index'),
+                            'target_type' => 'user',
+                            'target_value' => (string) $nextApproverUser->id,
+                            'created_by' => null,
+                        ]);
+                    }
+                }
             }
         }
 

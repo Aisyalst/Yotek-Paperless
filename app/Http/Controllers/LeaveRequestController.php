@@ -121,6 +121,26 @@ class LeaveRequestController extends Controller
                     ]);
                 }
             }
+
+            // Notify the first approver
+            $firstApproval = \App\Models\LeaveRequestApproval::where('leave_request_id', $leaveRequest->id)
+                ->orderBy('approver_level', 'asc')
+                ->first();
+
+            if ($firstApproval && $firstApproval->approver_nik) {
+                $approverUser = \App\Models\User::where('nik', $firstApproval->approver_nik)->first();
+                if ($approverUser) {
+                    app(\App\Services\NotificationService::class)->send([
+                        'title' => 'Pengajuan Izin/Cuti Baru',
+                        'body' => $user->name . ' mengajukan izin/cuti baru yang membutuhkan persetujuan Anda.',
+                        'type' => 'info',
+                        'url' => route('leave-request-approvals.index'),
+                        'target_type' => 'user',
+                        'target_value' => (string) $approverUser->id,
+                        'created_by' => null,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('leave-requests.index')->with('success', 'Pengajuan berhasil dikirim.');

@@ -36,6 +36,8 @@ class HandleInertiaRequests extends Middleware
                 'permissions' => $request->user() && $request->user()->role
                     ? $request->user()->role->permissions->load('route')->pluck('route.route_name')->filter()->toArray()
                     : [],
+                'unreadNotificationsCount' => $request->user() ? $request->user()->unreadNotifications()->count() : 0,
+                'latestNotifications' => $request->user() ? $request->user()->notifications()->with('notification')->orderBy('created_at', 'desc')->take(5)->get() : [],
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

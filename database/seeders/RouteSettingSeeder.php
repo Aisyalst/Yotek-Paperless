@@ -105,6 +105,11 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Approval Workflow Steps Delete', 'route_name' => 'approval-workflow-steps.destroy'],
             ['name' => 'Leave Request Approvals Index', 'route_name' => 'leave-request-approvals.index'],
             ['name' => 'Leave Request Approvals Update', 'route_name' => 'leave-request-approvals.update'],
+            ['name' => 'Notifications Index', 'route_name' => 'notifications.index'],
+            ['name' => 'Notifications Create', 'route_name' => 'notifications.create'],
+            ['name' => 'Notifications Store', 'route_name' => 'notifications.store'],
+            ['name' => 'Notifications Read All', 'route_name' => 'notifications.read-all'],
+            ['name' => 'Notifications Read', 'route_name' => 'notifications.read'],
         ];
 
         foreach ($routes as $route) {
@@ -228,6 +233,15 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 7,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Notifications',
+            'icon' => 'HiBell',
+            'route_id' => \App\Models\Route::where('route_name', 'notifications.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 8,
         ]);
 
         $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);

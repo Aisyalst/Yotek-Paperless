@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link , usePage } from '@inertiajs/react'; // Gunakan Link dari Inertia agar perpindahan halaman cepat (SPA)
+import NotificationBell from '@/Components/NotificationBell';
 
 export default function Header({ judul, onMenuButtonClick }) {
     // State untuk mengontrol buka/tutup dropdown
@@ -26,7 +27,9 @@ export default function Header({ judul, onMenuButtonClick }) {
                     </div>
 
                     {/* BAGIAN KANAN: Profile Dropdown */}
-                    <div className="ms-auto flex items-center mr-4 sm:mr-[50px]">
+                    <div className="ms-auto flex items-center gap-2 sm:gap-4 mr-4 sm:mr-[50px]">
+                        <NotificationBell />
+                        
                         <div className="relative">
                             <button 
                                 onClick={() => setIsProfileOpen(!isProfileOpen)}

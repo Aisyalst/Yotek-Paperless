@@ -102,6 +102,13 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Notifications
+    Route::get('notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('notifications/create', [App\Http\Controllers\NotificationController::class, 'create'])->name('notifications.create');
+    Route::post('notifications', [App\Http\Controllers\NotificationController::class, 'store'])->name('notifications.store');
+    Route::patch('notifications/read-all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::patch('notifications/{recipient}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
 });
 
 require __DIR__.'/auth.php';

@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContractInformation::class, 'nik', 'nik');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(NotificationRecipient::class);
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->hasMany(NotificationRecipient::class)->where('is_read', false);
+    }
 }
