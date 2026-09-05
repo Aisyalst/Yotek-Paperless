@@ -29,7 +29,8 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Permissions Edit', 'route_name' => 'role-permissions.edit'], // 12
             ['name' => 'Permissions Update', 'route_name' => 'role-permissions.update'], // 13
             ['name' => 'Permissions Delete', 'route_name' => 'role-permissions.destroy'], // 14
-            ['name' => 'Menu', 'route_name' => 'dashboard-menus.index'], // 15
+            ['name' => 'Permissions Batch Sync', 'route_name' => 'role-permissions.batch-sync'], // 15
+            ['name' => 'Menu', 'route_name' => 'dashboard-menus.index'], // 16
             ['name' => 'Menu Create', 'route_name' => 'dashboard-menus.create'], // 16
             ['name' => 'Menu Store', 'route_name' => 'dashboard-menus.store'], // 17
             ['name' => 'Menu Edit', 'route_name' => 'dashboard-menus.edit'], // 18

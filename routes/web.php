@@ -55,6 +55,7 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
 
     Route::get('role-permissions', [RolePermissionController::class, 'index'])->name('role-permissions.index');
     Route::get('role-permissions/create', [RolePermissionController::class, 'create'])->name('role-permissions.create');
+    Route::post('role-permissions/batch-sync', [RolePermissionController::class, 'batchSync'])->name('role-permissions.batch-sync');
     Route::post('role-permissions', [RolePermissionController::class, 'store'])->name('role-permissions.store');
     Route::get('role-permissions/{role_permission}/edit', [RolePermissionController::class, 'edit'])->name('role-permissions.edit');
     Route::put('role-permissions/{role_permission}', [RolePermissionController::class, 'update'])->name('role-permissions.update');

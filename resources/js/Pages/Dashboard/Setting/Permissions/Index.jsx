@@ -46,6 +46,26 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
         }
     };
 
+    const handleBatchToggle = (routeIds, action) => {
+        if (!selectedRole || routeIds.length === 0) return;
+        
+        router.post('/role-permissions/batch-sync', {
+            role_id: selectedRole.id,
+            route_ids: routeIds,
+            action: action
+        }, {
+            preserveScroll: true,
+        });
+    };
+
+    const allRouteIds = routes.map(r => r.id);
+    const allPermissions = rolePermissions.filter(rp => rp.role_id === selectedRole?.id);
+    const isAllChecked = allRouteIds.length > 0 && allPermissions.length >= allRouteIds.length;
+
+    const handleToggleAll = () => {
+        handleBatchToggle(allRouteIds, isAllChecked ? 'revoke' : 'grant');
+    };
+
     return (
         <DashboardLayout judulHalaman="Permissions Setting">
             <Head title="Permissions Setting" />
@@ -89,9 +109,23 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
                     {selectedRole ? (
                         <div className="space-y-6">
                             <div className="bg-[#ffffff] p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                                <h3 className="text-lg font-bold text-[#1a1a1a]">
-                                    Permissions untuk <span className="text-[#eaae36]">{selectedRole.name}</span>
-                                </h3>
+                                <div className="flex items-center gap-4">
+                                    <h3 className="text-lg font-bold text-[#1a1a1a]">
+                                        Permissions untuk <span className="text-[#eaae36]">{selectedRole.name}</span>
+                                    </h3>
+                                    <div className="flex items-center gap-2 border-l border-gray-200 pl-4 ml-2">
+                                        <span className="text-sm font-medium text-gray-700">All Access</span>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                className="sr-only peer"
+                                                checked={isAllChecked}
+                                                onChange={handleToggleAll}
+                                            />
+                                            <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#eaae36]"></div>
+                                        </label>
+                                    </div>
+                                </div>
                                 <div className="relative">
                                     <input 
                                         type="text" 
@@ -109,14 +143,31 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
                             </div>
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {Object.entries(groupedRoutes).map(([moduleName, moduleRoutes]) => (
-                                    <div key={moduleName} className="bg-[#ffffff] border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                                        <div className="px-4 py-3 bg-[#f8f8f8] border-b border-gray-200 flex justify-between items-center">
-                                            <h4 className="font-semibold text-[#1a1a1a] capitalize flex items-center gap-2">
-                                                <HiOutlineCollection className="w-4 h-4 text-gray-500" />
-                                                {moduleName.replace('-', ' ')}
-                                            </h4>
-                                        </div>
+                                {Object.entries(groupedRoutes).map(([moduleName, moduleRoutes]) => {
+                                    const moduleRouteIds = moduleRoutes.map(r => r.id);
+                                    const modulePermissions = rolePermissions.filter(rp => rp.role_id === selectedRole.id && moduleRouteIds.includes(rp.route_id));
+                                    const isAllModuleChecked = moduleRouteIds.length > 0 && modulePermissions.length >= moduleRouteIds.length;
+
+                                    return (
+                                        <div key={moduleName} className="bg-[#ffffff] border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                            <div className="px-4 py-3 bg-[#f8f8f8] border-b border-gray-200 flex justify-between items-center">
+                                                <h4 className="font-semibold text-[#1a1a1a] capitalize flex items-center gap-2">
+                                                    <HiOutlineCollection className="w-4 h-4 text-gray-500" />
+                                                    {moduleName.replace('-', ' ')}
+                                                </h4>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs font-medium text-gray-500">All Section</span>
+                                                    <label className="relative inline-flex items-center cursor-pointer">
+                                                        <input
+                                                            type="checkbox"
+                                                            className="sr-only peer"
+                                                            checked={isAllModuleChecked}
+                                                            onChange={() => handleBatchToggle(moduleRouteIds, isAllModuleChecked ? 'revoke' : 'grant')}
+                                                        />
+                                                        <div className="w-7 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[#eaae36]"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         <div className="p-4 space-y-3">
                                             {moduleRoutes.map(route => {
                                                 const existingRp = rolePermissions.find(
@@ -151,7 +202,8 @@ export default function Index({ roles = [], routes = [], rolePermissions = [] })
                                             })}
                                         </div>
                                     </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     ) : (

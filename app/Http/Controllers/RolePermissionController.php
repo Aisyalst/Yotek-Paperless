@@ -95,4 +95,39 @@ class RolePermissionController extends Controller
         $rolePermission->delete();
         return redirect()->route('role-permissions.index')->with('success', 'Permission revoked successfully.');
     }
+
+    public function batchSync(Request $request)
+    {
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+            'route_ids' => 'required|array',
+            'route_ids.*' => 'exists:routes,id',
+            'action' => 'required|in:grant,revoke'
+        ]);
+
+        if ($request->action === 'grant') {
+            $existing = RolePermission::where('role_id', $request->role_id)
+                ->whereIn('route_id', $request->route_ids)
+                ->pluck('route_id')
+                ->toArray();
+            
+            $toInsert = array_diff($request->route_ids, $existing);
+            $insertData = array_map(function($routeId) use ($request) {
+                return [
+                    'role_id' => $request->role_id,
+                    'route_id' => $routeId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $toInsert);
+            
+            RolePermission::insert($insertData);
+        } else {
+            RolePermission::where('role_id', $request->role_id)
+                ->whereIn('route_id', $request->route_ids)
+                ->delete();
+        }
+
+        return redirect()->back()->with('success', 'Permissions updated successfully.');
+    }
 }
