@@ -35,7 +35,7 @@ class ContractController extends Controller
 
     public function create()
     {
-        $users = User::all(['nik', 'name']);
+        $users = User::with('contractInformation')->get(['nik', 'name']);
         
         return inertia('Dashboard/Contract/Create', [
             'users' => $users
@@ -69,7 +69,7 @@ class ContractController extends Controller
     public function edit(ContractInformation $contract)
     {
         $contract->load('user');
-        $users = User::all(['nik', 'name']);
+        $users = User::with('contractInformation')->get(['nik', 'name']);
 
         return inertia('Dashboard/Contract/Edit', [
             'contract' => $contract,

@@ -60,9 +60,11 @@ export default function DynamicForm({
                                 type={field.type || 'text'}
                                 value={data[field.name]}
                                 onChange={(e) => setData(field.name, e.target.value)}
-                                className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
+                                className={`w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent ${field.readOnly || field.disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                                 placeholder={field.placeholder}
                                 required={field.required}
+                                readOnly={field.readOnly}
+                                disabled={field.disabled}
                             />
                         )}
                         

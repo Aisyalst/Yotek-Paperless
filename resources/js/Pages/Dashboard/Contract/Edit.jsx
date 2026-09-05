@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
@@ -16,6 +16,58 @@ export default function Edit({ contract, users }) {
         previous_contract: contract.previous_contract || '',
         next_action: contract.next_action || ''
     });
+
+    useEffect(() => {
+        if (data.contract_start_date && data.contract_end_date) {
+            const start = new Date(data.contract_start_date);
+            const end = new Date(data.contract_end_date);
+            if (end >= start) {
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const totalMonths = Math.round(diffDays / 30.436875);
+                
+                const years = Math.floor(totalMonths / 12);
+                const months = totalMonths % 12;
+                
+                let durationStr = '';
+                if (years > 0) durationStr += `${years} Tahun `;
+                if (months > 0 || years === 0) durationStr += `${months} Bulan`;
+                
+                if (data.contract_duration !== durationStr.trim()) {
+                    setData('contract_duration', durationStr.trim());
+                }
+            } else {
+                if (data.contract_duration !== 'Tanggal tidak valid') {
+                    setData('contract_duration', 'Tanggal tidak valid');
+                }
+            }
+        }
+    }, [data.contract_start_date, data.contract_end_date]);
+
+    useEffect(() => {
+        if (data.nik) {
+            const selectedUser = users.find(u => String(u.nik) === String(data.nik));
+            if (selectedUser && selectedUser.contract_information) {
+                const count = selectedUser.contract_information.length;
+                
+                // For Edit, if the selected NIK is the same as the original contract NIK, 
+                // we shouldn't change the sequence and previous contract unless we want to recalculate.
+                // Usually we keep the original values unless the user changes the NIK.
+                if (String(data.nik) !== String(contract.nik)) {
+                    const newSequence = count + 1;
+                    const prevContract = count > 0 ? selectedUser.contract_information[count - 1].contract_number : '-';
+                    
+                    if (data.contract_sequence !== newSequence || data.previous_contract !== prevContract) {
+                        setData({
+                            ...data,
+                            contract_sequence: newSequence,
+                            previous_contract: prevContract
+                        });
+                    }
+                }
+            }
+        }
+    }, [data.nik]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -40,8 +92,15 @@ export default function Edit({ contract, users }) {
         {
             name: 'contract_type',
             label: 'Tipe Kontrak',
-            type: 'text',
-            placeholder: 'Contoh: PKWT, PKWTT',
+            type: 'select',
+            options: [
+                { value: 'PKWT', label: 'PKWT' },
+                { value: 'PKWTT', label: 'PKWTT' },
+                { value: 'Magang', label: 'Magang' },
+                { value: 'Freelance', label: 'Freelance' },
+                { value: 'Probation', label: 'Probation' },
+            ],
+            placeholder: 'Pilih Tipe Kontrak',
         },
         {
             name: 'contract_start_date',
@@ -57,31 +116,42 @@ export default function Edit({ contract, users }) {
             name: 'contract_duration',
             label: 'Durasi Kontrak',
             type: 'text',
-            placeholder: 'Contoh: 1 Tahun, 6 Bulan',
+            placeholder: 'Dihitung otomatis',
+            readOnly: true,
         },
         {
             name: 'contract_sequence',
             label: 'Kontrak Ke-',
             type: 'number',
-            placeholder: 'Contoh: 1',
+            placeholder: 'Dihitung otomatis',
+            readOnly: true,
         },
         {
             name: 'contract_status',
             label: 'Status Kontrak',
-            type: 'text',
-            placeholder: 'Contoh: Aktif, Selesai',
+            type: 'select',
+            options: [
+                { value: 'Aktif', label: 'Aktif' },
+                { value: 'Selesai', label: 'Selesai' },
+            ],
+            placeholder: 'Pilih Status',
         },
         {
             name: 'previous_contract',
             label: 'Kontrak Sebelumnya',
             type: 'text',
-            placeholder: 'Nomor Kontrak Sebelumnya',
+            placeholder: 'Dihitung otomatis',
+            readOnly: true,
         },
         {
             name: 'next_action',
             label: 'Tindakan Selanjutnya',
-            type: 'text',
-            placeholder: 'Contoh: Diperpanjang, Diputus',
+            type: 'select',
+            options: [
+                { value: 'Diperpanjang', label: 'Diperpanjang' },
+                { value: 'Tidak diperpanjang', label: 'Tidak diperpanjang' },
+            ],
+            placeholder: 'Pilih Tindakan',
         }
     ];
 
