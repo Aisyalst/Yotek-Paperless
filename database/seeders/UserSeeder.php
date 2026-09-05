@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                     'employee_rank_id' => $staffRank ? $staffRank->id : null,
                     'employment_status' => 'Permanent',
                     'join_date' => Carbon::now()->subYears(1),
-                    'effective_date' => Carbon::now()->subYears(1),
+
                 ]
             );
         }
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
                 'employee_rank_id' => $managerRank ? $managerRank->id : null,
                 'employment_status' => 'Permanent',
                 'join_date' => Carbon::now()->subYears(2),
-                'effective_date' => Carbon::now()->subYears(2),
+
             ]
         );
 

@@ -8,7 +8,7 @@ class EmployeeInformation extends Model
 {
     protected $fillable = [
         'nik', 'company', 'branch', 'department', 'employee_rank_id', 
-        'direct_supervisor', 'employment_status', 'join_date', 'effective_date'
+        'direct_supervisor', 'employment_status', 'join_date'
     ];
 
     public function user()

@@ -18,7 +18,7 @@ class ProfileController extends Controller
      */
     public function index(Request $request): Response
     {
-        $user = $request->user()->load(['personalInformation', 'employeeInformation', 'contractInformation']);
+        $user = $request->user()->load(['personalInformation', 'employeeInformation.employeeRank', 'contractInformation']);
 
         return Inertia::render('Profile/Index', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,

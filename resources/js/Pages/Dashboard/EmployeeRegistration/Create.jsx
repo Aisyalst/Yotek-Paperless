@@ -14,7 +14,6 @@ export default function Create({ users, allUsers, companies, ranks }) {
         direct_supervisor: '',
         employment_status: '',
         join_date: '',
-        effective_date: ''
     });
 
     React.useEffect(() => {
@@ -107,11 +106,6 @@ export default function Create({ users, allUsers, companies, ranks }) {
             label: 'Tanggal Bergabung',
             type: 'date',
         },
-        {
-            name: 'effective_date',
-            label: 'Tanggal Efektif',
-            type: 'date',
-        }
     ];
 
     return (

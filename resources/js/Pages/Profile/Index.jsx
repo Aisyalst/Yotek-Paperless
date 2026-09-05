@@ -19,11 +19,18 @@ export default function Index({ auth, userData }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
                         {Object.entries(data).map(([key, value]) => {
                             if (['id', 'nik', 'created_at', 'updated_at'].includes(key) || typeof value === 'object') return null;
-                            const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                            let label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                            let displayValue = value;
+
+                            if (key === 'employee_rank_id') {
+                                label = 'Employee Rank';
+                                displayValue = data.employee_rank?.title || value;
+                            }
+
                             return (
                                 <div key={key} className="flex flex-col space-y-1 p-3 rounded-lg hover:bg-[#f8f8f8] transition-colors duration-200">
                                     <span className="text-sm font-semibold text-gray-500">{label}</span>
-                                    <span className="text-base text-[#1a1a1a] break-words">{value || '-'}</span>
+                                    <span className="text-base text-[#1a1a1a] break-words">{displayValue || '-'}</span>
                                 </div>
                             );
                         })}

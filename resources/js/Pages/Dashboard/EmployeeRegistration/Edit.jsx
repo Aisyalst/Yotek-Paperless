@@ -13,7 +13,6 @@ export default function Edit({ employee, users, allUsers, companies, ranks }) {
         direct_supervisor: employee.direct_supervisor || '',
         employment_status: employee.employment_status || '',
         join_date: employee.join_date || '',
-        effective_date: employee.effective_date || ''
     });
 
     const handleSubmit = (e) => {
@@ -87,11 +86,6 @@ export default function Edit({ employee, users, allUsers, companies, ranks }) {
         {
             name: 'join_date',
             label: 'Tanggal Bergabung',
-            type: 'date',
-        },
-        {
-            name: 'effective_date',
-            label: 'Tanggal Efektif',
             type: 'date',
         }
     ];

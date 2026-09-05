@@ -61,7 +61,6 @@ class EmployeeRegistrationController extends Controller
             'direct_supervisor' => 'nullable|string|max:255',
             'employment_status' => 'nullable|string|max:255',
             'join_date' => 'nullable|date',
-            'effective_date' => 'nullable|date',
         ], [
             'user_id.required' => 'Pengguna wajib dipilih.',
             'nik.required' => 'NIK wajib diisi.',
@@ -113,7 +112,6 @@ class EmployeeRegistrationController extends Controller
             'direct_supervisor' => 'nullable|string|max:255',
             'employment_status' => 'nullable|string|max:255',
             'join_date' => 'nullable|date',
-            'effective_date' => 'nullable|date',
         ]);
 
         $employeeRegistration->update($request->except('nik'));
