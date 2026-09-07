@@ -16,101 +16,101 @@ class RouteSettingSeeder extends Seeder
     public function run(): void
     {
         $routes = [
-            ['name' => 'Users', 'route_name' => 'users.index'], // 1
-            ['name' => 'Roles', 'route_name' => 'roles.index'], // 3
-            ['name' => 'Routes', 'route_name' => 'routes.index'], // 4
-            ['name' => 'Routes Create', 'route_name' => 'routes.create'], // 5
-            ['name' => 'Routes Store', 'route_name' => 'routes.store'], // 6
-            ['name' => 'Routes Edit', 'route_name' => 'routes.edit'], // 7
-            ['name' => 'Routes Update', 'route_name' => 'routes.update'], // 8
-            ['name' => 'Permissions', 'route_name' => 'role-permissions.index'], // 9
-            ['name' => 'Permissions Create', 'route_name' => 'role-permissions.create'], // 10
-            ['name' => 'Permissions Store', 'route_name' => 'role-permissions.store'], // 11
-            ['name' => 'Permissions Edit', 'route_name' => 'role-permissions.edit'], // 12
-            ['name' => 'Permissions Update', 'route_name' => 'role-permissions.update'], // 13
-            ['name' => 'Permissions Delete', 'route_name' => 'role-permissions.destroy'], // 14
-            ['name' => 'Permissions Batch Sync', 'route_name' => 'role-permissions.batch-sync'], // 15
+            ['name' => 'Pengguna', 'route_name' => 'users.index'], // 1
+            ['name' => 'Peran', 'route_name' => 'roles.index'], // 3
+            ['name' => 'Rute', 'route_name' => 'routes.index'], // 4
+            ['name' => 'Tambah Rute', 'route_name' => 'routes.create'], // 5
+            ['name' => 'Simpan Rute', 'route_name' => 'routes.store'], // 6
+            ['name' => 'Edit Rute', 'route_name' => 'routes.edit'], // 7
+            ['name' => 'Perbarui Rute', 'route_name' => 'routes.update'], // 8
+            ['name' => 'Hak Akses', 'route_name' => 'role-permissions.index'], // 9
+            ['name' => 'Tambah Hak Akses', 'route_name' => 'role-permissions.create'], // 10
+            ['name' => 'Simpan Hak Akses', 'route_name' => 'role-permissions.store'], // 11
+            ['name' => 'Edit Hak Akses', 'route_name' => 'role-permissions.edit'], // 12
+            ['name' => 'Perbarui Hak Akses', 'route_name' => 'role-permissions.update'], // 13
+            ['name' => 'Hapus Hak Akses', 'route_name' => 'role-permissions.destroy'], // 14
+            ['name' => 'Sinkronisasi Massal Hak Akses', 'route_name' => 'role-permissions.batch-sync'], // 15
             ['name' => 'Menu', 'route_name' => 'dashboard-menus.index'], // 16
-            ['name' => 'Menu Create', 'route_name' => 'dashboard-menus.create'], // 16
-            ['name' => 'Menu Store', 'route_name' => 'dashboard-menus.store'], // 17
-            ['name' => 'Menu Edit', 'route_name' => 'dashboard-menus.edit'], // 18
-            ['name' => 'Menu Update', 'route_name' => 'dashboard-menus.update'], // 19
-            ['name' => 'Menu Delete', 'route_name' => 'dashboard-menus.destroy'], // 20
-            ['name' => 'Users Create', 'route_name' => 'users.create'], // 16
-            ['name' => 'Users Store', 'route_name' => 'users.store'], // 17
-            ['name' => 'Users Edit', 'route_name' => 'users.edit'], // 18
-            ['name' => 'Users Update', 'route_name' => 'users.update'], // 19
-            ['name' => 'Users Delete', 'route_name' => 'users.destroy'], // 20
-            ['name' => 'Roles Create', 'route_name' => 'roles.create'], // 16
-            ['name' => 'Roles Store', 'route_name' => 'roles.store'], // 17
-            ['name' => 'Roles Edit', 'route_name' => 'roles.edit'], // 18
-            ['name' => 'Roles Update', 'route_name' => 'roles.update'], // 19
-            ['name' => 'Roles Delete', 'route_name' => 'roles.destroy'], // 29
-            ['name' => 'Menu Drag', 'route_name' => 'dashboard-menus.reorder'], // 30
+            ['name' => 'Tambah Menu', 'route_name' => 'dashboard-menus.create'], // 16
+            ['name' => 'Simpan Menu', 'route_name' => 'dashboard-menus.store'], // 17
+            ['name' => 'Edit Menu', 'route_name' => 'dashboard-menus.edit'], // 18
+            ['name' => 'Perbarui Menu', 'route_name' => 'dashboard-menus.update'], // 19
+            ['name' => 'Hapus Menu', 'route_name' => 'dashboard-menus.destroy'], // 20
+            ['name' => 'Tambah Pengguna', 'route_name' => 'users.create'], // 16
+            ['name' => 'Simpan Pengguna', 'route_name' => 'users.store'], // 17
+            ['name' => 'Edit Pengguna', 'route_name' => 'users.edit'], // 18
+            ['name' => 'Perbarui Pengguna', 'route_name' => 'users.update'], // 19
+            ['name' => 'Hapus Pengguna', 'route_name' => 'users.destroy'], // 20
+            ['name' => 'Tambah Peran', 'route_name' => 'roles.create'], // 16
+            ['name' => 'Simpan Peran', 'route_name' => 'roles.store'], // 17
+            ['name' => 'Edit Peran', 'route_name' => 'roles.edit'], // 18
+            ['name' => 'Perbarui Peran', 'route_name' => 'roles.update'], // 19
+            ['name' => 'Hapus Peran', 'route_name' => 'roles.destroy'], // 29
+            ['name' => 'Urutkan Menu', 'route_name' => 'dashboard-menus.reorder'], // 30
 
             // Dashboard Menu Section Routes
-            ['name' => 'Menu Sections', 'route_name' => 'dashboard-menu-sections.index'], // 43
-            ['name' => 'Menu Sections Create', 'route_name' => 'dashboard-menu-sections.create'], // 44
-            ['name' => 'Menu Sections Store', 'route_name' => 'dashboard-menu-sections.store'], // 45
-            ['name' => 'Menu Sections Drag', 'route_name' => 'dashboard-menu-sections.reorder'], // 46
-            ['name' => 'Menu Sections Edit', 'route_name' => 'dashboard-menu-sections.edit'], // 47
-            ['name' => 'Menu Sections Update', 'route_name' => 'dashboard-menu-sections.update'], // 48
-            ['name' => 'Menu Sections Delete', 'route_name' => 'dashboard-menu-sections.destroy'], // 49
+            ['name' => 'Bagian Menu', 'route_name' => 'dashboard-menu-sections.index'], // 43
+            ['name' => 'Tambah Bagian Menu', 'route_name' => 'dashboard-menu-sections.create'], // 44
+            ['name' => 'Simpan Bagian Menu', 'route_name' => 'dashboard-menu-sections.store'], // 45
+            ['name' => 'Urutkan Bagian Menu', 'route_name' => 'dashboard-menu-sections.reorder'], // 46
+            ['name' => 'Edit Bagian Menu', 'route_name' => 'dashboard-menu-sections.edit'], // 47
+            ['name' => 'Perbarui Bagian Menu', 'route_name' => 'dashboard-menu-sections.update'], // 48
+            ['name' => 'Hapus Bagian Menu', 'route_name' => 'dashboard-menu-sections.destroy'], // 49
             // Devision Routes
-            ['name' => 'Devisions', 'route_name' => 'devisions.index'], // 50
-            ['name' => 'Devisions Create', 'route_name' => 'devisions.create'], // 51
-            ['name' => 'Devisions Store', 'route_name' => 'devisions.store'], // 52
-            ['name' => 'Devisions Edit', 'route_name' => 'devisions.edit'], // 53
-            ['name' => 'Devisions Update', 'route_name' => 'devisions.update'], // 54
-            ['name' => 'Devisions Delete', 'route_name' => 'devisions.destroy'], // 55
-            ['name' => 'Dashboard', 'route_name' => 'dashboard'],
-            ['name' => 'Profile - Index', 'route_name' => 'profile.index'],
-            ['name' => 'Leave Request Index', 'route_name' => 'leave-requests.index'],
-            ['name' => 'Leave Request Create', 'route_name' => 'leave-requests.create'],
-            ['name' => 'Leave Request Store', 'route_name' => 'leave-requests.store'],
-            ['name' => 'Leave Request Show', 'route_name' => 'leave-requests.show'],
-            ['name' => 'Employee Registrations Index', 'route_name' => 'employee-registrations.index'],
-            ['name' => 'Employee Registrations Create', 'route_name' => 'employee-registrations.create'],
-            ['name' => 'Employee Registrations Store', 'route_name' => 'employee-registrations.store'],
-            ['name' => 'Employee Registrations Edit', 'route_name' => 'employee-registrations.edit'],
-            ['name' => 'Employee Registrations Update', 'route_name' => 'employee-registrations.update'],
-            ['name' => 'Employee Registrations Delete', 'route_name' => 'employee-registrations.destroy'],
-            ['name' => 'Contracts Index', 'route_name' => 'contracts.index'],
-            ['name' => 'Contracts Create', 'route_name' => 'contracts.create'],
-            ['name' => 'Contracts Store', 'route_name' => 'contracts.store'],
-            ['name' => 'Contracts Edit', 'route_name' => 'contracts.edit'],
-            ['name' => 'Contracts Update', 'route_name' => 'contracts.update'],
-            ['name' => 'Contracts Delete', 'route_name' => 'contracts.destroy'],
-            ['name' => 'Profile Personal Edit', 'route_name' => 'profile.personal.edit'],
-            ['name' => 'Profile Personal Update', 'route_name' => 'profile.personal.update'],
-            ['name' => 'Companies Index', 'route_name' => 'companies.index'],
-            ['name' => 'Companies Create', 'route_name' => 'companies.create'],
-            ['name' => 'Companies Store', 'route_name' => 'companies.store'],
-            ['name' => 'Companies Edit', 'route_name' => 'companies.edit'],
-            ['name' => 'Companies Update', 'route_name' => 'companies.update'],
-            ['name' => 'Companies Delete', 'route_name' => 'companies.destroy'],
-            ['name' => 'Employee Ranks Index', 'route_name' => 'employee-ranks.index'],
-            ['name' => 'Employee Ranks Create', 'route_name' => 'employee-ranks.create'],
-            ['name' => 'Employee Ranks Store', 'route_name' => 'employee-ranks.store'],
-            ['name' => 'Employee Ranks Edit', 'route_name' => 'employee-ranks.edit'],
-            ['name' => 'Employee Ranks Update', 'route_name' => 'employee-ranks.update'],
-            ['name' => 'Employee Ranks Delete', 'route_name' => 'employee-ranks.destroy'],
-            ['name' => 'Employee Ranks Reorder', 'route_name' => 'employee-ranks.reorder'],
-            ['name' => 'Approval Workflows Index', 'route_name' => 'approval-workflows.index'],
-            ['name' => 'Approval Workflows Create', 'route_name' => 'approval-workflows.create'],
-            ['name' => 'Approval Workflows Store', 'route_name' => 'approval-workflows.store'],
-            ['name' => 'Approval Workflows Edit', 'route_name' => 'approval-workflows.edit'],
-            ['name' => 'Approval Workflows Update', 'route_name' => 'approval-workflows.update'],
-            ['name' => 'Approval Workflows Delete', 'route_name' => 'approval-workflows.destroy'],
-            ['name' => 'Approval Workflow Steps Store', 'route_name' => 'approval-workflow-steps.store'],
-            ['name' => 'Approval Workflow Steps Delete', 'route_name' => 'approval-workflow-steps.destroy'],
-            ['name' => 'Leave Request Approvals Index', 'route_name' => 'leave-request-approvals.index'],
-            ['name' => 'Leave Request Approvals Update', 'route_name' => 'leave-request-approvals.update'],
-            ['name' => 'Notifications Index', 'route_name' => 'notifications.index'],
-            ['name' => 'Notifications Create', 'route_name' => 'notifications.create'],
-            ['name' => 'Notifications Store', 'route_name' => 'notifications.store'],
-            ['name' => 'Notifications Read All', 'route_name' => 'notifications.read-all'],
-            ['name' => 'Notifications Read', 'route_name' => 'notifications.read'],
+            ['name' => 'Divisi', 'route_name' => 'devisions.index'], // 50
+            ['name' => 'Tambah Divisi', 'route_name' => 'devisions.create'], // 51
+            ['name' => 'Simpan Divisi', 'route_name' => 'devisions.store'], // 52
+            ['name' => 'Edit Divisi', 'route_name' => 'devisions.edit'], // 53
+            ['name' => 'Perbarui Divisi', 'route_name' => 'devisions.update'], // 54
+            ['name' => 'Hapus Divisi', 'route_name' => 'devisions.destroy'], // 55
+            ['name' => 'Dasbor', 'route_name' => 'dashboard'],
+            ['name' => 'Profil', 'route_name' => 'profile.index'],
+            ['name' => 'Pengajuan Izin', 'route_name' => 'leave-requests.index'],
+            ['name' => 'Tambah Pengajuan Izin', 'route_name' => 'leave-requests.create'],
+            ['name' => 'Simpan Pengajuan Izin', 'route_name' => 'leave-requests.store'],
+            ['name' => 'Detail Pengajuan Izin', 'route_name' => 'leave-requests.show'],
+            ['name' => 'Registrasi Karyawan', 'route_name' => 'employee-registrations.index'],
+            ['name' => 'Tambah Registrasi Karyawan', 'route_name' => 'employee-registrations.create'],
+            ['name' => 'Simpan Registrasi Karyawan', 'route_name' => 'employee-registrations.store'],
+            ['name' => 'Edit Registrasi Karyawan', 'route_name' => 'employee-registrations.edit'],
+            ['name' => 'Perbarui Registrasi Karyawan', 'route_name' => 'employee-registrations.update'],
+            ['name' => 'Hapus Registrasi Karyawan', 'route_name' => 'employee-registrations.destroy'],
+            ['name' => 'Manajemen Kontrak', 'route_name' => 'contracts.index'],
+            ['name' => 'Tambah Kontrak', 'route_name' => 'contracts.create'],
+            ['name' => 'Simpan Kontrak', 'route_name' => 'contracts.store'],
+            ['name' => 'Edit Kontrak', 'route_name' => 'contracts.edit'],
+            ['name' => 'Perbarui Kontrak', 'route_name' => 'contracts.update'],
+            ['name' => 'Hapus Kontrak', 'route_name' => 'contracts.destroy'],
+            ['name' => 'Edit Profil Pribadi', 'route_name' => 'profile.personal.edit'],
+            ['name' => 'Perbarui Profil Pribadi', 'route_name' => 'profile.personal.update'],
+            ['name' => 'Perusahaan', 'route_name' => 'companies.index'],
+            ['name' => 'Tambah Perusahaan', 'route_name' => 'companies.create'],
+            ['name' => 'Simpan Perusahaan', 'route_name' => 'companies.store'],
+            ['name' => 'Edit Perusahaan', 'route_name' => 'companies.edit'],
+            ['name' => 'Perbarui Perusahaan', 'route_name' => 'companies.update'],
+            ['name' => 'Hapus Perusahaan', 'route_name' => 'companies.destroy'],
+            ['name' => 'Golongan Karyawan', 'route_name' => 'employee-ranks.index'],
+            ['name' => 'Tambah Golongan Karyawan', 'route_name' => 'employee-ranks.create'],
+            ['name' => 'Simpan Golongan Karyawan', 'route_name' => 'employee-ranks.store'],
+            ['name' => 'Edit Golongan Karyawan', 'route_name' => 'employee-ranks.edit'],
+            ['name' => 'Perbarui Golongan Karyawan', 'route_name' => 'employee-ranks.update'],
+            ['name' => 'Hapus Golongan Karyawan', 'route_name' => 'employee-ranks.destroy'],
+            ['name' => 'Urutkan Golongan Karyawan', 'route_name' => 'employee-ranks.reorder'],
+            ['name' => 'Alur Persetujuan', 'route_name' => 'approval-workflows.index'],
+            ['name' => 'Tambah Alur Persetujuan', 'route_name' => 'approval-workflows.create'],
+            ['name' => 'Simpan Alur Persetujuan', 'route_name' => 'approval-workflows.store'],
+            ['name' => 'Edit Alur Persetujuan', 'route_name' => 'approval-workflows.edit'],
+            ['name' => 'Perbarui Alur Persetujuan', 'route_name' => 'approval-workflows.update'],
+            ['name' => 'Hapus Alur Persetujuan', 'route_name' => 'approval-workflows.destroy'],
+            ['name' => 'Simpan Langkah Persetujuan', 'route_name' => 'approval-workflow-steps.store'],
+            ['name' => 'Hapus Langkah Persetujuan', 'route_name' => 'approval-workflow-steps.destroy'],
+            ['name' => 'Persetujuan Izin', 'route_name' => 'leave-request-approvals.index'],
+            ['name' => 'Perbarui Persetujuan Izin', 'route_name' => 'leave-request-approvals.update'],
+            ['name' => 'Notifikasi', 'route_name' => 'notifications.index'],
+            ['name' => 'Tambah Notifikasi', 'route_name' => 'notifications.create'],
+            ['name' => 'Simpan Notifikasi', 'route_name' => 'notifications.store'],
+            ['name' => 'Baca Semua Notifikasi', 'route_name' => 'notifications.read-all'],
+            ['name' => 'Baca Notifikasi', 'route_name' => 'notifications.read'],
         ];
 
         foreach ($routes as $route) {
@@ -119,15 +119,15 @@ class RouteSettingSeeder extends Seeder
 
         // First make sure we have the sections, or rely on DashboardMenuSectionSeeder being called first.
         // Assuming Tables is ID 1 and Settings is ID 2 if seeded in order. Let's just fetch them to be safe.
-        $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Form'], ['order' => 1]);
-        $masterDataSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Master Data'], ['order' => 3]);
-        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Web Setting'], ['order' => 4]);
+        $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Formulir'], ['order' => 1]);
+        $masterDataSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Data Master'], ['order' => 3]);
+        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Pengaturan Web'], ['order' => 4]);
 
         // 1. Forms Section
         DashboardMenu::create([
             'name' => 'Pengajuan Izin',
             'icon' => 'HiDocumentText',
-            'route_id' => 46,
+            'route_id' => \App\Models\Route::where('route_name', 'leave-requests.index')->first()?->id ?? 1,
             'section_id' => $tablesSection->id,
             'type' => 'Single',
             'position' => 1,
@@ -135,7 +135,7 @@ class RouteSettingSeeder extends Seeder
 
         // 2. Web Setting Section (Parent & Children)
         $settingsParent = DashboardMenu::create([
-            'name' => 'Web Setting',
+            'name' => 'Pengaturan Web',
             'icon' => 'HiCog',
             'section_id' => $settingsSection->id,
             'type' => 'Dropdown',
@@ -143,9 +143,9 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Routes',
+            'name' => 'Rute',
             'icon' => 'HiLink',
-            'route_id' => 3,
+            'route_id' => \App\Models\Route::where('route_name', 'routes.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -155,7 +155,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Menu',
             'icon' => 'HiMenuAlt2',
-            'route_id' => 14,
+            'route_id' => \App\Models\Route::where('route_name', 'dashboard-menus.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -163,9 +163,9 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Menu Sections',
+            'name' => 'Bagian Menu',
             'icon' => 'HiViewGrid',
-            'route_id' => 31,
+            'route_id' => \App\Models\Route::where('route_name', 'dashboard-menu-sections.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -174,25 +174,25 @@ class RouteSettingSeeder extends Seeder
 
         // 3. Master Data Section (Flat)
         DashboardMenu::create([
-            'name' => 'Users',
+            'name' => 'Pengguna',
             'icon' => 'HiUser',
-            'route_id' => 1,
+            'route_id' => \App\Models\Route::where('route_name', 'users.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 1,
         ]);
 
         DashboardMenu::create([
-            'name' => 'Devisions',
+            'name' => 'Divisi',
             'icon' => 'HiOfficeBuilding',
-            'route_id' => 38,
+            'route_id' => \App\Models\Route::where('route_name', 'devisions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 2,
         ]);
         
         DashboardMenu::create([
-            'name' => 'Companies',
+            'name' => 'Perusahaan',
             'icon' => 'HiLibrary',
             'route_id' => \App\Models\Route::where('route_name', 'companies.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
@@ -201,7 +201,7 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Employee Ranks',
+            'name' => 'Golongan Karyawan',
             'icon' => 'HiIdentification',
             'route_id' => \App\Models\Route::where('route_name', 'employee-ranks.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
@@ -210,25 +210,25 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Roles',
+            'name' => 'Peran',
             'icon' => 'HiShieldCheck',
-            'route_id' => 2,
+            'route_id' => \App\Models\Route::where('route_name', 'roles.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 5,
         ]);
 
         DashboardMenu::create([
-            'name' => 'Permissions',
+            'name' => 'Hak Akses',
             'icon' => 'HiOutlineLogin',
-            'route_id' => 8,
+            'route_id' => \App\Models\Route::where('route_name', 'role-permissions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 6,
         ]);
 
         DashboardMenu::create([
-            'name' => 'Approval Workflow',
+            'name' => 'Alur Persetujuan',
             'icon' => 'HiClipboardCheck',
             'route_id' => \App\Models\Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
@@ -237,7 +237,7 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Notifications',
+            'name' => 'Notifikasi',
             'icon' => 'HiBell',
             'route_id' => \App\Models\Route::where('route_name', 'notifications.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
@@ -276,7 +276,7 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Approval Cuti',
+            'name' => 'Persetujuan Izin',
             'icon' => 'HiCheckCircle',
             'route_id' => \App\Models\Route::where('route_name', 'leave-request-approvals.index')->first()?->id ?? 1,
             'section_id' => $hrSection->id,
