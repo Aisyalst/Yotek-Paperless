@@ -183,7 +183,7 @@ export default function Sidebar({ isOpen, onClose }) {
             {/* Bagian Menu */}
             <nav className="flex-1 overflow-y-auto h-full">
                 <ul className="h-full flex flex-col pt-5">
-                    <Menu link="/dashboard" label="Dashboard" svg={<HiHome className="inline me-2 w-5 h-5" />} />
+                    <Menu link="/dashboard" label="Beranda" svg={<HiHome className="inline me-2 w-5 h-5" />} />
 
                     {sortedSections.map((section) => (
                         <React.Fragment key={section.name}>

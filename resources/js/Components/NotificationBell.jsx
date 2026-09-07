@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { usePage, router } from '@inertiajs/react';
+import { usePage, router, Link } from '@inertiajs/react';
 import NotificationModal from './NotificationModal';
 
 function timeAgo(dateParam) {
@@ -98,31 +98,57 @@ export default function NotificationBell() {
                             </div>
                         ) : (
                             <ul className="divide-y divide-zinc-50">
-                                {latestNotifications.map(notif => (
-                                    <li key={notif.id}>
-                                        <button 
-                                            onClick={() => handleNotificationClick(notif)}
-                                            className={`w-full text-left px-4 py-3 hover:bg-zinc-50 transition-colors flex items-start gap-3 ${notif.is_read ? 'opacity-70' : 'bg-blue-50/30'}`}
-                                        >
-                                            {!notif.is_read && (
-                                                <div className="w-2 h-2 rounded-full bg-[#eaae36] mt-1.5 flex-shrink-0"></div>
-                                            )}
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-semibold text-[#1a1a1a] truncate">
-                                                    {notif.notification.title}
-                                                </p>
-                                                <p className="text-xs text-zinc-500 line-clamp-1 mt-0.5">
-                                                    {notif.notification.body}
-                                                </p>
-                                                <p className="text-[10px] text-zinc-400 mt-1">
-                                                    {timeAgo(notif.created_at)}
-                                                </p>
-                                            </div>
-                                        </button>
-                                    </li>
-                                ))}
+                                {latestNotifications.map(notif => {
+                                    const type = notif.notification.type?.toLowerCase() || 'info';
+                                    let iconBg = 'bg-blue-100';
+                                    let iconText = 'text-blue-600';
+                                    let iconChar = 'i';
+
+                                    if (type === 'success') {
+                                        iconBg = 'bg-green-100'; iconText = 'text-green-600'; iconChar = '✓';
+                                    } else if (type === 'warning') {
+                                        iconBg = 'bg-yellow-100'; iconText = 'text-yellow-600'; iconChar = '!';
+                                    } else if (type === 'error') {
+                                        iconBg = 'bg-red-100'; iconText = 'text-red-600'; iconChar = '✕';
+                                    }
+
+                                    return (
+                                        <li key={notif.id}>
+                                            <button 
+                                                onClick={() => handleNotificationClick(notif)}
+                                                className={`w-full text-left px-4 py-3 hover:bg-zinc-50 transition-colors flex items-start gap-3 ${notif.is_read ? 'opacity-70' : 'bg-slate-50'}`}
+                                            >
+                                                <div className={`w-8 h-8 rounded-full ${iconBg} ${iconText} flex items-center justify-center shrink-0 font-bold text-sm`}>
+                                                    {iconChar}
+                                                </div>
+                                                
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <p className="text-sm font-semibold text-[#1a1a1a] truncate">
+                                                            {notif.notification.title}
+                                                        </p>
+                                                        {!notif.is_read && (
+                                                            <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-xs text-zinc-500 line-clamp-1 mt-0.5">
+                                                        {notif.notification.body}
+                                                    </p>
+                                                    <p className="text-[10px] text-zinc-400 mt-1">
+                                                        {timeAgo(notif.created_at)}
+                                                    </p>
+                                                </div>
+                                            </button>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         )}
+                    </div>
+                    <div className="p-2 border-t border-zinc-100">
+                        <Link href={route('notifications.index')} className="block w-full text-center py-2 text-sm text-[#eaae36] font-bold rounded-lg hover:bg-zinc-50 transition-colors">
+                            Lihat Semua Notifikasi
+                        </Link>
                     </div>
                 </div>
             )}

@@ -63,7 +63,7 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Edit Divisi', 'route_name' => 'devisions.edit'], // 53
             ['name' => 'Perbarui Divisi', 'route_name' => 'devisions.update'], // 54
             ['name' => 'Hapus Divisi', 'route_name' => 'devisions.destroy'], // 55
-            ['name' => 'Dasbor', 'route_name' => 'dashboard'],
+            ['name' => 'Beranda', 'route_name' => 'dashboard'],
             ['name' => 'Profil', 'route_name' => 'profile.index'],
             ['name' => 'Pengajuan Izin', 'route_name' => 'leave-requests.index'],
             ['name' => 'Tambah Pengajuan Izin', 'route_name' => 'leave-requests.create'],
@@ -236,14 +236,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 7,
         ]);
 
-        DashboardMenu::create([
-            'name' => 'Notifikasi',
-            'icon' => 'HiBell',
-            'route_id' => \App\Models\Route::where('route_name', 'notifications.index')->first()?->id ?? 1,
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'position' => 8,
-        ]);
+
 
         $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 
