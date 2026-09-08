@@ -38,7 +38,16 @@ export default function Index({ companies, filters }) {
         { 
             header: 'Perusahaan', 
             render: (company) => (
-                <span className="font-semibold text-[#1a1a1a]">{company.name}</span>
+                <div className="flex items-center gap-3">
+                    {company.logo ? (
+                        <img src={`/storage/${company.logo}`} alt={company.name} className="w-10 h-10 object-contain rounded-md border border-gray-200 bg-white" />
+                    ) : (
+                        <div className="w-10 h-10 rounded-md bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500 font-bold text-lg">
+                            {company.name.charAt(0).toUpperCase()}
+                        </div>
+                    )}
+                    <span className="font-semibold text-[#1a1a1a]">{company.name}</span>
+                </div>
             )
         },
         { 
@@ -49,7 +58,7 @@ export default function Index({ companies, filters }) {
                 
                 const cities = branches.map(b => b.city).join(', ');
                 return (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col items-center text-center">
                         <span className="font-semibold text-gray-700 text-xs mb-1">{branches.length} Cabang</span>
                         <span className="text-sm text-gray-600 truncate max-w-xs" title={cities}>
                             {cities}

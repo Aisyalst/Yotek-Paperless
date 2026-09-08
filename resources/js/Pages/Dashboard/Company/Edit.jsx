@@ -6,14 +6,16 @@ import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
 import { HiPlus, HiTrash } from 'react-icons/hi';
 
 export default function Edit({ company }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
+        _method: 'put',
         name: company.name || '',
+        logo: null,
         branches: company.branch && company.branch.length > 0 ? company.branch : [{ region: '', province: '', city: '' }],
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('companies.update', company.id));
+        post(route('companies.update', company.id));
     };
 
     const addBranch = () => {
@@ -58,6 +60,25 @@ export default function Edit({ company }) {
                             required
                         />
                         {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
+                            Logo Perusahaan
+                        </label>
+                        {company.logo && (
+                            <div className="mb-3">
+                                <img src={`/storage/${company.logo}`} alt="Logo Perusahaan" className="max-h-20 object-contain rounded border p-1" />
+                            </div>
+                        )}
+                        <input
+                            type="file"
+                            onChange={(e) => setData('logo', e.target.files[0])}
+                            className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
+                            accept="image/*"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Abaikan jika tidak ingin mengubah logo.</p>
+                        {errors.logo && <p className="text-red-500 text-sm mt-1">{errors.logo}</p>}
                     </div>
 
                     <div className="pt-4 border-t border-gray-100">

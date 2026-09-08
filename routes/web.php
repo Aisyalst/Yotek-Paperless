@@ -40,7 +40,18 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('dashboard-menus', [DashboardMenuController::class, 'index'])->name('dashboard-menus.index');
     Route::get('dashboard-menus/create', [DashboardMenuController::class, 'create'])->name('dashboard-menus.create');
     Route::post('dashboard-menus', [DashboardMenuController::class, 'store'])->name('dashboard-menus.store');
-    Route::post('dashboard-menus/reorder', [DashboardMenuController::class, 'reorder'])->name('dashboard-menus.reorder');
+    Route::post('/dashboard-menus/reorder', [DashboardMenuController::class, 'reorder'])->name('dashboard-menus.reorder');
+    Route::resource('dashboard-menu-sections', \App\Http\Controllers\DashboardMenuSectionController::class);
+
+    // New Management Modules
+    Route::post('/banners/reorder', [App\Http\Controllers\BannerController::class, 'reorder'])->name('banners.reorder');
+    Route::resource('banners', App\Http\Controllers\BannerController::class)->except(['show']);
+    
+    Route::resource('company-albums', App\Http\Controllers\CompanyAlbumController::class)->only(['index', 'create', 'store', 'destroy']);
+    
+    Route::post('/quick-accesses/reorder', [App\Http\Controllers\QuickAccessController::class, 'reorder'])->name('quick-accesses.reorder');
+    Route::resource('quick-accesses', App\Http\Controllers\QuickAccessController::class)->except(['show']);
+
     Route::get('dashboard-menus/{dashboardMenu}/edit', [DashboardMenuController::class, 'edit'])->name('dashboard-menus.edit');
     Route::put('dashboard-menus/{dashboardMenu}', [DashboardMenuController::class, 'update'])->name('dashboard-menus.update');
     Route::delete('dashboard-menus/{dashboardMenu}', [DashboardMenuController::class, 'destroy'])->name('dashboard-menus.destroy');

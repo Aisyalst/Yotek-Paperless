@@ -8,6 +8,7 @@ import { HiPlus, HiTrash } from 'react-icons/hi';
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
+        logo: null,
         branches: [{ region: '', province: '', city: '' }],
     });
 
@@ -58,6 +59,19 @@ export default function Create() {
                             required
                         />
                         {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
+                            Logo Perusahaan
+                        </label>
+                        <input
+                            type="file"
+                            onChange={(e) => setData('logo', e.target.files[0])}
+                            className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
+                            accept="image/*"
+                        />
+                        {errors.logo && <p className="text-red-500 text-sm mt-1">{errors.logo}</p>}
                     </div>
 
                     <div className="pt-4 border-t border-gray-100">

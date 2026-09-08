@@ -8,6 +8,11 @@ use App\Models\Role;
 use Carbon\Carbon;
 use Inertia\Inertia;
 
+use App\Models\Company;
+use App\Models\Banner;
+use App\Models\CompanyAlbum;
+use App\Models\QuickAccess;
+
 class DashboardController extends Controller
 {
     public function index()
@@ -27,8 +32,17 @@ class DashboardController extends Controller
             })
         ];
 
+        $companies = Company::all();
+        $banners = Banner::orderBy('sort_order')->get();
+        $albums = CompanyAlbum::latest()->get();
+        $quickAccesses = QuickAccess::orderBy('sort_order')->get();
+
         return Inertia::render('Dashboard/Index', [
-            'stats' => $stats
+            'stats' => $stats,
+            'companies' => $companies,
+            'banners' => $banners,
+            'albums' => $albums,
+            'quickAccesses' => $quickAccesses,
         ]);
     }
 }

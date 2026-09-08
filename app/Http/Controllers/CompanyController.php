@@ -39,16 +39,23 @@ class CompanyController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'logo' => 'nullable|image|max:2048',
             'branches' => 'required|array|min:1',
             'branches.*.region' => 'required|string|max:255',
             'branches.*.province' => 'required|string|max:255',
             'branches.*.city' => 'required|string|max:255',
         ]);
 
-        Company::create([
+        $data = [
             'name' => $request->name,
             'branch' => $request->branches,
-        ]);
+        ];
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('company_logos', 'public');
+        }
+
+        Company::create($data);
 
         return redirect()->route('companies.index')->with('success', 'Perusahaan berhasil ditambahkan.');
     }
@@ -64,22 +71,36 @@ class CompanyController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'logo' => 'nullable|image|max:2048',
             'branches' => 'required|array|min:1',
             'branches.*.region' => 'required|string|max:255',
             'branches.*.province' => 'required|string|max:255',
             'branches.*.city' => 'required|string|max:255',
         ]);
 
-        $company->update([
+        $data = [
             'name' => $request->name,
             'branch' => $request->branches,
-        ]);
+        ];
+
+        if ($request->hasFile('logo')) {
+            if ($company->logo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($company->logo);
+            }
+            $data['logo'] = $request->file('logo')->store('company_logos', 'public');
+        }
+
+        $company->update($data);
 
         return redirect()->route('companies.index')->with('success', 'Data perusahaan berhasil diperbarui.');
     }
 
     public function destroy(Company $company)
     {
+        if ($company->logo) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($company->logo);
+        }
+        
         $company->delete();
 
         return redirect()->route('companies.index')->with('success', 'Data perusahaan berhasil dihapus.');

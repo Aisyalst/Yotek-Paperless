@@ -111,6 +111,27 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Simpan Notifikasi', 'route_name' => 'notifications.store'],
             ['name' => 'Baca Semua Notifikasi', 'route_name' => 'notifications.read-all'],
             ['name' => 'Baca Notifikasi', 'route_name' => 'notifications.read'],
+            
+            ['name' => 'Banner', 'route_name' => 'banners.index'],
+            ['name' => 'Tambah Banner', 'route_name' => 'banners.create'],
+            ['name' => 'Simpan Banner', 'route_name' => 'banners.store'],
+            ['name' => 'Edit Banner', 'route_name' => 'banners.edit'],
+            ['name' => 'Perbarui Banner', 'route_name' => 'banners.update'],
+            ['name' => 'Hapus Banner', 'route_name' => 'banners.destroy'],
+            ['name' => 'Urutkan Banner', 'route_name' => 'banners.reorder'],
+            
+            ['name' => 'Album Perusahaan', 'route_name' => 'company-albums.index'],
+            ['name' => 'Tambah Album Perusahaan', 'route_name' => 'company-albums.create'],
+            ['name' => 'Simpan Album Perusahaan', 'route_name' => 'company-albums.store'],
+            ['name' => 'Hapus Album Perusahaan', 'route_name' => 'company-albums.destroy'],
+
+            ['name' => 'Akses Cepat', 'route_name' => 'quick-accesses.index'],
+            ['name' => 'Tambah Akses Cepat', 'route_name' => 'quick-accesses.create'],
+            ['name' => 'Simpan Akses Cepat', 'route_name' => 'quick-accesses.store'],
+            ['name' => 'Edit Akses Cepat', 'route_name' => 'quick-accesses.edit'],
+            ['name' => 'Perbarui Akses Cepat', 'route_name' => 'quick-accesses.update'],
+            ['name' => 'Hapus Akses Cepat', 'route_name' => 'quick-accesses.destroy'],
+            ['name' => 'Urutkan Akses Cepat', 'route_name' => 'quick-accesses.reorder'],
         ];
 
         foreach ($routes as $route) {
@@ -169,6 +190,44 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
+            'position' => 3,
+        ]);
+
+        $dashboardBerandaMenu = DashboardMenu::create([
+            'name' => 'Management Dashboard',
+            'icon' => 'HiTemplate',
+            'section_id' => $settingsSection->id,
+            'type' => 'Dropdown',
+            'position' => 10,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Banner',
+            'icon' => 'HiPhotograph',
+            'route_id' => \App\Models\Route::where('route_name', 'banners.index')->first()?->id ?? 1,
+            'section_id' => $settingsSection->id,
+            'type' => 'Single',
+            'parent_id' => $dashboardBerandaMenu->id,
+            'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Album Perusahaan',
+            'icon' => 'HiCamera',
+            'route_id' => \App\Models\Route::where('route_name', 'company-albums.index')->first()?->id ?? 1,
+            'section_id' => $settingsSection->id,
+            'type' => 'Single',
+            'parent_id' => $dashboardBerandaMenu->id,
+            'position' => 2,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Akses Cepat',
+            'icon' => 'HiLightningBolt',
+            'route_id' => \App\Models\Route::where('route_name', 'quick-accesses.index')->first()?->id ?? 1,
+            'section_id' => $settingsSection->id,
+            'type' => 'Single',
+            'parent_id' => $dashboardBerandaMenu->id,
             'position' => 3,
         ]);
 
