@@ -96,6 +96,7 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::resource('employee-registrations', \App\Http\Controllers\EmployeeRegistrationController::class)->except(['show']);
     Route::resource('contracts', \App\Http\Controllers\ContractController::class)->except(['show']);
     Route::resource('companies', \App\Http\Controllers\CompanyController::class)->except(['show']);
+    Route::resource('leave-entitlements', \App\Http\Controllers\LeaveEntitlementController::class)->except(['show']);
 
     Route::resource('approval-workflows', \App\Http\Controllers\ApprovalWorkflowController::class);
     Route::post('/approval-workflow-steps', [\App\Http\Controllers\ApprovalWorkflowStepController::class, 'store'])->name('approval-workflow-steps.store');

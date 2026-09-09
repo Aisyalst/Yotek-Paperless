@@ -132,6 +132,13 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Perbarui Akses Cepat', 'route_name' => 'quick-accesses.update'],
             ['name' => 'Hapus Akses Cepat', 'route_name' => 'quick-accesses.destroy'],
             ['name' => 'Urutkan Akses Cepat', 'route_name' => 'quick-accesses.reorder'],
+            
+            ['name' => 'Hak Cuti', 'route_name' => 'leave-entitlements.index'],
+            ['name' => 'Tambah Hak Cuti', 'route_name' => 'leave-entitlements.create'],
+            ['name' => 'Simpan Hak Cuti', 'route_name' => 'leave-entitlements.store'],
+            ['name' => 'Edit Hak Cuti', 'route_name' => 'leave-entitlements.edit'],
+            ['name' => 'Perbarui Hak Cuti', 'route_name' => 'leave-entitlements.update'],
+            ['name' => 'Hapus Hak Cuti', 'route_name' => 'leave-entitlements.destroy'],
         ];
 
         foreach ($routes as $route) {
@@ -335,6 +342,16 @@ class RouteSettingSeeder extends Seeder
             'type' => 'Single',
             'parent_id' => $hrParent->id,
             'position' => 3,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Hak Cuti',
+            'icon' => 'HiOutlineTicket',
+            'route_id' => \App\Models\Route::where('route_name', 'leave-entitlements.index')->first()?->id ?? 1,
+            'section_id' => $hrSection->id,
+            'type' => 'Single',
+            'parent_id' => $hrParent->id,
+            'position' => 4,
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)
