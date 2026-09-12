@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->integer('duration_days')->nullable();
-            $table->boolean('has_doctor_note')->nullable();
+            $table->string('has_doctor_note')->nullable();
             $table->string('permission_type')->nullable();
             $table->time('permission_start_time')->nullable();
             $table->time('permission_end_time')->nullable();

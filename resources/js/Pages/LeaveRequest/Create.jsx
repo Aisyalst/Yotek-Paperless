@@ -15,7 +15,7 @@ export default function Create({ auth, userData }) {
         start_date: '',
         end_date: '',
         duration_days: '',
-        has_doctor_note: false,
+        has_doctor_note: null,
         permission_type: '',
         permission_start_time: '',
         permission_end_time: '',
@@ -170,13 +170,19 @@ export default function Create({ auth, userData }) {
 
                         {/* Dynamic Fields */}
                         {jenisPengajuan === 'Sakit' && (
-                            <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl">
-                                <label className="flex items-center space-x-3">
-                                    <input type="checkbox" className="rounded border-gray-300 text-[#eaae36] focus:ring-[#eaae36]" 
-                                        checked={data.has_doctor_note} 
-                                        onChange={(e) => setData('has_doctor_note', e.target.checked)} />
-                                    <span className="text-gray-700 font-medium">Melampirkan Surat Dokter (Ada/Tidak Ada)</span>
-                                </label>
+                            <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl space-y-3">
+                                <div>
+                                    <InputLabel htmlFor="has_doctor_note" value="Unggah Surat Dokter (Opsional saat ini)" />
+                                    <p className="text-xs text-gray-500 mb-2">Bisa dikosongkan jika sedang dirawat dan diunggah menyusul pada halaman detail.</p>
+                                    <input 
+                                        type="file" 
+                                        id="has_doctor_note"
+                                        accept="image/*"
+                                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#eaae36]/10 file:text-[#eaae36] hover:file:bg-[#eaae36]/20"
+                                        onChange={(e) => setData('has_doctor_note', e.target.files[0])} 
+                                    />
+                                    <InputError message={errors.has_doctor_note} className="mt-2" />
+                                </div>
                             </div>
                         )}
 

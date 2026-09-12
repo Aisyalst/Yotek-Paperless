@@ -69,6 +69,7 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Tambah Pengajuan Izin', 'route_name' => 'leave-requests.create'],
             ['name' => 'Simpan Pengajuan Izin', 'route_name' => 'leave-requests.store'],
             ['name' => 'Detail Pengajuan Izin', 'route_name' => 'leave-requests.show'],
+            ['name' => 'Unggah Surat Dokter', 'route_name' => 'leave-requests.upload-doctor-note'],
             ['name' => 'Registrasi Karyawan', 'route_name' => 'employee-registrations.index'],
             ['name' => 'Tambah Registrasi Karyawan', 'route_name' => 'employee-registrations.create'],
             ['name' => 'Simpan Registrasi Karyawan', 'route_name' => 'employee-registrations.store'],

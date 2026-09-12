@@ -40,7 +40,7 @@ class LeaveRequestController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'duration_days' => 'nullable|integer|min:1',
-            'has_doctor_note' => 'nullable|boolean',
+            'has_doctor_note' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'permission_type' => 'nullable|string',
             'permission_start_time' => 'nullable|date_format:H:i',
             'permission_end_time' => 'nullable|date_format:H:i|after:permission_start_time',
@@ -71,6 +71,13 @@ class LeaveRequestController extends Controller
         $validated['employee_nik'] = $user->nik;
         $validated['request_date'] = now()->toDateString();
         $validated['status'] = 'Pending';
+
+        if ($request->hasFile('has_doctor_note')) {
+            $path = $request->file('has_doctor_note')->store('doctor_notes', 'public');
+            $validated['has_doctor_note'] = '/storage/' . $path;
+        } else {
+            $validated['has_doctor_note'] = null;
+        }
 
         $leaveRequest = LeaveRequest::create($validated);
 
@@ -156,5 +163,26 @@ class LeaveRequestController extends Controller
         return Inertia::render('LeaveRequest/Show', [
             'leaveRequest' => $leaveRequest
         ]);
+    }
+
+    public function uploadDoctorNote(Request $request, LeaveRequest $leaveRequest)
+    {
+        $request->validate([
+            'has_doctor_note' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'has_doctor_note.required' => 'Surat dokter wajib diunggah.',
+            'has_doctor_note.image' => 'File harus berupa gambar.',
+            'has_doctor_note.mimes' => 'Format gambar tidak valid (harus jpeg, png, jpg, gif).',
+            'has_doctor_note.max' => 'Ukuran gambar maksimal 2MB.',
+        ]);
+
+        if ($request->hasFile('has_doctor_note')) {
+            $path = $request->file('has_doctor_note')->store('doctor_notes', 'public');
+            $leaveRequest->update([
+                'has_doctor_note' => '/storage/' . $path
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Surat dokter berhasil diunggah.');
     }
 }

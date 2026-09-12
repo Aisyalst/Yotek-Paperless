@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('leave-requests/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('leave-requests.create');
     Route::post('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'store'])->name('leave-requests.store');
     Route::get('leave-requests/{leaveRequest}', [\App\Http\Controllers\LeaveRequestController::class, 'show'])->name('leave-requests.show');
+    Route::post('leave-requests/{leaveRequest}/upload-doctor-note', [\App\Http\Controllers\LeaveRequestController::class, 'uploadDoctorNote'])->name('leave-requests.upload-doctor-note');
 
     Route::resource('employee-registrations', \App\Http\Controllers\EmployeeRegistrationController::class)->except(['show']);
     Route::resource('contracts', \App\Http\Controllers\ContractController::class)->except(['show']);

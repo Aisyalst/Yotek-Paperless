@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, Link, usePage, router } from '@inertiajs/react';
 import SignatureCanvas from 'react-signature-canvas';
+import Modal from '@/Components/Modal';
 
 export default function Show({ leaveRequest }) {
     const { auth } = usePage().props;
@@ -10,6 +11,7 @@ export default function Show({ leaveRequest }) {
     const sigCanvas = useRef({});
     const [signatureError, setSignatureError] = useState('');
     const [processing, setProcessing] = useState(false);
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
     let needsApproval = false;
     let activeApproval = null;
@@ -49,6 +51,20 @@ export default function Show({ leaveRequest }) {
             onError: () => setProcessing(false),
             onFinish: () => setProcessing(false)
         });
+    };
+
+    const handleUploadDoctorNote = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (confirm('Apakah Anda yakin ingin mengunggah surat dokter ini?')) {
+            router.post(route('leave-requests.upload-doctor-note', leaveRequest.id), {
+                has_doctor_note: file
+            }, {
+                preserveScroll: true,
+                forceFormData: true,
+            });
+        }
     };
 
     return (
@@ -131,6 +147,44 @@ export default function Show({ leaveRequest }) {
                                         </p>
                                     </div>
                                 </>
+                            )}
+                            {leaveRequest.request_type === 'Sakit' && (
+                                <div className="col-span-2">
+                                    <p className="text-gray-500 mb-1">Surat Dokter</p>
+                                    {leaveRequest.has_doctor_note ? (
+                                        <div className="mt-2">
+                                            <button 
+                                                type="button" 
+                                                onClick={() => setIsImageModalOpen(true)}
+                                                className="focus:outline-none"
+                                            >
+                                                <img src={leaveRequest.has_doctor_note} alt="Surat Dokter" className="max-w-xs rounded-lg shadow-sm border border-gray-200 hover:opacity-90 transition" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="mt-2 bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg flex flex-col sm:flex-row items-center justify-between">
+                                            <div>
+                                                <p className="text-sm font-semibold mb-1">Surat dokter belum dilampirkan.</p>
+                                                <p className="text-xs">Silakan unggah surat keterangan sakit Anda jika sudah tersedia.</p>
+                                            </div>
+                                            <div className="mt-3 sm:mt-0">
+                                                <input 
+                                                    type="file" 
+                                                    id="upload_doctor_note"
+                                                    accept="image/*"
+                                                    className="hidden"
+                                                    onChange={handleUploadDoctorNote}
+                                                />
+                                                <label 
+                                                    htmlFor="upload_doctor_note" 
+                                                    className="cursor-pointer bg-[#eaae36] hover:bg-[#d49929] text-[#1a1a1a] font-bold py-2 px-4 rounded-lg text-sm transition"
+                                                >
+                                                    Unggah Sekarang
+                                                </label>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                             <div className="col-span-2">
                                 <p className="text-gray-500 mb-1">Alasan</p>
@@ -274,6 +328,18 @@ export default function Show({ leaveRequest }) {
                     </div>
                 </div>
             </div>
+
+            <Modal show={isImageModalOpen} onClose={() => setIsImageModalOpen(false)} maxWidth="2xl">
+                <div className="p-4 bg-gray-50 flex justify-between items-center border-b">
+                    <h3 className="text-lg font-bold text-gray-900">Surat Dokter</h3>
+                    <button onClick={() => setIsImageModalOpen(false)} className="text-gray-500 hover:text-gray-700">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div className="p-4 bg-gray-200 flex justify-center overflow-auto" style={{ maxHeight: '75vh' }}>
+                    <img src={leaveRequest.has_doctor_note} alt="Surat Dokter" className="max-w-full h-auto object-contain" />
+                </div>
+            </Modal>
         </DashboardLayout>
     );
 }
