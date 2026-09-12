@@ -224,6 +224,7 @@ export default function Show({ leaveRequest }) {
                                             <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 ${
                                                 approval.status === 'Approved' ? 'bg-green-100 text-green-600 border border-green-200' :
                                                 approval.status === 'Rejected' ? 'bg-red-100 text-red-600 border border-red-200' :
+                                                approval.status === 'Auto Reject' ? 'bg-gray-100 text-gray-500 border border-gray-200' :
                                                 'bg-yellow-100 text-yellow-600 border border-yellow-200'
                                             }`}>
                                                 {approval.status === 'Approved' && (
@@ -231,6 +232,9 @@ export default function Show({ leaveRequest }) {
                                                 )}
                                                 {approval.status === 'Rejected' && (
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                                )}
+                                                {approval.status === 'Auto Reject' && (
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
                                                 )}
                                                 {approval.status === 'Pending' && (
                                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -250,9 +254,10 @@ export default function Show({ leaveRequest }) {
                                                     <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
                                                         approval.status === 'Approved' ? 'bg-green-100 text-green-800' : 
                                                         approval.status === 'Rejected' ? 'bg-red-100 text-red-800' : 
+                                                        approval.status === 'Auto Reject' ? 'bg-gray-100 text-gray-500' :
                                                         'bg-yellow-100 text-yellow-800'
                                                     }`}>
-                                                        {approval.status}
+                                                        {approval.status === 'Auto Reject' ? 'Otomatis Ditolak' : approval.status}
                                                     </span>
                                                 </div>
 

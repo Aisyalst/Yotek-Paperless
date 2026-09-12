@@ -112,7 +112,7 @@ export default function Create({ auth, userData }) {
                         
                         {/* Jenis Pengajuan */}
                         <div>
-                            <InputLabel htmlFor="request_type" value="Jenis Pengajuan" className="text-lg font-bold text-[#eaae36]" />
+                            <InputLabel htmlFor="request_type" value="Jenis Pengajuan" className="text-lg font-bold text-[#eaae36]" required={true} />
                             <select
                                 id="request_type"
                                 className={inputClasses}
@@ -132,7 +132,7 @@ export default function Create({ auth, userData }) {
                         {/* Tanggal */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-[#f8f8f8] rounded-xl">
                             <div>
-                                <InputLabel htmlFor="start_date" value="Tanggal Mulai" />
+                                <InputLabel htmlFor="start_date" value="Tanggal Mulai" required={true} />
                                 <TextInput
                                     id="start_date"
                                     type="date"
@@ -144,7 +144,7 @@ export default function Create({ auth, userData }) {
                                 <InputError message={errors.start_date} className="mt-2" />
                             </div>
                             <div>
-                                <InputLabel htmlFor="end_date" value="Tanggal Selesai (s.d)" />
+                                <InputLabel htmlFor="end_date" value="Tanggal Selesai (s.d)" required={true} />
                                 <TextInput
                                     id="end_date"
                                     type="date"
@@ -155,7 +155,7 @@ export default function Create({ auth, userData }) {
                                 <InputError message={errors.end_date} className="mt-2" />
                             </div>
                             <div>
-                                <InputLabel htmlFor="duration_days" value="Lama (Hari)" />
+                                <InputLabel htmlFor="duration_days" value="Lama (Hari)" required={true} />
                                 <TextInput
                                     id="duration_days"
                                     type="number"
@@ -172,7 +172,7 @@ export default function Create({ auth, userData }) {
                         {jenisPengajuan === 'Sakit' && (
                             <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl space-y-3">
                                 <div>
-                                    <InputLabel htmlFor="has_doctor_note" value="Unggah Surat Dokter (Opsional saat ini)" />
+                                    <InputLabel htmlFor="has_doctor_note" value="Unggah Surat Dokter (Opsional saat ini)" required={true} />
                                     <p className="text-xs text-gray-500 mb-2">Bisa dikosongkan jika sedang dirawat dan diunggah menyusul pada halaman detail.</p>
                                     <input 
                                         type="file" 
@@ -189,7 +189,7 @@ export default function Create({ auth, userData }) {
                         {jenisPengajuan === 'Izin' && (
                             <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl space-y-4">
                                 <div>
-                                    <InputLabel htmlFor="permission_type" value="Kategori Izin" />
+                                    <InputLabel htmlFor="permission_type" value="Kategori Izin" required={true} />
                                     <select
                                         id="permission_type"
                                         className={inputClasses}
@@ -206,16 +206,16 @@ export default function Create({ auth, userData }) {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <InputLabel htmlFor="permission_start_time" value="Jam Mulai" />
+                                        <InputLabel htmlFor="permission_start_time" value="Jam Mulai" required={true} />
                                         <TextInput type="time" id="permission_start_time" className={inputClasses} value={data.permission_start_time} onChange={(e) => setData('permission_start_time', e.target.value)} />
                                     </div>
                                     <div>
-                                        <InputLabel htmlFor="permission_end_time" value="Jam Selesai" />
+                                        <InputLabel htmlFor="permission_end_time" value="Jam Selesai" required={true} />
                                         <TextInput type="time" id="permission_end_time" className={inputClasses} value={data.permission_end_time} onChange={(e) => setData('permission_end_time', e.target.value)} />
                                     </div>
                                 </div>
                                 <div>
-                                    <InputLabel htmlFor="deduction_type" value="Sanksi (Bila Ada)" />
+                                    <InputLabel htmlFor="deduction_type" value="Sanksi (Bila Ada)" required={true} />
                                     <select id="deduction_type" className={inputClasses} value={data.deduction_type} onChange={(e) => setData('deduction_type', e.target.value)}>
                                         <option value="">Tidak Ada</option>
                                         <option value="Potong Gaji">Potong Gaji</option>
@@ -227,7 +227,7 @@ export default function Create({ auth, userData }) {
 
                         {jenisPengajuan === 'Cuti Khusus' && (
                             <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl">
-                                <InputLabel htmlFor="special_leave_type" value="Pilih Jenis Cuti Khusus" />
+                                <InputLabel htmlFor="special_leave_type" value="Pilih Jenis Cuti Khusus" required={true} />
                                 <select
                                     id="special_leave_type"
                                     className={inputClasses}
@@ -248,7 +248,7 @@ export default function Create({ auth, userData }) {
                         {/* Text Areas */}
                         <div className="space-y-4">
                             <div>
-                                <InputLabel htmlFor="reason" value="Alasan / Keterangan" />
+                                <InputLabel htmlFor="reason" value="Alasan / Keterangan" required={true} />
                                 <textarea
                                     id="reason"
                                     rows="3"
@@ -259,7 +259,7 @@ export default function Create({ auth, userData }) {
                                 <InputError message={errors.reason} className="mt-2" />
                             </div>
                             <div>
-                                <InputLabel htmlFor="work_delegation" value="Pekerjaan yang ditinggalkan (Tugas / Orang Pengganti)" />
+                                <InputLabel htmlFor="work_delegation" value="Pekerjaan yang ditinggalkan (Tugas / Orang Pengganti)" required={true} />
                                 <textarea
                                     id="work_delegation"
                                     rows="3"

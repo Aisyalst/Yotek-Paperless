@@ -25,7 +25,21 @@ class LeaveRequestApprovalController extends Controller
             $query->where('approver_nik', $user->nik);
         }
 
-        $approvals = $query->get();
+        $approvals = $query->get()->map(function ($approval) {
+            $is_my_turn = false;
+            
+            if ($approval->status === 'Pending') {
+                $pendingPrevious = LeaveRequestApproval::where('leave_request_id', $approval->leave_request_id)
+                    ->where('approver_level', '<', $approval->approver_level)
+                    ->where('status', '!=', 'Approved')
+                    ->exists();
+                
+                $is_my_turn = !$pendingPrevious;
+            }
+            
+            $approval->setAttribute('is_my_turn', $is_my_turn);
+            return $approval;
+        });
 
         return Inertia::render('Dashboard/LeaveRequestApproval/Index', [
             'approvals' => $approvals
@@ -89,6 +103,10 @@ class LeaveRequestApprovalController extends Controller
         
         if ($request->status === 'Rejected') {
             $leaveRequest->update(['status' => 'Rejected']);
+            
+            LeaveRequestApproval::where('leave_request_id', $leaveRequest->id)
+                ->where('approver_level', '>', $leaveRequestApproval->approver_level)
+                ->update(['status' => 'Auto Reject']);
 
             if ($employeeUser) {
                 app(\App\Services\NotificationService::class)->send([
