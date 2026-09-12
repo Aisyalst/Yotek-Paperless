@@ -17,3 +17,10 @@
 🗄️ 4. Migration Rules
 - Check First: Before editing a table, I must always check if it already exists.
 - No File Clutter: If I need to edit an existing table, I will create an alter/edit migration, not a new creation migration. If we are setting up a table and changing our minds during development, I will combine the changes into the existing migration file rather than creating multiple files for the same table.
+
+📝 5. Form & Validation Rules
+- Required Fields: Every mandatory input on a form must be marked with a red asterisk (*) next to its label.
+  Example: `Full Name <span style="color:#e53e3e">*</span>`
+- Placement: The asterisk is placed after the label text, not before.
+- Validation Message: Error validation messages still follow the Indonesian language rule (see point 2), e.g., "Nama lengkap wajib diisi."
+- Consistency: Use a standard red color (#e53e3e, or another consistent system red) exclusively for this required-field indicator — kept separate from the main color palette (#f8f8f8, #1a1a1a, #eaae36, #ffffff) since it functions as a status indicator, not a core visual element.
