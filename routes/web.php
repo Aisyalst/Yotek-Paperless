@@ -88,6 +88,8 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::put('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'update'])->name('devisions.update');
     Route::delete('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'destroy'])->name('devisions.destroy');
 
+    Route::resource('meeting-rooms', App\Http\Controllers\MeetingRoomController::class)->except(['show']);
+
     Route::get('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'index'])->name('leave-requests.index');
     Route::get('leave-requests/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('leave-requests.create');
     Route::post('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'store'])->name('leave-requests.store');

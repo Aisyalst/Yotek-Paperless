@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             EmployeeRankSeeder::class,
             UserSeeder::class,
             RouteSettingSeeder::class,
+            MeetingRoomSeeder::class,
         ]);
     }
 }

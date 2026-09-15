@@ -140,6 +140,12 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Edit Hak Cuti', 'route_name' => 'leave-entitlements.edit'],
             ['name' => 'Perbarui Hak Cuti', 'route_name' => 'leave-entitlements.update'],
             ['name' => 'Hapus Hak Cuti', 'route_name' => 'leave-entitlements.destroy'],
+            ['name' => 'Ruangan Rapat', 'route_name' => 'meeting-rooms.index'],
+            ['name' => 'Tambah Ruangan Rapat', 'route_name' => 'meeting-rooms.create'],
+            ['name' => 'Simpan Ruangan Rapat', 'route_name' => 'meeting-rooms.store'],
+            ['name' => 'Edit Ruangan Rapat', 'route_name' => 'meeting-rooms.edit'],
+            ['name' => 'Perbarui Ruangan Rapat', 'route_name' => 'meeting-rooms.update'],
+            ['name' => 'Hapus Ruangan Rapat', 'route_name' => 'meeting-rooms.destroy'],
         ];
 
         foreach ($routes as $route) {
@@ -301,6 +307,15 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 7,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Ruangan Rapat',
+            'icon' => 'HiOfficeBuilding',
+            'route_id' => \App\Models\Route::where('route_name', 'meeting-rooms.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 8,
         ]);
 
 
