@@ -17,6 +17,7 @@ class RouteSettingSeeder extends Seeder
     {
         $routes = [
             ['name' => 'Pengguna', 'route_name' => 'users.index'], // 1
+            ['name' => 'Riwayat Potong Cuti', 'route_name' => 'profile.leave-history'],
             ['name' => 'Peran', 'route_name' => 'roles.index'], // 3
             ['name' => 'Rute', 'route_name' => 'routes.index'], // 4
             ['name' => 'Tambah Rute', 'route_name' => 'routes.create'], // 5

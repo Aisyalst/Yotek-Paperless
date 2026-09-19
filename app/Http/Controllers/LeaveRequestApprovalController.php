@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeaveRequestApproval;
+use App\Models\LeaveRequest;
 use App\Models\LeaveEntitlement;
+use App\Models\LeaveEntitlementUsage;
+use App\Models\RolePermission;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -176,6 +178,13 @@ class LeaveRequestApprovalController extends Controller
                             
                             $deductFromThis = min($entitlement->total, $remainingDaysToDeduct);
                             $entitlement->update(['total' => $entitlement->total - $deductFromThis]);
+                            
+                            LeaveEntitlementUsage::create([
+                                'leave_entitlement_id' => $entitlement->id,
+                                'leave_request_id' => $leaveRequest->id,
+                                'deducted_days' => $deductFromThis,
+                                'reason' => 'Diproses otomatis melalui Persetujuan (Potong Cuti)'
+                            ]);
                             
                             $remainingDaysToDeduct -= $deductFromThis;
                             $totalDeductedLeave += $deductFromThis;

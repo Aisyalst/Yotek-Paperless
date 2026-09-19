@@ -123,6 +123,7 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::resource('employee-positions', \App\Http\Controllers\EmployeePositionController::class)->except(['show']);
     Route::get('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'edit'])->name('profile.personal.edit');
     Route::post('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'update'])->name('profile.personal.update');
+    Route::get('profile/leave-history', [\App\Http\Controllers\LeaveEntitlementUsageController::class, 'index'])->name('profile.leave-history');
     
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

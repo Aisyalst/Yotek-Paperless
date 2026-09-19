@@ -36,6 +36,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Data Personal
                                 </NavLink>
+                                <NavLink
+                                    href={route('profile.leave-history')}
+                                    active={route().current('profile.leave-history')}
+                                >
+                                    Riwayat Potong Cuti
+                                </NavLink>
                             </div>
 
                         </div>
