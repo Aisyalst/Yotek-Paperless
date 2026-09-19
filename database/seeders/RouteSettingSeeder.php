@@ -107,6 +107,7 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Hapus Langkah Persetujuan', 'route_name' => 'approval-workflow-steps.destroy'],
             ['name' => 'Persetujuan Izin', 'route_name' => 'leave-request-approvals.index'],
             ['name' => 'Perbarui Persetujuan Izin', 'route_name' => 'leave-request-approvals.update'],
+            ['name' => 'Set Konsekuensi Izin', 'route_name' => 'leave-request-approvals.set-consequence'],
             ['name' => 'Notifikasi', 'route_name' => 'notifications.index'],
             ['name' => 'Tambah Notifikasi', 'route_name' => 'notifications.create'],
             ['name' => 'Simpan Notifikasi', 'route_name' => 'notifications.store'],

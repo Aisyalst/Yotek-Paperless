@@ -85,7 +85,7 @@ export default function Create({ auth, userData }) {
                     )}
 
                     {/* Header Info */}
-                    <div className="bg-white/80 backdrop-blur-lg overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100/50 p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white/80 backdrop-blur-lg overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100/50 p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <p className="text-sm text-gray-500 font-semibold">Tanggal Pengajuan</p>
                             <p className="font-bold text-[#1a1a1a]">{new Date().toLocaleDateString('id-ID')}</p>
@@ -105,6 +105,10 @@ export default function Create({ auth, userData }) {
                         <div>
                             <p className="text-sm text-gray-500 font-semibold">Divisi / Department</p>
                             <p className="font-bold text-[#1a1a1a]">{userData.role?.devision?.name || '-'}</p>
+                        </div>
+                        <div>
+                            <p className="text-sm text-gray-500 font-semibold">Total Sisa Cuti Aktif</p>
+                            <p className="font-extrabold text-[#eaae36] text-lg">{usePage().props.totalActiveLeave || 0} Hari</p>
                         </div>
                     </div>
 

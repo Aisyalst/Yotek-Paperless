@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeaveRequestApproval;
+use App\Models\LeaveEntitlement;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -38,11 +39,31 @@ class LeaveRequestApprovalController extends Controller
             }
             
             $approval->setAttribute('is_my_turn', $is_my_turn);
+            
+            // Get total leave entitlements for the employee
+            if ($approval->leaveRequest && $approval->leaveRequest->employee_nik) {
+                $totalLeave = LeaveEntitlement::where('nik', $approval->leaveRequest->employee_nik)
+                    ->where('status', 'Aktif')
+                    ->sum('total');
+                $approval->leaveRequest->setAttribute('total_active_leave', $totalLeave);
+            }
+            
             return $approval;
         });
 
+        $userRole = $user ? $user->role_id : null;
+        $canSetConsequence = false;
+        
+        if ($userRole) {
+            $canSetConsequence = \App\Models\RolePermission::where('role_id', $userRole)
+                ->whereHas('route', function ($query) {
+                    $query->where('route_name', 'leave-request-approvals.set-consequence');
+                })->exists();
+        }
+
         return Inertia::render('Dashboard/LeaveRequestApproval/Index', [
-            'approvals' => $approvals
+            'approvals' => $approvals,
+            'canSetConsequence' => $canSetConsequence
         ]);
     }
 
@@ -101,6 +122,17 @@ class LeaveRequestApprovalController extends Controller
         $leaveRequest = $leaveRequestApproval->leaveRequest;
         $employeeUser = $leaveRequest->employee ? $leaveRequest->employee->user : null;
         
+        $userRole = Auth::user()->role_id;
+        $canSetConsequence = \App\Models\RolePermission::where('role_id', $userRole)
+            ->whereHas('route', function ($query) {
+                $query->where('route_name', 'leave-request-approvals.set-consequence');
+            })->exists();
+        
+        if ($canSetConsequence && $request->has('consequence') && $request->status === 'Approved') {
+            $consequence = $request->consequence;
+            $leaveRequest->update(['consequence' => $consequence]);
+        }
+        
         if ($request->status === 'Rejected') {
             $leaveRequest->update(['status' => 'Rejected']);
             
@@ -125,6 +157,50 @@ class LeaveRequestApprovalController extends Controller
                 ->exists();
                 
             if ($allApproved) {
+                // Handle consequence deductions
+                if ($leaveRequest->consequence) {
+                    $requestedDays = (int) $leaveRequest->duration_days;
+                    
+                    if ($leaveRequest->consequence === 'Potong Cuti' || $leaveRequest->consequence === 'Potong Cuti dan Gaji') {
+                        $activeEntitlements = LeaveEntitlement::where('nik', $leaveRequest->employee_nik)
+                            ->where('status', 'Aktif')
+                            ->where('total', '>', 0)
+                            ->orderBy('end_date', 'asc')
+                            ->get();
+                            
+                        $remainingDaysToDeduct = $requestedDays;
+                        $totalDeductedLeave = 0;
+                        
+                        foreach ($activeEntitlements as $entitlement) {
+                            if ($remainingDaysToDeduct <= 0) break;
+                            
+                            $deductFromThis = min($entitlement->total, $remainingDaysToDeduct);
+                            $entitlement->update(['total' => $entitlement->total - $deductFromThis]);
+                            
+                            $remainingDaysToDeduct -= $deductFromThis;
+                            $totalDeductedLeave += $deductFromThis;
+                        }
+                        
+                        $deductedSalary = 0;
+                        if ($leaveRequest->consequence === 'Potong Cuti dan Gaji' && $remainingDaysToDeduct > 0) {
+                            $deductedSalary = $remainingDaysToDeduct;
+                        } elseif ($leaveRequest->consequence === 'Potong Cuti dan Gaji' && $requestedDays > $totalDeductedLeave) {
+                            // If user selected Potong Cuti dan Gaji and didn't have enough cuti, rest goes to salary
+                             $deductedSalary = $requestedDays - $totalDeductedLeave;
+                        }
+                        
+                        $leaveRequest->update([
+                            'deducted_leave_days' => $totalDeductedLeave,
+                            'deducted_salary_days' => $deductedSalary
+                        ]);
+                    } elseif ($leaveRequest->consequence === 'Potong Gaji') {
+                        $leaveRequest->update([
+                            'deducted_leave_days' => 0,
+                            'deducted_salary_days' => $requestedDays
+                        ]);
+                    }
+                }
+
                 $leaveRequest->update(['status' => 'Approved']);
 
                 if ($employeeUser) {

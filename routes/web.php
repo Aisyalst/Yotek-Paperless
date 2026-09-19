@@ -114,6 +114,7 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     // Leave Request Approval routes
     Route::get('/leave-request-approvals', [App\Http\Controllers\LeaveRequestApprovalController::class, 'index'])->name('leave-request-approvals.index');
     Route::put('/leave-request-approvals/{leaveRequestApproval}', [App\Http\Controllers\LeaveRequestApprovalController::class, 'update'])->name('leave-request-approvals.update');
+    Route::post('/leave-request-approvals/set-consequence', function() { abort(404); })->name('leave-request-approvals.set-consequence');
 
     Route::post('employee-ranks/reorder', [\App\Http\Controllers\EmployeeRankController::class, 'reorder'])->name('employee-ranks.reorder');
     Route::resource('employee-ranks', \App\Http\Controllers\EmployeeRankController::class)->except(['show']);

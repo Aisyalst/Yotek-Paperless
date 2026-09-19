@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\LeaveEntitlement;
 
 class ProfileController extends Controller
 {
@@ -20,10 +21,18 @@ class ProfileController extends Controller
     {
         $user = $request->user()->load(['personalInformation', 'employeeInformation.employeeRank', 'contractInformation']);
 
+        $totalActiveLeave = 0;
+        if ($user->nik) {
+            $totalActiveLeave = LeaveEntitlement::where('nik', $user->nik)
+                ->where('status', 'Aktif')
+                ->sum('total');
+        }
+
         return Inertia::render('Profile/Index', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'userData' => $user,
+            'totalActiveLeave' => $totalActiveLeave,
         ]);
     }
 

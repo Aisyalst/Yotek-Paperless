@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\LeaveRequest;
+use App\Models\LeaveEntitlement;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestController extends Controller
 {
@@ -13,9 +15,17 @@ class LeaveRequestController extends Controller
         // For now, load all requests with their user data. 
         // In the future, this might be filtered by role (e.g. employee sees their own, HR sees all).
         $leaveRequests = LeaveRequest::with(['employee.user', 'approvals'])->orderBy('created_at', 'desc')->get();
+        
+        $totalActiveLeave = 0;
+        if (Auth::check() && Auth::user()->nik) {
+            $totalActiveLeave = LeaveEntitlement::where('nik', Auth::user()->nik)
+                ->where('status', 'Aktif')
+                ->sum('total');
+        }
 
         return Inertia::render('LeaveRequest/Index', [
-            'leaveRequests' => $leaveRequests
+            'leaveRequests' => $leaveRequests,
+            'totalActiveLeave' => $totalActiveLeave
         ]);
     }
 
@@ -28,8 +38,13 @@ class LeaveRequestController extends Controller
             return redirect()->back()->with('error', 'Anda harus terdaftar sebagai karyawan dan memiliki NIK sebelum dapat mengajukan izin/cuti.');
         }
 
+        $totalActiveLeave = LeaveEntitlement::where('nik', $user->nik)
+            ->where('status', 'Aktif')
+            ->sum('total');
+
         return Inertia::render('LeaveRequest/Create', [
-            'userData' => $user
+            'userData' => $user,
+            'totalActiveLeave' => $totalActiveLeave
         ]);
     }
 

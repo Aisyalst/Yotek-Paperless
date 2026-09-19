@@ -9,7 +9,7 @@ class LeaveRequest extends Model
     protected $fillable = [
         'employee_nik', 'request_date', 'request_type', 'start_date', 'end_date',
         'duration_days', 'has_doctor_note', 'permission_type', 'permission_start_time',
-        'permission_end_time', 'deduction_type', 'special_leave_type', 'reason',
+        'permission_end_time', 'deduction_type', 'consequence', 'deducted_leave_days', 'deducted_salary_days', 'special_leave_type', 'reason',
         'work_delegation', 'status'
     ];
 

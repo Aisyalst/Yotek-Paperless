@@ -3,7 +3,7 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, Link, router } from '@inertiajs/react';
 import SignatureCanvas from 'react-signature-canvas';
 
-export default function Index({ approvals }) {
+export default function Index({ approvals, canSetConsequence }) {
     const sigCanvas = useRef({});
     
     // UI State
@@ -14,6 +14,7 @@ export default function Index({ approvals }) {
     const [modalAction, setModalAction] = useState(''); // 'Approved' or 'Rejected'
     const [selectedApprovalId, setSelectedApprovalId] = useState(null);
     const [signatureError, setSignatureError] = useState('');
+    const [consequence, setConsequence] = useState('');
     const [processing, setProcessing] = useState(false);
 
     // Detail Modal State
@@ -41,6 +42,7 @@ export default function Index({ approvals }) {
         setModalAction(action);
         setIsModalOpen(true);
         setSignatureError('');
+        setConsequence('');
         if (sigCanvas.current && sigCanvas.current.clear) {
             setTimeout(() => sigCanvas.current.clear(), 100);
         }
@@ -51,6 +53,7 @@ export default function Index({ approvals }) {
         setSelectedApprovalId(null);
         setModalAction('');
         setSignatureError('');
+        setConsequence('');
     };
 
     const clearSignature = () => {
@@ -71,7 +74,8 @@ export default function Index({ approvals }) {
 
         router.put(route('leave-request-approvals.update', selectedApprovalId), {
             status: modalAction,
-            signature: signatureData
+            signature: signatureData,
+            consequence: consequence
         }, {
             preserveScroll: true,
             onSuccess: () => {
@@ -272,6 +276,42 @@ export default function Index({ approvals }) {
                                         Silakan bubuhkan tanda tangan Anda di kotak bawah ini sebagai bukti persetujuan/penolakan.
                                     </p>
                                     
+                                    {modalAction === 'Approved' && (
+                                        <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                <h4 className="font-bold text-blue-900 text-sm">Informasi Cuti Karyawan</h4>
+                                            </div>
+                                            <p className="text-sm text-blue-800">
+                                                Total Sisa Cuti Aktif: <span className="font-extrabold">{approvals.find(a => a.id === selectedApprovalId)?.leave_request?.total_active_leave || 0} Hari</span>
+                                            </p>
+                                            <p className="text-sm text-blue-800">
+                                                Durasi Pengajuan Ini: <span className="font-extrabold">{approvals.find(a => a.id === selectedApprovalId)?.leave_request?.duration_days || 0} Hari</span>
+                                            </p>
+                                        </div>
+                                    )}
+                                    
+                                    {modalAction === 'Approved' && canSetConsequence && (
+                                        <div className="mb-6">
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">
+                                                Sanksi / Konsekuensi (Bila Ada)
+                                            </label>
+                                            <select 
+                                                value={consequence}
+                                                onChange={(e) => setConsequence(e.target.value)}
+                                                className="w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-xl shadow-sm text-sm"
+                                            >
+                                                <option value="">-- Pilih Sanksi --</option>
+                                                <option value="Tanpa Potong">Tanpa Potong</option>
+                                                <option value="Potong Gaji">Potong Gaji</option>
+                                                {approvals.find(a => a.id === selectedApprovalId)?.leave_request?.total_active_leave >= approvals.find(a => a.id === selectedApprovalId)?.leave_request?.duration_days && (
+                                                    <option value="Potong Cuti">Potong Cuti</option>
+                                                )}
+                                                <option value="Potong Cuti dan Gaji">Potong Cuti dan Gaji</option>
+                                            </select>
+                                        </div>
+                                    )}
+
                                     <div className="relative border-2 border-dashed border-gray-300 rounded-xl bg-[#f8f8f8] overflow-hidden group">
                                         <div className="w-full overflow-hidden flex justify-center">
                                             <SignatureCanvas 

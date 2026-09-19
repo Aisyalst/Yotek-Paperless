@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
 import React from 'react';
 
-export default function Index({ auth, userData }) {
+export default function Index({ auth, userData, totalActiveLeave }) {
     const { personal_information, employee_information, contract_information } = userData;
 
     const renderCard = (title, data, icon) => (
@@ -85,6 +85,11 @@ export default function Index({ auth, userData }) {
                                     <span className="flex items-center">
                                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
                                         NIK: {userData.nik || '-'}
+                                    </span>
+                                </div>
+                                <div className="mt-4">
+                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#eaae36]/20 text-[#eaae36] border border-[#eaae36]/30 shadow-sm">
+                                        Total Cuti Aktif: {totalActiveLeave || 0} Hari
                                     </span>
                                 </div>
                             </div>

@@ -165,11 +165,20 @@ export default function Index({ leaveRequests }) {
                         {/* Decorative Background Element */}
                         <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#eaae36]/10 rounded-full blur-3xl pointer-events-none"></div>
                         
-                        <div className="relative z-10">
-                            <h2 className="text-3xl font-extrabold text-[#1a1a1a] tracking-tight">Riwayat Pengajuan</h2>
-                            <p className="text-gray-500 text-sm mt-2 max-w-xl">
-                                Pantau dan kelola semua pengajuan izin, sakit, dan cuti karyawan di satu tempat.
-                            </p>
+                        <div className="relative z-10 w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <h2 className="text-3xl font-extrabold text-[#1a1a1a] tracking-tight">Riwayat Pengajuan</h2>
+                                <p className="text-gray-500 text-sm mt-2 max-w-xl">
+                                    Pantau dan kelola semua pengajuan izin, sakit, dan cuti karyawan di satu tempat.
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-2 bg-[#f8f8f8] px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
+                                <svg className="w-5 h-5 text-[#eaae36]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <div>
+                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Total Cuti Aktif Anda</p>
+                                    <p className="font-extrabold text-[#1a1a1a] leading-none mt-0.5">{usePage().props.totalActiveLeave || 0} Hari</p>
+                                </div>
+                            </div>
                         </div>
                         
                         <Link
