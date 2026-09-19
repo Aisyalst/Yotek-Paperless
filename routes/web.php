@@ -9,6 +9,9 @@ use App\Http\Controllers\DashboardMenuController;
 use App\Http\Controllers\RolePermissionController;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MeetingRoomController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\MyMeetingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -88,7 +91,10 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::put('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'update'])->name('devisions.update');
     Route::delete('devisions/{devision}', [App\Http\Controllers\DevisionController::class, 'destroy'])->name('devisions.destroy');
 
-    Route::resource('meeting-rooms', App\Http\Controllers\MeetingRoomController::class)->except(['show']);
+    Route::resource('meeting-rooms', MeetingRoomController::class)->except(['show']);
+    Route::resource('meetings', MeetingController::class);
+    Route::get('my-meetings', [MyMeetingController::class, 'index'])->name('my-meetings.index');
+    Route::put('my-meetings/{meeting}/respond', [MyMeetingController::class, 'respond'])->name('my-meetings.respond');
 
     Route::get('leave-requests', [\App\Http\Controllers\LeaveRequestController::class, 'index'])->name('leave-requests.index');
     Route::get('leave-requests/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('leave-requests.create');

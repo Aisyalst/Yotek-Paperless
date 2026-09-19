@@ -146,6 +146,15 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Edit Ruangan Rapat', 'route_name' => 'meeting-rooms.edit'],
             ['name' => 'Perbarui Ruangan Rapat', 'route_name' => 'meeting-rooms.update'],
             ['name' => 'Hapus Ruangan Rapat', 'route_name' => 'meeting-rooms.destroy'],
+            ['name' => 'Jadwal Meeting', 'route_name' => 'meetings.index'],
+            ['name' => 'Tambah Jadwal Meeting', 'route_name' => 'meetings.create'],
+            ['name' => 'Simpan Jadwal Meeting', 'route_name' => 'meetings.store'],
+            ['name' => 'Detail Jadwal Meeting', 'route_name' => 'meetings.show'],
+            ['name' => 'Edit Jadwal Meeting', 'route_name' => 'meetings.edit'],
+            ['name' => 'Perbarui Jadwal Meeting', 'route_name' => 'meetings.update'],
+            ['name' => 'Hapus Jadwal Meeting', 'route_name' => 'meetings.destroy'],
+            ['name' => 'Undangan Meeting', 'route_name' => 'my-meetings.index'],
+            ['name' => 'Respons Undangan Meeting', 'route_name' => 'my-meetings.respond'],
         ];
 
         foreach ($routes as $route) {
@@ -166,6 +175,24 @@ class RouteSettingSeeder extends Seeder
             'section_id' => $tablesSection->id,
             'type' => 'Single',
             'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Jadwal Meeting',
+            'icon' => 'HiCalendar',
+            'route_id' => \App\Models\Route::where('route_name', 'meetings.index')->first()?->id ?? 1,
+            'section_id' => $tablesSection->id,
+            'type' => 'Single',
+            'position' => 2,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Undangan Meeting',
+            'icon' => 'HiMailOpen',
+            'route_id' => \App\Models\Route::where('route_name', 'my-meetings.index')->first()?->id ?? 1,
+            'section_id' => $tablesSection->id,
+            'type' => 'Single',
+            'position' => 3,
         ]);
 
         // 2. Web Setting Section (Parent & Children)

@@ -9,9 +9,12 @@ import {
     HiOutlineMail,
     HiOutlineBell,
     HiChevronLeft,
-    HiChevronRight
+    HiChevronRight,
+    HiCheck,
+    HiX
 } from 'react-icons/hi';
 import * as HiIcons from 'react-icons/hi';
+import { router } from '@inertiajs/react';
 
 const DynamicIcon = ({ iconName, className }) => {
   const IconComponent = HiIcons[iconName];
@@ -34,7 +37,7 @@ function timeAgo(dateParam) {
     return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 }
 
-export default function Index({ stats, companies, banners = [], albums = [], quickAccesses = [] }) {
+export default function Index({ stats, companies, banners = [], albums = [], quickAccesses = [], meetingInvitations = [] }) {
     const { auth } = usePage().props;
     const latestNotifications = auth?.latestNotifications || [];
 
@@ -180,6 +183,14 @@ export default function Index({ stats, companies, banners = [], albums = [], qui
         ? [...companies, ...companies, ...companies, ...companies, ...companies, ...companies] 
         : [];
 
+    const handleRespondMeeting = (meetingId, status) => {
+        router.put(route('my-meetings.respond', meetingId), {
+            status: status
+        }, {
+            preserveScroll: true
+        });
+    };
+
     return (
         <DashboardLayout judulHalaman="Beranda">
             <Head title="Beranda" />
@@ -192,31 +203,63 @@ export default function Index({ stats, companies, banners = [], albums = [], qui
                     <div className="lg:col-span-4 order-2 lg:order-1 bg-white rounded-3xl shadow-sm border border-gray-100 p-6 flex flex-col h-[300px] md:h-[350px]">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-xl font-bold text-[#1a1a1a]">Undangan Meeting</h3>
-                            <span className="text-xs font-semibold bg-[#eaae36] text-white px-2 py-1 rounded-full">Baru</span>
+                            {meetingInvitations.length > 0 && (
+                                <span className="text-xs font-semibold bg-[#eaae36] text-white px-2 py-1 rounded-full">
+                                    {meetingInvitations.length} Baru
+                                </span>
+                            )}
                         </div>
                         <div className="flex-1 overflow-y-auto pr-2 space-y-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full">
-                            {/* Dummy Meeting Item */}
-                            <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-[#eaae36] transition-colors cursor-pointer group">
-                                <p className="font-bold text-sm text-[#1a1a1a] group-hover:text-[#eaae36] transition-colors">Rapat Koordinasi IT</p>
-                                <p className="text-xs text-gray-500 mt-1">Hari ini, 14:00 WIB</p>
-                                <div className="mt-3 flex items-center gap-2">
-                                    <span className="text-[10px] font-semibold bg-blue-100 text-blue-700 px-2 py-1 rounded-md">Zoom</span>
-                                    <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-md">Internal</span>
+                            {meetingInvitations.length > 0 ? (
+                                meetingInvitations.map((meeting) => (
+                                    <div key={meeting.id} className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-[#eaae36] transition-colors group">
+                                        <p className="font-bold text-sm text-[#1a1a1a] group-hover:text-[#eaae36] transition-colors">{meeting.title}</p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            {new Date(meeting.date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}, {meeting.start_time.substring(0, 5)} WIB
+                                        </p>
+                                        <div className="mt-3 flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-[10px] font-semibold bg-blue-100 text-blue-700 px-2 py-1 rounded-md">
+                                                    {meeting.type === 'online' ? meeting.online_platform : 'Offline'}
+                                                </span>
+                                                {meeting.type === 'offline' && meeting.room && (
+                                                    <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-md">
+                                                        {meeting.room.name}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button 
+                                                    onClick={() => handleRespondMeeting(meeting.id, 'accepted')}
+                                                    title="Terima"
+                                                    className="w-7 h-7 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors shadow-sm"
+                                                >
+                                                    <HiCheck className="w-4 h-4" />
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleRespondMeeting(meeting.id, 'declined')}
+                                                    title="Tolak"
+                                                    className="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors shadow-sm"
+                                                >
+                                                    <HiX className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-full text-gray-400 min-h-[150px]">
+                                    <HiOutlineClipboardCheck className="w-12 h-12 mb-2 text-gray-300" />
+                                    <p className="text-sm">Tidak ada undangan meeting baru.</p>
                                 </div>
-                            </div>
-                            
-                            {/* Dummy Meeting Item 2 */}
-                            <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-[#eaae36] transition-colors cursor-pointer group">
-                                <p className="font-bold text-sm text-[#1a1a1a] group-hover:text-[#eaae36] transition-colors">Evaluasi Kinerja Q3</p>
-                                <p className="text-xs text-gray-500 mt-1">Besok, 09:00 WIB</p>
-                                <div className="mt-3 flex items-center gap-2">
-                                    <span className="text-[10px] font-semibold bg-purple-100 text-purple-700 px-2 py-1 rounded-md">Ruang Rapat Utama</span>
-                                </div>
-                            </div>
+                            )}
                         </div>
-                        <button className="w-full mt-4 py-2.5 text-sm font-semibold text-[#1a1a1a] bg-gray-50 border border-gray-200 rounded-xl hover:bg-[#1a1a1a] hover:text-white transition-all">
+                        <Link 
+                            href={route('my-meetings.index')} 
+                            className="block text-center w-full mt-4 py-2.5 text-sm font-semibold text-[#1a1a1a] bg-gray-50 border border-gray-200 rounded-xl hover:bg-[#1a1a1a] hover:text-white transition-all"
+                        >
                             Lihat Semua Undangan
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Banner Section (Right, 8 columns) */}

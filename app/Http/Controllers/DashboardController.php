@@ -8,6 +8,7 @@ use App\Models\Role;
 use Carbon\Carbon;
 use Inertia\Inertia;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Company;
 use App\Models\Banner;
 use App\Models\CompanyAlbum;
@@ -36,6 +37,18 @@ class DashboardController extends Controller
         $banners = Banner::orderBy('sort_order')->get();
         $albums = CompanyAlbum::latest()->get();
         $quickAccesses = QuickAccess::orderBy('sort_order')->get();
+        $nik = Auth::user()->nik;
+
+        $meetingInvitations = \App\Models\Meeting::with(['room', 'organizer', 'participants' => function($q) use ($nik) {
+            $q->where('employee_nik', $nik);
+        }])
+        ->whereHas('participants', function($q) use ($nik) {
+            $q->where('employee_nik', $nik)->where('status', 'pending');
+        })
+        ->whereDate('date', '>=', Carbon::today())
+        ->orderBy('date', 'asc')
+        ->orderBy('start_time', 'asc')
+        ->get();
 
         return Inertia::render('Dashboard/Index', [
             'stats' => $stats,
@@ -43,6 +56,7 @@ class DashboardController extends Controller
             'banners' => $banners,
             'albums' => $albums,
             'quickAccesses' => $quickAccesses,
+            'meetingInvitations' => $meetingInvitations,
         ]);
     }
 }
