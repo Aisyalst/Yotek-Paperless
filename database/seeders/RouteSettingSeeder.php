@@ -155,6 +155,13 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Hapus Jadwal Meeting', 'route_name' => 'meetings.destroy'],
             ['name' => 'Undangan Meeting', 'route_name' => 'my-meetings.index'],
             ['name' => 'Respons Undangan Meeting', 'route_name' => 'my-meetings.respond'],
+            ['name' => 'Jabatan Karyawan', 'route_name' => 'employee-positions.index'],
+            ['name' => 'Tambah Jabatan Karyawan', 'route_name' => 'employee-positions.create'],
+            ['name' => 'Simpan Jabatan Karyawan', 'route_name' => 'employee-positions.store'],
+            ['name' => 'Edit Jabatan Karyawan', 'route_name' => 'employee-positions.edit'],
+            ['name' => 'Perbarui Jabatan Karyawan', 'route_name' => 'employee-positions.update'],
+            ['name' => 'Hapus Jabatan Karyawan', 'route_name' => 'employee-positions.destroy'],
+            ['name' => 'Urutkan Jabatan Karyawan', 'route_name' => 'employee-positions.reorder'],
         ];
 
         foreach ($routes as $route) {
@@ -345,7 +352,14 @@ class RouteSettingSeeder extends Seeder
             'position' => 8,
         ]);
 
-
+        DashboardMenu::create([
+            'name' => 'Jabatan Karyawan',
+            'icon' => 'HiBriefcase',
+            'route_id' => \App\Models\Route::where('route_name', 'employee-positions.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 9,
+        ]);
 
         $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 

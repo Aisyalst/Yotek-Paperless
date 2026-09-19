@@ -54,6 +54,10 @@ export default function Index({ employees, filters }) {
         },
         { 
             header: 'Jabatan', 
+            render: (emp) => emp.employee_position ? emp.employee_position.name : '-'
+        },
+        { 
+            header: 'Level', 
             render: (emp) => emp.employee_rank ? emp.employee_rank.title : '-'
         },
         { 

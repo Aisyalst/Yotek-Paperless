@@ -3,13 +3,14 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function Create({ users, allUsers, companies, ranks }) {
+export default function Create({ users, allUsers, companies, ranks, positions }) {
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
         nik: '',
         company: '',
         branch: '',
         department: '',
+        employee_position_id: '',
         employee_rank_id: '',
         direct_supervisor: '',
         employment_status: '',
@@ -75,11 +76,18 @@ export default function Create({ users, allUsers, companies, ranks }) {
             placeholder: 'Departemen',
         },
         {
+            name: 'employee_position_id',
+            label: 'Jabatan',
+            type: 'select',
+            options: positions ? positions.map(pos => ({ value: pos.id, label: pos.name })) : [],
+            placeholder: 'Pilih Jabatan',
+        },
+        {
             name: 'employee_rank_id',
-            label: 'Jabatan / Level',
+            label: 'Level',
             type: 'select',
             options: ranks ? ranks.map(rank => ({ value: rank.id, label: rank.title })) : [],
-            placeholder: 'Pilih Jabatan / Level',
+            placeholder: 'Pilih Level',
         },
         {
             name: 'direct_supervisor',

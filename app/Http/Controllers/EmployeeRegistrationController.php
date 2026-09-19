@@ -13,7 +13,7 @@ class EmployeeRegistrationController extends Controller
         $search = $request->query('search');
         $perPage = $request->query('per_page', 10);
 
-        $query = EmployeeInformation::with(['user', 'supervisor', 'employeeRank'])->latest();
+        $query = EmployeeInformation::with(['user', 'supervisor', 'employeeRank', 'employeePosition'])->latest();
 
         if ($search) {
             $query->whereHas('user', function($q) use ($search) {
@@ -40,12 +40,14 @@ class EmployeeRegistrationController extends Controller
         $allUsers = User::all(['nik', 'name']);
         $companies = \App\Models\Company::all(['id', 'name', 'branch']);
         $ranks = \App\Models\EmployeeRank::orderBy('order')->get(['id', 'title']);
+        $positions = \App\Models\EmployeePosition::orderBy('order')->get(['id', 'name']);
         
         return inertia('Dashboard/EmployeeRegistration/Create', [
             'users' => $users,
             'allUsers' => $allUsers,
             'companies' => $companies,
-            'ranks' => $ranks
+            'ranks' => $ranks,
+            'positions' => $positions
         ]);
     }
 
@@ -57,6 +59,7 @@ class EmployeeRegistrationController extends Controller
             'company' => 'nullable|string|max:255',
             'branch' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
+            'employee_position_id' => 'nullable|exists:employee_positions,id',
             'employee_rank_id' => 'nullable|exists:employee_ranks,id',
             'direct_supervisor' => 'nullable|string|max:255',
             'employment_status' => 'nullable|string|max:255',
@@ -87,18 +90,20 @@ class EmployeeRegistrationController extends Controller
 
     public function edit(EmployeeInformation $employeeRegistration)
     {
-        $employeeRegistration->load(['user', 'employeeRank']);
+        $employeeRegistration->load(['user', 'employeeRank', 'employeePosition']);
         $users = User::where('nik', $employeeRegistration->nik)->get(['nik', 'name']);
         $allUsers = User::all(['nik', 'name']);
         $companies = \App\Models\Company::all(['id', 'name', 'branch']);
         $ranks = \App\Models\EmployeeRank::orderBy('order')->get(['id', 'title']);
+        $positions = \App\Models\EmployeePosition::orderBy('order')->get(['id', 'name']);
 
         return inertia('Dashboard/EmployeeRegistration/Edit', [
             'employee' => $employeeRegistration,
             'users' => $users,
             'allUsers' => $allUsers,
             'companies' => $companies,
-            'ranks' => $ranks
+            'ranks' => $ranks,
+            'positions' => $positions
         ]);
     }
 
@@ -108,6 +113,7 @@ class EmployeeRegistrationController extends Controller
             'company' => 'nullable|string|max:255',
             'branch' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
+            'employee_position_id' => 'nullable|exists:employee_positions,id',
             'employee_rank_id' => 'nullable|exists:employee_ranks,id',
             'direct_supervisor' => 'nullable|string|max:255',
             'employment_status' => 'nullable|string|max:255',

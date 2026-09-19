@@ -117,6 +117,9 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
 
     Route::post('employee-ranks/reorder', [\App\Http\Controllers\EmployeeRankController::class, 'reorder'])->name('employee-ranks.reorder');
     Route::resource('employee-ranks', \App\Http\Controllers\EmployeeRankController::class)->except(['show']);
+    
+    Route::post('employee-positions/reorder', [\App\Http\Controllers\EmployeePositionController::class, 'reorder'])->name('employee-positions.reorder');
+    Route::resource('employee-positions', \App\Http\Controllers\EmployeePositionController::class)->except(['show']);
     Route::get('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'edit'])->name('profile.personal.edit');
     Route::post('profile/personal', [\App\Http\Controllers\PersonalInformationController::class, 'update'])->name('profile.personal.update');
     

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EmployeeInformation extends Model
 {
     protected $fillable = [
-        'nik', 'company', 'branch', 'department', 'employee_rank_id', 
+        'nik', 'company', 'branch', 'department', 'employee_position_id', 'employee_rank_id', 
         'direct_supervisor', 'employment_status', 'join_date'
     ];
 
@@ -24,5 +24,10 @@ class EmployeeInformation extends Model
     public function employeeRank()
     {
         return $this->belongsTo(EmployeeRank::class, 'employee_rank_id');
+    }
+
+    public function employeePosition()
+    {
+        return $this->belongsTo(EmployeePosition::class, 'employee_position_id');
     }
 }
