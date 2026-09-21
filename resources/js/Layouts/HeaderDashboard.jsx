@@ -50,7 +50,7 @@ export default function Header({ judul, onMenuButtonClick }) {
                                     <div className="px-4 py-2 border-b border-zinc-200">
                                         <p className="text-sm font-semibold text-[#1a1a1a]">Halo, {auth.user.name}!</p>
                                     </div>
-                                    <Link href="/profile" className="block px-4 py-2 text-sm text-[#1a1a1a] hover:bg-gray-100">Edit Profil</Link>
+                                    <Link href="/profile" className="block px-4 py-2 text-sm text-[#1a1a1a] hover:bg-gray-100">Profil</Link>
                                     
                                     {/* Contoh tombol Logout (menggunakan method POST Inertia) */}
                                     <Link href="/logout" method="post" as="button" className="w-full text-left block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 border-t border-zinc-200">

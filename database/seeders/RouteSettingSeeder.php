@@ -177,12 +177,21 @@ class RouteSettingSeeder extends Seeder
         $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Pengaturan Web'], ['order' => 4]);
 
         // 1. Forms Section
+        $formsDropdown = DashboardMenu::create([
+            'name' => 'Daftar Formulir',
+            'icon' => 'HiDocumentDuplicate',
+            'section_id' => $tablesSection->id,
+            'type' => 'Dropdown',
+            'position' => 1,
+        ]);
+
         DashboardMenu::create([
             'name' => 'Pengajuan Izin',
             'icon' => 'HiDocumentText',
             'route_id' => \App\Models\Route::where('route_name', 'leave-requests.index')->first()?->id ?? 1,
             'section_id' => $tablesSection->id,
             'type' => 'Single',
+            'parent_id' => $formsDropdown->id,
             'position' => 1,
         ]);
 
@@ -192,16 +201,8 @@ class RouteSettingSeeder extends Seeder
             'route_id' => \App\Models\Route::where('route_name', 'meetings.index')->first()?->id ?? 1,
             'section_id' => $tablesSection->id,
             'type' => 'Single',
+            'parent_id' => $formsDropdown->id,
             'position' => 2,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Undangan Meeting',
-            'icon' => 'HiMailOpen',
-            'route_id' => \App\Models\Route::where('route_name', 'my-meetings.index')->first()?->id ?? 1,
-            'section_id' => $tablesSection->id,
-            'type' => 'Single',
-            'position' => 3,
         ]);
 
         // 2. Web Setting Section (Parent & Children)
@@ -281,32 +282,51 @@ class RouteSettingSeeder extends Seeder
             'position' => 3,
         ]);
 
-        // 3. Master Data Section (Flat)
+        // 3. Master Data Section (Grouped)
+        $masterOrganisasi = DashboardMenu::create([
+            'name' => 'Organisasi',
+            'icon' => 'HiLibrary',
+            'section_id' => $masterDataSection->id,
+            'type' => 'Dropdown',
+            'position' => 1,
+        ]);
+
         DashboardMenu::create([
-            'name' => 'Pengguna',
-            'icon' => 'HiUser',
-            'route_id' => \App\Models\Route::where('route_name', 'users.index')->first()?->id ?? 1,
+            'name' => 'Perusahaan',
+            'icon' => 'HiOfficeBuilding',
+            'route_id' => \App\Models\Route::where('route_name', 'companies.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
+            'parent_id' => $masterOrganisasi->id,
             'position' => 1,
         ]);
 
         DashboardMenu::create([
             'name' => 'Divisi',
-            'icon' => 'HiOfficeBuilding',
+            'icon' => 'HiViewGrid',
             'route_id' => \App\Models\Route::where('route_name', 'devisions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
+            'parent_id' => $masterOrganisasi->id,
             'position' => 2,
         ]);
-        
+
         DashboardMenu::create([
-            'name' => 'Perusahaan',
-            'icon' => 'HiLibrary',
-            'route_id' => \App\Models\Route::where('route_name', 'companies.index')->first()?->id ?? 1,
+            'name' => 'Ruangan Rapat',
+            'icon' => 'HiUserGroup',
+            'route_id' => \App\Models\Route::where('route_name', 'meeting-rooms.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
+            'parent_id' => $masterOrganisasi->id,
             'position' => 3,
+        ]);
+
+        $masterKepegawaian = DashboardMenu::create([
+            'name' => 'Kepegawaian',
+            'icon' => 'HiBriefcase',
+            'section_id' => $masterDataSection->id,
+            'type' => 'Dropdown',
+            'position' => 2,
         ]);
 
         DashboardMenu::create([
@@ -315,52 +335,65 @@ class RouteSettingSeeder extends Seeder
             'route_id' => \App\Models\Route::where('route_name', 'employee-ranks.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
-            'position' => 4,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Peran',
-            'icon' => 'HiShieldCheck',
-            'route_id' => \App\Models\Route::where('route_name', 'roles.index')->first()?->id ?? 1,
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'position' => 5,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Hak Akses',
-            'icon' => 'HiOutlineLogin',
-            'route_id' => \App\Models\Route::where('route_name', 'role-permissions.index')->first()?->id ?? 1,
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'position' => 6,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Alur Persetujuan',
-            'icon' => 'HiClipboardCheck',
-            'route_id' => \App\Models\Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'position' => 7,
-        ]);
-
-        DashboardMenu::create([
-            'name' => 'Ruangan Rapat',
-            'icon' => 'HiOfficeBuilding',
-            'route_id' => \App\Models\Route::where('route_name', 'meeting-rooms.index')->first()?->id ?? 1,
-            'section_id' => $masterDataSection->id,
-            'type' => 'Single',
-            'position' => 8,
+            'parent_id' => $masterKepegawaian->id,
+            'position' => 1,
         ]);
 
         DashboardMenu::create([
             'name' => 'Jabatan Karyawan',
-            'icon' => 'HiBriefcase',
+            'icon' => 'HiBadgeCheck',
             'route_id' => \App\Models\Route::where('route_name', 'employee-positions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
-            'position' => 9,
+            'parent_id' => $masterKepegawaian->id,
+            'position' => 2,
+        ]);
+
+        $masterKeamanan = DashboardMenu::create([
+            'name' => 'Keamanan & Akses',
+            'icon' => 'HiShieldCheck',
+            'section_id' => $masterDataSection->id,
+            'type' => 'Dropdown',
+            'position' => 3,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Pengguna',
+            'icon' => 'HiUser',
+            'route_id' => \App\Models\Route::where('route_name', 'users.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterKeamanan->id,
+            'position' => 1,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Peran',
+            'icon' => 'HiKey',
+            'route_id' => \App\Models\Route::where('route_name', 'roles.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterKeamanan->id,
+            'position' => 2,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Hak Akses',
+            'icon' => 'HiLockClosed',
+            'route_id' => \App\Models\Route::where('route_name', 'role-permissions.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'parent_id' => $masterKeamanan->id,
+            'position' => 3,
+        ]);
+
+        DashboardMenu::create([
+            'name' => 'Alur Persetujuan',
+            'icon' => 'HiClipboardList',
+            'route_id' => \App\Models\Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
+            'section_id' => $masterDataSection->id,
+            'type' => 'Single',
+            'position' => 4,
         ]);
 
         $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
