@@ -407,7 +407,7 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         DashboardMenu::create([
-            'name' => 'Registrasi Karyawan',
+            'name' => 'Daftar Karyawan',
             'icon' => 'HiIdentification',
             'route_id' => \App\Models\Route::where('route_name', 'employee-registrations.index')->first()->id ?? 1,
             'section_id' => $hrSection->id,

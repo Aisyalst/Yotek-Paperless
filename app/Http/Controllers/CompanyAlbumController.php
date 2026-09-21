@@ -25,17 +25,20 @@ class CompanyAlbumController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ], [
-            'image.required' => 'Gambar album wajib diunggah.',
-            'image.image' => 'File harus berupa gambar.',
+            'images.required' => 'Gambar album wajib diunggah.',
+            'images.*.image' => 'File harus berupa gambar.',
         ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('company_albums', 'public');
-            CompanyAlbum::create([
-                'image' => $imagePath,
-            ]);
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $imagePath = $file->store('company_albums', 'public');
+                CompanyAlbum::create([
+                    'image' => $imagePath,
+                ]);
+            }
             return redirect()->route('company-albums.index')->with('success', 'Gambar album berhasil ditambahkan.');
         }
 

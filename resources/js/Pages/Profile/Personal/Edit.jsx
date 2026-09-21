@@ -45,17 +45,18 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-[#1a1a1a]">Edit Data Personal</h3>
-                                    <p className="text-sm text-gray-500">Perbarui informasi personal Anda di bawah ini.</p>
+                                    <p className="text-sm text-gray-500">Perbarui informasi personal Anda di bawah ini. <span className="text-[#eaae36] font-semibold">Pastikan data yang diisi valid!!</span></p>
                                 </div>
                             </div>
 
                             <form onSubmit={submit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <InputLabel htmlFor="nik" value="NIK" />
+                                        <InputLabel htmlFor="nik" value="NIK" required />
                                         <TextInput
                                             id="nik"
                                             className="mt-1 block w-full bg-gray-50"
+                                            required
                                             value={data.nik}
                                             onChange={(e) => setData('nik', e.target.value)}
                                             readOnly={!!employeeInformation?.nik}
@@ -67,7 +68,7 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="full_name" value="Nama Lengkap" />
+                                        <InputLabel htmlFor="full_name" value="Nama Lengkap" required />
                                         <TextInput
                                             id="full_name"
                                             className="mt-1 block w-full"
@@ -90,10 +91,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="nik_ktp" value="NIK KTP" />
+                                        <InputLabel htmlFor="nik_ktp" value="NIK KTP" required />
                                         <TextInput
                                             id="nik_ktp"
                                             className="mt-1 block w-full"
+                                            required
                                             value={data.nik_ktp}
                                             onChange={(e) => setData('nik_ktp', e.target.value)}
                                         />
@@ -101,10 +103,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="birth_place" value="Tempat Lahir" />
+                                        <InputLabel htmlFor="birth_place" value="Tempat Lahir" required />
                                         <TextInput
                                             id="birth_place"
                                             className="mt-1 block w-full"
+                                            required
                                             value={data.birth_place}
                                             onChange={(e) => setData('birth_place', e.target.value)}
                                         />
@@ -112,11 +115,12 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="birth_date" value="Tanggal Lahir" />
+                                        <InputLabel htmlFor="birth_date" value="Tanggal Lahir" required />
                                         <TextInput
                                             id="birth_date"
                                             type="date"
                                             className="mt-1 block w-full"
+                                            required
                                             value={data.birth_date}
                                             onChange={(e) => setData('birth_date', e.target.value)}
                                         />
@@ -124,10 +128,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
                                     
                                     <div>
-                                        <InputLabel htmlFor="gender" value="Jenis Kelamin" />
+                                        <InputLabel htmlFor="gender" value="Jenis Kelamin" required />
                                         <select
                                             id="gender"
                                             className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
+                                            required
                                             value={data.gender}
                                             onChange={(e) => setData('gender', e.target.value)}
                                         >
@@ -139,10 +144,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="marital_status" value="Status Pernikahan" />
+                                        <InputLabel htmlFor="marital_status" value="Status Pernikahan" required />
                                         <select
                                             id="marital_status"
                                             className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
+                                            required
                                             value={data.marital_status}
                                             onChange={(e) => setData('marital_status', e.target.value)}
                                         >
@@ -155,10 +161,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div className="md:col-span-2">
-                                        <InputLabel htmlFor="ktp_address" value="Alamat KTP" />
+                                        <InputLabel htmlFor="ktp_address" value="Alamat KTP" required />
                                         <textarea
                                             id="ktp_address"
                                             className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
+                                            required
                                             rows="3"
                                             value={data.ktp_address}
                                             onChange={(e) => setData('ktp_address', e.target.value)}
@@ -167,10 +174,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div className="md:col-span-2">
-                                        <InputLabel htmlFor="residential_address" value="Alamat Domisili" />
+                                        <InputLabel htmlFor="residential_address" value="Alamat Domisili" required />
                                         <textarea
                                             id="residential_address"
                                             className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
+                                            required
                                             rows="3"
                                             value={data.residential_address}
                                             onChange={(e) => setData('residential_address', e.target.value)}
@@ -179,11 +187,12 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="email" value="Email Pribadi" />
+                                        <InputLabel htmlFor="email" value="Email Pribadi" required />
                                         <TextInput
                                             id="email"
                                             type="email"
                                             className="mt-1 block w-full"
+                                            required
                                             value={data.email}
                                             onChange={(e) => setData('email', e.target.value)}
                                         />
@@ -191,10 +200,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="phone" value="No. Telepon / HP" />
+                                        <InputLabel htmlFor="phone" value="No. Telepon / HP" required />
                                         <TextInput
                                             id="phone"
                                             className="mt-1 block w-full"
+                                            required
                                             value={data.phone}
                                             onChange={(e) => setData('phone', e.target.value)}
                                         />
@@ -202,10 +212,11 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="emergency_contact" value="Kontak Darurat" />
+                                        <InputLabel htmlFor="emergency_contact" value="Kontak Darurat" required />
                                         <TextInput
                                             id="emergency_contact"
                                             className="mt-1 block w-full"
+                                            required
                                             value={data.emergency_contact}
                                             onChange={(e) => setData('emergency_contact', e.target.value)}
                                         />

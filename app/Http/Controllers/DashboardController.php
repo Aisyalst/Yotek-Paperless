@@ -35,7 +35,7 @@ class DashboardController extends Controller
 
         $companies = Company::all();
         $banners = Banner::orderBy('sort_order')->get();
-        $albums = CompanyAlbum::latest()->get();
+        $albums = CompanyAlbum::latest()->take(15)->get();
         $quickAccesses = QuickAccess::orderBy('sort_order')->get();
         $nik = Auth::user()->nik;
 
