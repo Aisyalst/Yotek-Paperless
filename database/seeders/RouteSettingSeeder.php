@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Route;
+use App\Models\Role;
 use App\Models\DashboardMenu;
+use App\Models\DashboardMenuSection;
 use App\Models\RolePermission;
 
 class RouteSettingSeeder extends Seeder
@@ -70,6 +72,7 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Tambah Pengajuan Izin', 'route_name' => 'leave-requests.create'],
             ['name' => 'Simpan Pengajuan Izin', 'route_name' => 'leave-requests.store'],
             ['name' => 'Detail Pengajuan Izin', 'route_name' => 'leave-requests.show'],
+            ['name' => 'Export Pengajuan Izin', 'route_name' => 'leave-requests.export'],
             ['name' => 'Unggah Surat Dokter', 'route_name' => 'leave-requests.upload-doctor-note'],
             ['name' => 'Registrasi Karyawan', 'route_name' => 'employee-registrations.index'],
             ['name' => 'Tambah Registrasi Karyawan', 'route_name' => 'employee-registrations.create'],
@@ -172,9 +175,9 @@ class RouteSettingSeeder extends Seeder
 
         // First make sure we have the sections, or rely on DashboardMenuSectionSeeder being called first.
         // Assuming Tables is ID 1 and Settings is ID 2 if seeded in order. Let's just fetch them to be safe.
-        $tablesSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Formulir'], ['order' => 1]);
-        $masterDataSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Data Master'], ['order' => 3]);
-        $settingsSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'Pengaturan Web'], ['order' => 4]);
+        $tablesSection = DashboardMenuSection::firstOrCreate(['name' => 'Formulir'], ['order' => 1]);
+        $masterDataSection = DashboardMenuSection::firstOrCreate(['name' => 'Data Master'], ['order' => 3]);
+        $settingsSection = DashboardMenuSection::firstOrCreate(['name' => 'Pengaturan Web'], ['order' => 4]);
 
         // 1. Forms Section
         $formsDropdown = DashboardMenu::create([
@@ -188,7 +191,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Pengajuan Izin',
             'icon' => 'HiDocumentText',
-            'route_id' => \App\Models\Route::where('route_name', 'leave-requests.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'leave-requests.index')->first()?->id ?? 1,
             'section_id' => $tablesSection->id,
             'type' => 'Single',
             'parent_id' => $formsDropdown->id,
@@ -198,7 +201,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Jadwal Meeting',
             'icon' => 'HiCalendar',
-            'route_id' => \App\Models\Route::where('route_name', 'meetings.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'meetings.index')->first()?->id ?? 1,
             'section_id' => $tablesSection->id,
             'type' => 'Single',
             'parent_id' => $formsDropdown->id,
@@ -217,7 +220,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Rute',
             'icon' => 'HiLink',
-            'route_id' => \App\Models\Route::where('route_name', 'routes.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'routes.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -227,7 +230,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Menu',
             'icon' => 'HiMenuAlt2',
-            'route_id' => \App\Models\Route::where('route_name', 'dashboard-menus.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'dashboard-menus.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -237,7 +240,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Bagian Menu',
             'icon' => 'HiViewGrid',
-            'route_id' => \App\Models\Route::where('route_name', 'dashboard-menu-sections.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'dashboard-menu-sections.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $settingsParent->id,
@@ -255,7 +258,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Banner',
             'icon' => 'HiPhotograph',
-            'route_id' => \App\Models\Route::where('route_name', 'banners.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'banners.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $dashboardBerandaMenu->id,
@@ -265,7 +268,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Album Perusahaan',
             'icon' => 'HiCamera',
-            'route_id' => \App\Models\Route::where('route_name', 'company-albums.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'company-albums.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $dashboardBerandaMenu->id,
@@ -275,7 +278,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Akses Cepat',
             'icon' => 'HiLightningBolt',
-            'route_id' => \App\Models\Route::where('route_name', 'quick-accesses.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'quick-accesses.index')->first()?->id ?? 1,
             'section_id' => $settingsSection->id,
             'type' => 'Single',
             'parent_id' => $dashboardBerandaMenu->id,
@@ -294,7 +297,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Perusahaan',
             'icon' => 'HiOfficeBuilding',
-            'route_id' => \App\Models\Route::where('route_name', 'companies.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'companies.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterOrganisasi->id,
@@ -304,7 +307,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Divisi',
             'icon' => 'HiViewGrid',
-            'route_id' => \App\Models\Route::where('route_name', 'devisions.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'devisions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterOrganisasi->id,
@@ -314,7 +317,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Ruangan Rapat',
             'icon' => 'HiUserGroup',
-            'route_id' => \App\Models\Route::where('route_name', 'meeting-rooms.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'meeting-rooms.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterOrganisasi->id,
@@ -332,7 +335,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Golongan Karyawan',
             'icon' => 'HiIdentification',
-            'route_id' => \App\Models\Route::where('route_name', 'employee-ranks.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'employee-ranks.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterKepegawaian->id,
@@ -342,7 +345,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Jabatan Karyawan',
             'icon' => 'HiBadgeCheck',
-            'route_id' => \App\Models\Route::where('route_name', 'employee-positions.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'employee-positions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterKepegawaian->id,
@@ -360,7 +363,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Pengguna',
             'icon' => 'HiUser',
-            'route_id' => \App\Models\Route::where('route_name', 'users.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'users.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterKeamanan->id,
@@ -370,7 +373,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Peran',
             'icon' => 'HiKey',
-            'route_id' => \App\Models\Route::where('route_name', 'roles.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'roles.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterKeamanan->id,
@@ -380,7 +383,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Hak Akses',
             'icon' => 'HiLockClosed',
-            'route_id' => \App\Models\Route::where('route_name', 'role-permissions.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'role-permissions.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'parent_id' => $masterKeamanan->id,
@@ -390,13 +393,13 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Alur Persetujuan',
             'icon' => 'HiClipboardList',
-            'route_id' => \App\Models\Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
             'section_id' => $masterDataSection->id,
             'type' => 'Single',
             'position' => 4,
         ]);
 
-        $hrSection = \App\Models\DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
+        $hrSection = DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 
         $hrParent = DashboardMenu::create([
             'name' => 'Karyawan',
@@ -409,7 +412,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Daftar Karyawan',
             'icon' => 'HiIdentification',
-            'route_id' => \App\Models\Route::where('route_name', 'employee-registrations.index')->first()->id ?? 1,
+            'route_id' => Route::where('route_name', 'employee-registrations.index')->first()->id ?? 1,
             'section_id' => $hrSection->id,
             'type' => 'Single',
             'parent_id' => $hrParent->id,
@@ -419,7 +422,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Manajemen Kontrak',
             'icon' => 'HiDocumentDuplicate',
-            'route_id' => \App\Models\Route::where('route_name', 'contracts.index')->first()->id ?? 1,
+            'route_id' => Route::where('route_name', 'contracts.index')->first()->id ?? 1,
             'section_id' => $hrSection->id,
             'type' => 'Single',
             'parent_id' => $hrParent->id,
@@ -429,7 +432,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Persetujuan Izin',
             'icon' => 'HiCheckCircle',
-            'route_id' => \App\Models\Route::where('route_name', 'leave-request-approvals.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'leave-request-approvals.index')->first()?->id ?? 1,
             'section_id' => $hrSection->id,
             'type' => 'Single',
             'parent_id' => $hrParent->id,
@@ -439,7 +442,7 @@ class RouteSettingSeeder extends Seeder
         DashboardMenu::create([
             'name' => 'Hak Cuti',
             'icon' => 'HiOutlineTicket',
-            'route_id' => \App\Models\Route::where('route_name', 'leave-entitlements.index')->first()?->id ?? 1,
+            'route_id' => Route::where('route_name', 'leave-entitlements.index')->first()?->id ?? 1,
             'section_id' => $hrSection->id,
             'type' => 'Single',
             'parent_id' => $hrParent->id,
@@ -447,7 +450,7 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)
-        $roles = \App\Models\Role::all();
+        $roles = Role::all();
         foreach ($roles as $role) {
             foreach (Route::all() as $route) {
                 RolePermission::create([

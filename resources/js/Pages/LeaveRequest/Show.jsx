@@ -78,12 +78,23 @@ export default function Show({ leaveRequest }) {
                         Informasi lengkap mengenai pengajuan cuti dan status persetujuan.
                     </p>
                 </div>
-                <Link
-                    href={route('leave-requests.index')}
-                    className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition"
-                >
-                    Kembali
-                </Link>
+                <div className="flex gap-2">
+                    {leaveRequest.status === 'Approved' && (
+                        <a
+                            href={route('leave-requests.export', leaveRequest.id)}
+                            target="_blank"
+                            className="bg-[#1a1a1a] text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition flex items-center gap-2"
+                        >
+                            Export PDF
+                        </a>
+                    )}
+                    <Link
+                        href={route('leave-requests.index')}
+                        className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition"
+                    >
+                        Kembali
+                    </Link>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -7,6 +7,7 @@ use App\Models\LeaveRequest;
 use App\Models\LeaveEntitlement;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LeaveRequestController extends Controller
 {
@@ -199,5 +200,11 @@ class LeaveRequestController extends Controller
         }
 
         return redirect()->back()->with('success', 'Surat dokter berhasil diunggah.');
+    }
+    public function exportPdf(Request $request, LeaveRequest $leaveRequest)
+    {
+
+        $pdf = Pdf::loadView('pdf.leave-request', compact('leaveRequest'))->setPaper('a4', 'landscape');
+         return $pdf->stream();
     }
 }
