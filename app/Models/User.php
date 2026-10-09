@@ -45,6 +45,20 @@ class User extends Authenticatable
         return $this->hasOne(EmployeeInformation::class, 'nik', 'nik');
     }
 
+    /**
+     * Semua penempatan kerja karyawan (multi-perusahaan / multi-jabatan).
+     * employeeInformation() di atas tetap penempatan UTAMA (is_primary).
+     */
+    public function employments()
+    {
+        return $this->hasMany(EmployeeEmployment::class, 'nik', 'nik');
+    }
+
+    public function primaryEmployment()
+    {
+        return $this->hasOne(EmployeeEmployment::class, 'nik', 'nik')->where('is_primary', true);
+    }
+
     public function contractInformation()
     {
         return $this->hasMany(ContractInformation::class, 'nik', 'nik');
