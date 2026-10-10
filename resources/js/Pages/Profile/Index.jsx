@@ -34,6 +34,32 @@ export default function Index({ auth, userData, totalActiveLeave }) {
                                 </div>
                             );
                         })}
+
+                        {/* Daftar penempatan perusahaan (multi-perusahaan) */}
+                        {Array.isArray(data.employments) && data.employments.length > 0 && (
+                            <div className="md:col-span-2 flex flex-col space-y-2 p-3 rounded-lg hover:bg-[#f8f8f8] transition-colors duration-200">
+                                <span className="text-sm font-semibold text-gray-500">Penempatan Perusahaan</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {data.employments.map((emp, i) => (
+                                        <span
+                                            key={i}
+                                            className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${
+                                                emp.is_primary
+                                                    ? 'bg-[#eaae36]/15 text-[#8a6410] border-[#eaae36]/40'
+                                                    : 'bg-gray-100 text-gray-700 border-gray-200'
+                                            }`}
+                                        >
+                                            {emp.is_primary && (
+                                                <span className="bg-[#eaae36] text-white rounded-full px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide">
+                                                    Utama
+                                                </span>
+                                            )}
+                                            {emp.company || '-'}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className="flex items-center justify-center p-8 text-gray-400 italic bg-gray-50/50 rounded-xl">

@@ -39,14 +39,28 @@ export default function Index({ employees, filters }) {
             header: 'Karyawan', 
             render: (emp) => (
                 <div className="flex flex-col">
-                    <span className="font-semibold text-[#1a1a1a]">{emp.user?.name || '-'}</span>
+                    <span className="font-semibold text-[#1a1a1a]">{emp.employee_name || emp.user?.name || '-'}</span>
                     <span className="text-xs text-gray-500">{emp.nik}</span>
                 </div>
             )
         },
         { 
             header: 'Perusahaan', 
-            accessor: 'company' 
+            render: (emp) => {
+                const list = Array.isArray(emp.employments) && emp.employments.length
+                    ? emp.employments.map(e => e.company).filter(Boolean)
+                    : (emp.company ? [emp.company] : []);
+                if (!list.length) return '-';
+                return (
+                    <div className="flex flex-wrap gap-1">
+                        {list.map((c, i) => (
+                            <span key={i} className="px-2 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                                {c}
+                            </span>
+                        ))}
+                    </div>
+                );
+            }
         },
         { 
             header: 'Departemen', 

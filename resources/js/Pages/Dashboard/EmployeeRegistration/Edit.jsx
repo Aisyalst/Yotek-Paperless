@@ -4,9 +4,14 @@ import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function Edit({ employee, users, allUsers, companies, ranks, positions }) {
+    const initialCompanies = Array.isArray(employee.employments) && employee.employments.length
+        ? employee.employments.map(e => e.company).filter(Boolean)
+        : (employee.company ? [employee.company] : []);
+
     const { data, setData, put, processing, errors } = useForm({
+        employee_name: employee.employee_name || employee.user?.name || '',
         nik: employee.nik || '',
-        company: employee.company || '',
+        company: initialCompanies,
         branch: employee.branch || '',
         department: employee.department || '',
         employee_position_id: employee.employee_position_id || '',
@@ -23,6 +28,14 @@ export default function Edit({ employee, users, allUsers, companies, ranks, posi
 
     const formFields = [
         {
+            name: 'employee_name',
+            label: 'Nama Karyawan',
+            type: 'text',
+            placeholder: 'Nama karyawan',
+            readOnly: true,
+            disabled: true,
+        },
+        {
             name: 'nik',
             label: 'NIK Karyawan',
             type: 'text',
@@ -32,24 +45,26 @@ export default function Edit({ employee, users, allUsers, companies, ranks, posi
         {
             name: 'company',
             label: 'Perusahaan',
-            type: 'select',
+            type: 'multiselect',
             options: (companies || []).map(c => ({ value: c.name, label: c.name })),
-            placeholder: 'Pilih Perusahaan',
+            placeholder: 'Pilih Perusahaan (bisa lebih dari satu)',
+            searchPlaceholder: 'Cari perusahaan...',
         },
         {
             name: 'branch',
             label: 'Cabang',
             type: 'select',
             options: (() => {
-                if (!data.company || !companies) return [];
-                const selectedCompany = companies.find(c => c.name === data.company);
+                const selected = Array.isArray(data.company) ? data.company[0] : data.company;
+                if (!selected || !companies) return [];
+                const selectedCompany = companies.find(c => c.name === selected);
                 if (!selectedCompany || !Array.isArray(selectedCompany.branch)) return [];
                 return selectedCompany.branch.map(b => {
                     const label = `${b.region}, ${b.province}, ${b.city}`;
                     return { value: label, label: label };
                 });
             })(),
-            placeholder: 'Pilih Cabang',
+            placeholder: 'Pilih Cabang (perusahaan utama)',
         },
         {
             name: 'department',

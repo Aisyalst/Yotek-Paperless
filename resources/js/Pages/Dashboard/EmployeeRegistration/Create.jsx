@@ -7,7 +7,7 @@ export default function Create({ users, allUsers, companies, ranks, positions })
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
         nik: '',
-        company: '',
+        company: [],
         branch: '',
         department: '',
         employee_position_id: '',
@@ -50,24 +50,26 @@ export default function Create({ users, allUsers, companies, ranks, positions })
         {
             name: 'company',
             label: 'Perusahaan',
-            type: 'select',
+            type: 'multiselect',
             options: (companies || []).map(c => ({ value: c.name, label: c.name })),
-            placeholder: 'Pilih Perusahaan',
+            placeholder: 'Pilih Perusahaan (bisa lebih dari satu)',
+            searchPlaceholder: 'Cari perusahaan...',
         },
         {
             name: 'branch',
             label: 'Cabang',
             type: 'select',
             options: (() => {
-                if (!data.company || !companies) return [];
-                const selectedCompany = companies.find(c => c.name === data.company);
+                const selected = Array.isArray(data.company) ? data.company[0] : data.company;
+                if (!selected || !companies) return [];
+                const selectedCompany = companies.find(c => c.name === selected);
                 if (!selectedCompany || !Array.isArray(selectedCompany.branch)) return [];
                 return selectedCompany.branch.map(b => {
                     const label = `${b.region}, ${b.province}, ${b.city}`;
                     return { value: label, label: label };
                 });
             })(),
-            placeholder: 'Pilih Cabang',
+            placeholder: 'Pilih Cabang (perusahaan utama)',
         },
         {
             name: 'department',
