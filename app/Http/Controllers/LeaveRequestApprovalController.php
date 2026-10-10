@@ -53,15 +53,9 @@ class LeaveRequestApprovalController extends Controller
             return $approval;
         });
 
-        $userRole = $user ? $user->role_id : null;
-        $canSetConsequence = false;
-        
-        if ($userRole) {
-            $canSetConsequence = \App\Models\RolePermission::where('role_id', $userRole)
-                ->whereHas('route', function ($query) {
-                    $query->where('route_name', 'leave-request-approvals.set-consequence');
-                })->exists();
-        }
+        $canSetConsequence = $user
+            ? $user->hasPermissionTo('leave-request-approvals.set-consequence')
+            : false;
 
         return Inertia::render('Dashboard/LeaveRequestApproval/Index', [
             'approvals' => $approvals,
@@ -124,11 +118,8 @@ class LeaveRequestApprovalController extends Controller
         $leaveRequest = $leaveRequestApproval->leaveRequest;
         $employeeUser = $leaveRequest->employee ? $leaveRequest->employee->user : null;
         
-        $userRole = Auth::user()->role_id;
-        $canSetConsequence = \App\Models\RolePermission::where('role_id', $userRole)
-            ->whereHas('route', function ($query) {
-                $query->where('route_name', 'leave-request-approvals.set-consequence');
-            })->exists();
+        $canSetConsequence = Auth::user()
+            ->hasPermissionTo('leave-request-approvals.set-consequence');
         
         if ($canSetConsequence && $request->has('consequence') && $request->status === 'Approved') {
             $consequence = $request->consequence;

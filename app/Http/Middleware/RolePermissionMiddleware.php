@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\RolePermission;
 
 class RolePermissionMiddleware
 {
@@ -19,19 +18,13 @@ class RolePermissionMiddleware
         if (!auth()->check()) {
             return redirect()->route('login');
         }
-        $userRole = auth()->user()->role_id;
+        $user = auth()->user();
         $currentRouteName = $request->route()->getName(); // Ambil nama route saat ini
 
-        // Cek di database, apakah role ini punya akses ke route ini?
-        $punyaAkses = RolePermission::where('role_id', $userRole)
-                                    ->whereHas('route', function ($query) use ($currentRouteName) {
-                                        $query->where('route_name', $currentRouteName);
-                                    })
-                                    ->exists();
-
-        if (!$punyaAkses) {
-            return back()->with('error', 'As '. auth()->user()->role->name .' You are not authorized to access ' . $currentRouteName . ' !!');
-            // abort(403, 'Anda Sebagai '. auth()->user()->role->name .' Tidak Memiliki Hak Untuk Mengakses Halaman Route Dengan Nama ini ' . $currentRouteName . ' !!');
+        // Cek akses via SEMUA role user (union) — aman untuk multi-role.
+        if (!$user->hasPermissionTo($currentRouteName)) {
+            $roleName = $user->role?->name ?? 'Unknown Role';
+            return back()->with('error', 'As '. $roleName .' You are not authorized to access ' . $currentRouteName . ' !!');
         }
 
         return $next($request);

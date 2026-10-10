@@ -27,10 +27,13 @@ class UserSeeder extends Seeder
                 [
                     'name' => $role->name . ' User',
                     'nik' => $nik,
-                    'role_id' => $role->id,
                     'password' => Hash::make('123123123'),
                 ]
             );
+
+            $user->roles()->syncWithoutDetaching([
+                $role->id => ['is_primary' => true],
+            ]);
 
             EmployeeInformation::updateOrCreate(
                 ['nik' => $user->nik],
@@ -55,10 +58,15 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Aisyal',
                 'nik' => $aisyalNik,
-                'role_id' => $webDevRole ? $webDevRole->id : null,
                 'password' => Hash::make('123123123'),
             ]
         );
+
+        if ($webDevRole) {
+            $aisyal->roles()->syncWithoutDetaching([
+                $webDevRole->id => ['is_primary' => true],
+            ]);
+        }
 
         EmployeeInformation::updateOrCreate(
             ['nik' => $aisyal->nik],
@@ -74,11 +82,11 @@ class UserSeeder extends Seeder
         );
 
         // Assign Division Heads
-        $headFinanceUser = User::whereHas('role', function ($query) {
+        $headFinanceUser = User::whereHas('roles', function ($query) {
             $query->where('name', 'Head Finance');
         })->first();
 
-        $headHRUser = User::whereHas('role', function ($query) {
+        $headHRUser = User::whereHas('roles', function ($query) {
             $query->where('name', 'Head HR');
         })->first();
 

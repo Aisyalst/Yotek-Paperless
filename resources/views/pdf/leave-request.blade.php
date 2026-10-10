@@ -107,8 +107,8 @@
         <tr class="text-center">
             <td>{{ $leaveRequest->employee->nik ?? '-' }}</td>
             <td>{{ $leaveRequest->employee->user->name ?? '-' }}</td>
-            <td>{{ $leaveRequest->employee->user->role->name ?? '-' }}</td>
-            <td>{{ $leaveRequest->employee->user->role->devision->name ?? '-' }}</td>
+            <td>{{ $leaveRequest->employee->user->role?->name ?? '-' }}</td>
+            <td>{{ $leaveRequest->employee->user->role?->devision?->name ?? '-' }}</td>
             <td>
                 @php
                     $sisaCuti = \App\Models\LeaveEntitlement::where('nik', $leaveRequest->employee_nik)

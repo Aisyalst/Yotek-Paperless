@@ -9,7 +9,7 @@ export default function Create({ roles }) {
         name: '',
         email: '',
         phone: '',
-        role_id: '',
+        role_ids: [],
         password: '',
     });
 
@@ -44,11 +44,11 @@ export default function Create({ roles }) {
             required: true,
         },
         {
-            name: 'role_id',
-            label: 'Role',
-            type: 'select',
+            name: 'role_ids',
+            label: 'Roles',
+            type: 'multiselect',
             options: roles.map(role => ({ value: role.id, label: role.name })),
-            placeholder: 'Select Role',
+            placeholder: 'Select Roles',
             required: true,
         },
         {

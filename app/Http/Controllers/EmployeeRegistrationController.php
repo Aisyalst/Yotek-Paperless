@@ -36,7 +36,7 @@ class EmployeeRegistrationController extends Controller
     public function create()
     {
         // Users who don't have an NIK yet
-        $users = User::with('role.devision')->whereNull('nik')->get(['id', 'name', 'role_id']);
+        $users = User::with(['role.devision', 'roles'])->whereNull('nik')->get(['id', 'name']);
         $allUsers = User::all(['nik', 'name']);
         $companies = \App\Models\Company::all(['id', 'name', 'branch']);
         $ranks = \App\Models\EmployeeRank::orderBy('order')->get(['id', 'title']);

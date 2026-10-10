@@ -9,7 +9,7 @@ export default function Edit({ user, roles }) {
         name: user.name || '',
         email: user.email || '',
         phone: user.phone || '',
-        role_id: user.role_id || '',
+        role_ids: (user.roles || []).map(role => String(role.id)),
         is_active: user.is_active !== undefined ? user.is_active : 1,
         password: '',
     });
@@ -45,11 +45,11 @@ export default function Edit({ user, roles }) {
             required: true,
         },
         {
-            name: 'role_id',
-            label: 'Role',
-            type: 'select',
+            name: 'role_ids',
+            label: 'Roles',
+            type: 'multiselect',
             options: roles.map(role => ({ value: role.id, label: role.name })),
-            placeholder: 'Select Role',
+            placeholder: 'Select Roles',
             required: true,
         },
         {

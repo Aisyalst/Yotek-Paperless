@@ -32,10 +32,8 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
-                'permissions' => $request->user() && $request->user()->role
-                    ? $request->user()->role->permissions->load('route')->pluck('route.route_name')->filter()->toArray()
-                    : [],
+                'user' => $request->user() ? $request->user()->loadMissing(['role.devision', 'roles']) : null,
+                'permissions' => $request->user() ? $request->user()->allPermissions() : [],
                 'unreadNotificationsCount' => $request->user() ? $request->user()->unreadNotifications()->count() : 0,
                 'latestNotifications' => $request->user() ? $request->user()->notifications()->with('notification')->orderBy('created_at', 'desc')->take(5)->get() : [],
             ],

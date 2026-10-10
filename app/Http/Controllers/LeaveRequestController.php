@@ -105,9 +105,12 @@ class LeaveRequestController extends Controller
         $workflows = \App\Models\ApprovalWorkflow::where('workflow_type', 'Cuti')->get();
         $matchedWorkflow = null;
         
+        $userRoleIds = $user->roles()->pluck('roles.id')->map(fn ($id) => (string) $id)->all();
+
         foreach ($workflows as $wf) {
             $roleIds = is_array($wf->role_id) ? $wf->role_id : (json_decode($wf->role_id, true) ?? []);
-            if (in_array((string)$user->role_id, $roleIds) || in_array($user->role_id, $roleIds)) {
+            $roleIds = array_map('strval', $roleIds);
+            if (array_intersect($userRoleIds, $roleIds)) {
                 $matchedWorkflow = $wf;
                 break;
             }

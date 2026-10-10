@@ -88,7 +88,9 @@ export default function Index({ users, filters }) {
             render: (user) => (
                 <div className="flex flex-col gap-1">
                     <span className="text-gray-700 font-semibold">
-                        {user.role?.name || '-'}
+                        {(user.roles && user.roles.length
+                            ? user.roles.map(role => role.name).join(', ')
+                            : (user.role?.name || '-'))}
                     </span>
                     <span className="text-xs text-gray-500">
                         {user.role?.devision?.name || '-'}

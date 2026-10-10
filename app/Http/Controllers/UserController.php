@@ -14,7 +14,7 @@ class UserController extends Controller
         $search = $request->query('search');
         $perPage = $request->query('per_page', 10);
 
-        $query = User::latest()->with('role.devision');
+        $query = User::latest()->with(['role.devision', 'roles.devision']);
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -27,8 +27,7 @@ class UserController extends Controller
         $users = $query->paginate($perPage)->withQueryString();
 
         $users->getCollection()->transform(function($user) {
-            $role = $user->role;
-            $user->permissions_count = $role->permissions->count();
+            $user->permissions_count = $user->role ? $user->role->permissions->count() : 0;
             return $user;
         });
 
@@ -45,7 +44,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load('role');
+        $user->load(['role.devision', 'roles.devision']);
         return inertia('Dashboard/Users/Show', 
             ['user' => $user]
         );
@@ -60,23 +59,26 @@ class UserController extends Controller
     // Memproses data form yang disubmit
     public function store(Request $request)
     {
-        // 1. Validasi input
+        // 1. Validasi input (multi-role)
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|string|max:20',
-            'role_id' => 'required|exists:roles,id',
+            'role_ids' => 'required|array|min:1',
+            'role_ids.*' => 'exists:roles,id',
             'password' => 'required|string|min:8',
         ]);
 
         // 2. Simpan ke database
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'role_id' => $request->role_id,
             'password' => Hash::make($request->password),
         ]);
+
+        // 3. Simpan multi-role ke pivot user_roles
+        $this->syncRoles($user, $request->role_ids);
 
         // 3. Redirect kembali ke halaman index
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -84,7 +86,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $user->load('role');
+        $user->load(['role', 'roles']);
         $roles = Role::all();
         return inertia('Dashboard/Users/Edit', 
             ['user' => $user, 'roles' => $roles]
@@ -93,12 +95,13 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        // 1. Validasi input
+        // 1. Validasi input (multi-role)
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'phone' => 'required|string|max:20',
-            'role_id' => 'required|exists:roles,id',
+            'role_ids' => 'required|array|min:1',
+            'role_ids.*' => 'exists:roles,id',
             'is_active' => 'required|in:0,1',
             'password' => 'nullable|string|min:8',
         ]);
@@ -107,7 +110,6 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->role_id = $request->role_id;
         $user->is_active = $request->is_active;
         // Hanya update password jika field password tidak kosong
         if ($request->filled('password')) {
@@ -116,7 +118,10 @@ class UserController extends Controller
 
         $user->save();
 
-        // 3. Redirect kembali ke halaman index
+        // 3. Sinkronkan multi-role ke pivot user_roles
+        $this->syncRoles($user, $request->role_ids);
+
+        // 4. Redirect kembali ke halaman index
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
@@ -124,5 +129,21 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->back()->with('success', 'User deleted successfully.');
+    }
+
+    /**
+     * Sinkronkan daftar role user ke pivot user_roles.
+     * Role pertama pada input dijadikan role primary.
+     */
+    protected function syncRoles(User $user, array $roleIds): void
+    {
+        $roleIds = array_values(array_unique($roleIds));
+        $primary = $roleIds[0] ?? null;
+
+        $sync = collect($roleIds)->mapWithKeys(function ($id) use ($primary) {
+            return [$id => ['is_primary' => ((string) $id === (string) $primary)]];
+        })->all();
+
+        $user->roles()->sync($sync);
     }
 }

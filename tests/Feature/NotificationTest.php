@@ -13,9 +13,11 @@ class NotificationTest extends TestCase
 
     public function test_send_notification_to_specific_user()
     {
-        $role = \App\Models\Role::create(['name' => 'Test Role', 'guard_name' => 'web']);
-        $user1 = User::factory()->create(['role_id' => $role->id]);
-        $user2 = User::factory()->create(['role_id' => $role->id]);
+        $role = \App\Models\Role::create(['name' => 'Test Role']);
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $user1->roles()->attach($role->id, ['is_primary' => true]);
+        $user2->roles()->attach($role->id, ['is_primary' => true]);
 
         $service = new NotificationService();
         $service->send([
@@ -31,8 +33,11 @@ class NotificationTest extends TestCase
 
     public function test_send_notification_to_all_users()
     {
-        $role = \App\Models\Role::create(['name' => 'Test Role', 'guard_name' => 'web']);
-        User::factory()->count(3)->create(['role_id' => $role->id]);
+        $role = \App\Models\Role::create(['name' => 'Test Role']);
+        $users = User::factory()->count(3)->create();
+        foreach ($users as $u) {
+            $u->roles()->attach($role->id, ['is_primary' => true]);
+        }
 
         $service = new NotificationService();
         $service->send([
@@ -48,8 +53,9 @@ class NotificationTest extends TestCase
 
     public function test_mark_as_read()
     {
-        $role = \App\Models\Role::create(['name' => 'Test Role', 'guard_name' => 'web']);
-        $user = User::factory()->create(['role_id' => $role->id]);
+        $role = \App\Models\Role::create(['name' => 'Test Role']);
+        $user = User::factory()->create();
+        $user->roles()->attach($role->id, ['is_primary' => true]);
         $service = new NotificationService();
         $service->send([
             'title' => 'Hello',
@@ -71,8 +77,9 @@ class NotificationTest extends TestCase
 
     public function test_mark_all_as_read()
     {
-        $role = \App\Models\Role::create(['name' => 'Test Role', 'guard_name' => 'web']);
-        $user = User::factory()->create(['role_id' => $role->id]);
+        $role = \App\Models\Role::create(['name' => 'Test Role']);
+        $user = User::factory()->create();
+        $user->roles()->attach($role->id, ['is_primary' => true]);
         $service = new NotificationService();
         $service->send([
             'title' => 'Hello',

@@ -96,7 +96,7 @@ class MeetingController extends Controller
             }
 
             if (!empty($request->roles)) {
-                $niks = User::whereIn('role_id', $request->roles)->pluck('nik')->toArray();
+                $niks = User::whereHas('roles', fn ($q) => $q->whereIn('roles.id', $request->roles))->pluck('nik')->toArray();
                 $participantNiks = array_merge($participantNiks, $niks);
             }
 
@@ -205,7 +205,7 @@ class MeetingController extends Controller
             }
 
             if (!empty($request->roles)) {
-                $niks = User::whereIn('role_id', $request->roles)->pluck('nik')->toArray();
+                $niks = User::whereHas('roles', fn ($q) => $q->whereIn('roles.id', $request->roles))->pluck('nik')->toArray();
                 $participantNiks = array_merge($participantNiks, $niks);
             }
 

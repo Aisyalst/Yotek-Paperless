@@ -36,7 +36,9 @@ export default function Show({ user }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="col-span-2">
                             <span className="inline-block px-2 py-1 text-xs font-semibold text-white bg-blue-800 rounded-full">
-                                {user.role.name}
+                                {(user.roles && user.roles.length
+                                    ? user.roles.map(role => role.name).join(', ')
+                                    : (user.role?.name || '-'))}
                             </span>
                             {Number(user.is_active) === 1 ? (
                                 <span className="ml-2 inline-block px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">

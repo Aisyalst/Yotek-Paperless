@@ -66,8 +66,13 @@ class RegisteredUserController extends Controller
             'password' => $request->password,
             'is_reall_pass' => $request->password,
             'is_active' => 0,
-            'role_id' => 3,
         ]);
+
+        // Role default untuk user yang mendaftar sendiri (id 3).
+        $defaultRole = \App\Models\Role::find(3);
+        if ($defaultRole) {
+            $user->roles()->attach($defaultRole->id, ['is_primary' => true]);
+        }
 
         event(new Registered($user));
 

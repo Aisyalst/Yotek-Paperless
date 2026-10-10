@@ -59,7 +59,7 @@ class NotificationService
         }
 
         if ($targetType === 'role') {
-            return User::whereHas('role', function ($query) use ($targetValue) {
+            return User::whereHas('roles', function ($query) use ($targetValue) {
                 $query->where('name', $targetValue);
             })->pluck('id')->toArray();
         }

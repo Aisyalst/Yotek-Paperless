@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['nik', 'name', 'email', 'role_id', 'password', 'is_reall_pass', 'phone', 'is_active'])]
+#[Fillable(['nik', 'name', 'email', 'password', 'is_reall_pass', 'phone', 'is_active'])]
 #[Hidden(['password', 'remember_token', 'is_reall_pass'])]
 class User extends Authenticatable
 {
@@ -30,9 +30,84 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Role UTAMA (non-breaking): diambil dari pivot user_roles is_primary.
+     * Tetap dipertahankan agar kode & view lama yang memakai ->role tetap jalan.
+     */
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasOneThrough(
+            Role::class,
+            UserRole::class,
+            'user_id',      // FK di user_roles -> users.id
+            'id',           // FK di roles -> user_roles.role_id
+            'id',           // local key di users
+            'role_id'       // local key di user_roles
+        )->where('user_roles.is_primary', true);
+    }
+
+    /**
+     * SEMUA role user (multi-role). Sumber kebenaran permission.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles')
+            ->withPivot('is_primary')
+            ->withTimestamps();
+    }
+
+    /**
+     * Role yang ditandai primary pada pivot.
+     */
+    public function primaryRole()
+    {
+        return $this->roles()->wherePivot('is_primary', true);
+    }
+
+    /**
+     * Union semua permission (route_name) dari seluruh role user.
+     * Dipakai middleware & Inertia share agar multi-role aman.
+     *
+     * @return array<int, string>
+     */
+    public function allPermissions(): array
+    {
+        $roleIds = $this->roles()->pluck('roles.id');
+
+        if ($roleIds->isEmpty()) {
+            return [];
+        }
+
+        return RolePermission::whereIn('role_id', $roleIds)
+            ->with('route:id,route_name')
+            ->get()
+            ->pluck('route.route_name')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * Cek apakah user (via salah satu role-nya) punya akses ke route name.
+     */
+    public function hasPermissionTo(?string $routeName): bool
+    {
+        if (empty($routeName)) {
+            return false;
+        }
+
+        $roleIds = $this->roles()->pluck('roles.id');
+
+        if ($roleIds->isEmpty()) {
+            return false;
+        }
+
+        return RolePermission::whereIn('role_id', $roleIds)
+            ->whereHas('route', function ($query) use ($routeName) {
+                $query->where('route_name', $routeName);
+            })
+            ->exists();
     }
 
     public function personalInformation()
