@@ -1,6 +1,7 @@
 import React from 'react';
 import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
 import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
+import MultiSelect from '@/Components/MultiSelect';
 
 export default function DynamicForm({
     title,
@@ -46,6 +47,14 @@ export default function DynamicForm({
                                     </option>
                                 ))}
                             </select>
+                        ) : field.type === 'multiselect' ? (
+                            <MultiSelect
+                                value={data[field.name] || []}
+                                onChange={(selected) => setData(field.name, selected)}
+                                options={field.options || []}
+                                placeholder={field.placeholder || `Select ${field.label}`}
+                                searchPlaceholder={field.searchPlaceholder || 'Cari...'}
+                            />
                         ) : field.type === 'textarea' ? (
                             <textarea
                                 value={data[field.name]}
