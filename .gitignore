@@ -13,6 +13,7 @@
 /.vscode
 /.zed
 /auth.json
+/database/seeders/data
 /node_modules
 /public/fonts-manifest.dev.json
 /public/hot

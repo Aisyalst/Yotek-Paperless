@@ -9,26 +9,22 @@ class CompanySeeder extends Seeder
 {
     public function run(): void
     {
-        $companies = ['Yotek', 'SDD', 'SH', 'IRP'];
-        
-        $branches = [
-            [
-                'region' => 'Jawa',
-                'province' => 'Banten',
-                'city' => 'Tangerang',
-            ],
-            [
-                'region' => 'Sumatera',
-                'province' => 'Riau',
-                'city' => 'Pekanbaru',
-            ]
+        // Nama perusahaan harus sama dengan nilai `company` pada data karyawan
+        // (employee_data.json). Daftar cabang diisi oleh MainEmployeeData.
+        $companies = [
+            'Yogura Tekindo',
+            'Sumber Display Dunia',
+            'Seriyus Hutama',
+            'Indo Riau Perkasa',
+            'Sumber Daya Alamindo',
+            'Hunian Hijau Indonesia',
+            'Epta Solusi Indonesia',
+            'Cipta',
+            'Gerbang Lautan Indonesia',
         ];
 
         foreach ($companies as $name) {
-            Company::firstOrCreate(
-                ['name' => $name],
-                ['branch' => $branches]
-            );
+            Company::firstOrCreate(['name' => $name]);
         }
     }
 }

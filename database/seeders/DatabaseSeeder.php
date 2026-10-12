@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             DevisionSeeder::class,
             RoleSeeder::class,
             EmployeeRankSeeder::class,
+            MainEmployeeData::class,
             UserSeeder::class,
             RouteSettingSeeder::class,
             MeetingRoomSeeder::class,

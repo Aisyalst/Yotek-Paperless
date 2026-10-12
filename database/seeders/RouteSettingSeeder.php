@@ -450,14 +450,12 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         // 3. Assign all routes to Admin role (id = 1)
-        $roles = Role::all();
-        foreach ($roles as $role) {
-            foreach (Route::all() as $route) {
-                RolePermission::create([
-                    'role_id' => $role->id,
-                    'route_id' => $route->id,
-                ]);
-            }
+        $webdev = Role::where('name', 'Web Dev')->first();
+        foreach (Route::all() as $route) {
+            RolePermission::create([
+                'role_id' => $webdev->id,
+                'route_id' => $route->id,
+            ]);
         }
     }
 }

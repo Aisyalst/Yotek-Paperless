@@ -2,6 +2,7 @@ import React from 'react';
 import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
 import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
 import MultiSelect from '@/Components/MultiSelect';
+import EmploymentRepeater from '@/Components/EmploymentRepeater';
 
 export default function DynamicForm({
     title,
@@ -54,6 +55,15 @@ export default function DynamicForm({
                                 options={field.options || []}
                                 placeholder={field.placeholder || `Select ${field.label}`}
                                 searchPlaceholder={field.searchPlaceholder || 'Cari...'}
+                            />
+                        ) : field.type === 'repeater' ? (
+                            <EmploymentRepeater
+                                value={data[field.name] || []}
+                                onChange={(rows) => setData(field.name, rows)}
+                                companies={field.companies || []}
+                                ranks={field.ranks || []}
+                                positions={field.positions || []}
+                                allUsers={field.allUsers || []}
                             />
                         ) : field.type === 'textarea' ? (
                             <textarea

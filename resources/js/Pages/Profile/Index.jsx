@@ -35,12 +35,23 @@ export default function Index({ auth, userData, totalActiveLeave }) {
                             );
                         })}
 
-                        {/* Daftar penempatan perusahaan (multi-perusahaan) */}
+                        {/* Daftar penempatan perusahaan (multi-perusahaan).
+                            Nama perusahaan di-dedupe: beberapa penempatan bisa
+                            berada di perusahaan yang sama (multi-jabatan). */}
                         {Array.isArray(data.employments) && data.employments.length > 0 && (
                             <div className="md:col-span-2 flex flex-col space-y-2 p-3 rounded-lg hover:bg-[#f8f8f8] transition-colors duration-200">
                                 <span className="text-sm font-semibold text-gray-500">Penempatan Perusahaan</span>
                                 <div className="flex flex-wrap gap-2">
-                                    {data.employments.map((emp, i) => (
+                                    {Object.values(
+                                        data.employments.reduce((acc, emp) => {
+                                            const key = emp.company || '-';
+                                            if (!acc[key]) {
+                                                acc[key] = { company: key, is_primary: false };
+                                            }
+                                            acc[key].is_primary = acc[key].is_primary || !!emp.is_primary;
+                                            return acc;
+                                        }, {})
+                                    ).map((emp, i) => (
                                         <span
                                             key={i}
                                             className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${

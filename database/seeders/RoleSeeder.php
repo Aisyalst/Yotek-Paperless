@@ -11,13 +11,13 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $rolesData = [
+            // Role umum untuk SEMUA jabatan berawalan "Staff" (lintas departemen).
+            'Staff' => null,
             'Web Dev' => 'Digital Support',
-            'Head HR' => 'HR',
-            'Head Finance' => 'Finance',
         ];
 
         foreach ($rolesData as $roleName => $devisionName) {
-            $devision = Devision::where('name', $devisionName)->first();
+            $devision = $devisionName ? Devision::where('name', $devisionName)->first() : null;
             Role::firstOrCreate(
                 ['name' => $roleName],
                 ['devision_id' => $devision ? $devision->id : null]

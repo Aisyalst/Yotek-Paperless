@@ -7,24 +7,19 @@ export default function Create({ users, allUsers, companies, ranks, positions })
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
         nik: '',
-        company: [],
-        branch: '',
-        department: '',
-        employee_position_id: '',
-        employee_rank_id: '',
-        direct_supervisor: '',
-        employment_status: '',
-        join_date: '',
+        employments: [
+            {
+                company: '',
+                branch: '',
+                department: '',
+                employee_position_id: '',
+                employee_rank_id: '',
+                direct_supervisor: '',
+                employment_status: '',
+                join_date: '',
+            },
+        ],
     });
-
-    React.useEffect(() => {
-        if (data.user_id) {
-            const selectedUser = users.find(u => String(u.id) === String(data.user_id));
-            if (selectedUser?.role?.devision?.name) {
-                setData('department', selectedUser.role.devision.name);
-            }
-        }
-    }, [data.user_id]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,73 +43,13 @@ export default function Create({ users, allUsers, companies, ranks, positions })
             required: true,
         },
         {
-            name: 'company',
-            label: 'Perusahaan',
-            type: 'multiselect',
-            options: (companies || []).map(c => ({ value: c.name, label: c.name })),
-            placeholder: 'Pilih Perusahaan (bisa lebih dari satu)',
-            searchPlaceholder: 'Cari perusahaan...',
-        },
-        {
-            name: 'branch',
-            label: 'Cabang',
-            type: 'select',
-            options: (() => {
-                const selected = Array.isArray(data.company) ? data.company[0] : data.company;
-                if (!selected || !companies) return [];
-                const selectedCompany = companies.find(c => c.name === selected);
-                if (!selectedCompany || !Array.isArray(selectedCompany.branch)) return [];
-                return selectedCompany.branch.map(b => {
-                    const label = `${b.region}, ${b.province}, ${b.city}`;
-                    return { value: label, label: label };
-                });
-            })(),
-            placeholder: 'Pilih Cabang (perusahaan utama)',
-        },
-        {
-            name: 'department',
-            label: 'Departemen',
-            type: 'text',
-            placeholder: 'Departemen',
-        },
-        {
-            name: 'employee_position_id',
-            label: 'Jabatan',
-            type: 'select',
-            options: positions ? positions.map(pos => ({ value: pos.id, label: pos.name })) : [],
-            placeholder: 'Pilih Jabatan',
-        },
-        {
-            name: 'employee_rank_id',
-            label: 'Level',
-            type: 'select',
-            options: ranks ? ranks.map(rank => ({ value: rank.id, label: rank.title })) : [],
-            placeholder: 'Pilih Level',
-        },
-        {
-            name: 'direct_supervisor',
-            label: 'Atasan Langsung',
-            type: 'select',
-            options: [{ value: '', label: 'Pilih Atasan Langsung' }, ...allUsers.map(u => ({ value: u.nik, label: `${u.name} (${u.nik})` }))],
-            placeholder: 'Pilih Atasan Langsung (Opsional)',
-        },
-        {
-            name: 'employment_status',
-            label: 'Status Kepegawaian',
-            type: 'select',
-            options: [
-                { value: '', label: 'Pilih Status Kepegawaian' },
-                { value: 'Active', label: 'Active' },
-                { value: 'Inactive', label: 'Inactive' },
-                { value: 'Resigned', label: 'Resigned' },
-                { value: 'Terminated', label: 'Terminated' }
-            ],
-            placeholder: 'Pilih Status',
-        },
-        {
-            name: 'join_date',
-            label: 'Tanggal Bergabung',
-            type: 'date',
+            name: 'employments',
+            label: 'Penempatan Karyawan',
+            type: 'repeater',
+            companies: companies,
+            ranks: ranks,
+            positions: positions,
+            allUsers: allUsers,
         },
     ];
 

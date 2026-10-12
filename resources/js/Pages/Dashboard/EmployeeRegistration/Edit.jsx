@@ -4,21 +4,36 @@ import DynamicForm from '@/Components/DynamicForm';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function Edit({ employee, users, allUsers, companies, ranks, positions }) {
-    const initialCompanies = Array.isArray(employee.employments) && employee.employments.length
-        ? employee.employments.map(e => e.company).filter(Boolean)
-        : (employee.company ? [employee.company] : []);
+    // Bangun baris penempatan dari data employments (multi-perusahaan / multi-jabatan).
+    // Fallback ke kolom tunggal employee.* kalau belum ada baris employment.
+    const initialEmployments = Array.isArray(employee.employments) && employee.employments.length
+        ? employee.employments.map((emp) => ({
+            company: emp.company || '',
+            branch: emp.branch || '',
+            department: emp.department || '',
+            employee_position_id: emp.employee_position_id || '',
+            employee_rank_id: emp.employee_rank_id || '',
+            direct_supervisor: emp.direct_supervisor || '',
+            employment_status: emp.employment_status || '',
+            join_date: emp.join_date || '',
+        }))
+        : [
+            {
+                company: employee.company || '',
+                branch: employee.branch || '',
+                department: employee.department || '',
+                employee_position_id: employee.employee_position_id || '',
+                employee_rank_id: employee.employee_rank_id || '',
+                direct_supervisor: employee.direct_supervisor || '',
+                employment_status: employee.employment_status || '',
+                join_date: employee.join_date || '',
+            },
+        ];
 
     const { data, setData, put, processing, errors } = useForm({
         employee_name: employee.employee_name || employee.user?.name || '',
         nik: employee.nik || '',
-        company: initialCompanies,
-        branch: employee.branch || '',
-        department: employee.department || '',
-        employee_position_id: employee.employee_position_id || '',
-        employee_rank_id: employee.employee_rank_id || '',
-        direct_supervisor: employee.direct_supervisor || '',
-        employment_status: employee.employment_status || '',
-        join_date: employee.join_date || '',
+        employments: initialEmployments,
     });
 
     const handleSubmit = (e) => {
@@ -43,74 +58,14 @@ export default function Edit({ employee, users, allUsers, companies, ranks, posi
             disabled: true, // Tidak bisa ubah NIK saat edit
         },
         {
-            name: 'company',
-            label: 'Perusahaan',
-            type: 'multiselect',
-            options: (companies || []).map(c => ({ value: c.name, label: c.name })),
-            placeholder: 'Pilih Perusahaan (bisa lebih dari satu)',
-            searchPlaceholder: 'Cari perusahaan...',
+            name: 'employments',
+            label: 'Penempatan Karyawan',
+            type: 'repeater',
+            companies: companies,
+            ranks: ranks,
+            positions: positions,
+            allUsers: allUsers,
         },
-        {
-            name: 'branch',
-            label: 'Cabang',
-            type: 'select',
-            options: (() => {
-                const selected = Array.isArray(data.company) ? data.company[0] : data.company;
-                if (!selected || !companies) return [];
-                const selectedCompany = companies.find(c => c.name === selected);
-                if (!selectedCompany || !Array.isArray(selectedCompany.branch)) return [];
-                return selectedCompany.branch.map(b => {
-                    const label = `${b.region}, ${b.province}, ${b.city}`;
-                    return { value: label, label: label };
-                });
-            })(),
-            placeholder: 'Pilih Cabang (perusahaan utama)',
-        },
-        {
-            name: 'department',
-            label: 'Departemen',
-            type: 'text',
-            placeholder: 'Departemen',
-        },
-        {
-            name: 'employee_position_id',
-            label: 'Jabatan',
-            type: 'select',
-            options: positions ? positions.map(pos => ({ value: pos.id, label: pos.name })) : [],
-            placeholder: 'Pilih Jabatan',
-        },
-        {
-            name: 'employee_rank_id',
-            label: 'Level',
-            type: 'select',
-            options: ranks ? ranks.map(rank => ({ value: rank.id, label: rank.title })) : [],
-            placeholder: 'Pilih Level',
-        },
-        {
-            name: 'direct_supervisor',
-            label: 'Atasan Langsung',
-            type: 'select',
-            options: [{ value: '', label: 'Pilih Atasan Langsung' }, ...allUsers.map(u => ({ value: u.nik, label: `${u.name} (${u.nik})` }))],
-            placeholder: 'Pilih Atasan Langsung (Opsional)',
-        },
-        {
-            name: 'employment_status',
-            label: 'Status Kepegawaian',
-            type: 'select',
-            options: [
-                { value: '', label: 'Pilih Status Kepegawaian' },
-                { value: 'Active', label: 'Active' },
-                { value: 'Inactive', label: 'Inactive' },
-                { value: 'Resigned', label: 'Resigned' },
-                { value: 'Terminated', label: 'Terminated' }
-            ],
-            placeholder: 'Pilih Status',
-        },
-        {
-            name: 'join_date',
-            label: 'Tanggal Bergabung',
-            type: 'date',
-        }
     ];
 
     return (
