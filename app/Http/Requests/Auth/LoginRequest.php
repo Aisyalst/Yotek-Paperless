@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class LoginRequest extends FormRequest
 {
@@ -28,7 +29,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            // Menerima Email ATAU NIK dalam satu field.
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -41,9 +43,8 @@ class LoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'Alamat email wajib diisi.',
-            'email.string' => 'Alamat email harus berupa teks.',
-            'email.email' => 'Format alamat email tidak valid.',
+            'email.required' => 'Email atau NIK wajib diisi.',
+            'email.string' => 'Email atau NIK harus berupa teks.',
             'password.required' => 'Kata sandi wajib diisi.',
             'password.string' => 'Kata sandi harus berupa teks.',
         ];
@@ -52,21 +53,57 @@ class LoginRequest extends FormRequest
     /**
      * Attempt to authenticate the request's credentials.
      *
+     * Field "email" menerima Email ATAU NIK:
+     * - mengandung "@"  -> dianggap email
+     * - selain itu      -> dicari sebagai NIK di tabel users
+     *
      * @throws ValidationException
      */
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $login = trim((string) $this->input('email'));
+        $credentials = $this->credentials($login);
+
+        if (! $credentials || ! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => 'Alamat email atau kata sandi yang Anda masukkan salah.',
+                'email' => 'Email/NIK atau kata sandi yang Anda masukkan salah.',
             ]);
         }
 
         RateLimiter::clear($this->throttleKey());
+    }
+
+    /**
+     * Tentukan kredensial dari input login (email atau NIK).
+     *
+     * @return array{email: string, password: string}|null
+     */
+    protected function credentials(string $login): ?array
+    {
+        $password = (string) $this->input('password');
+
+        // 1. Input mengandung "@" -> login pakai email.
+        if (str_contains($login, '@')) {
+            return ['email' => $login, 'password' => $password];
+        }
+
+        // 2. Input numerik -> login pakai NIK.
+        if (ctype_digit($login)) {
+            $user = User::where('nik', $login)->first();
+
+            if ($user && $user->email) {
+                return ['email' => $user->email, 'password' => $password];
+            }
+
+            return null;
+        }
+
+        // 3. Fallback: coba sebagai email apa adanya (biar tetap fleksibel).
+        return ['email' => $login, 'password' => $password];
     }
 
     /**

@@ -183,12 +183,13 @@ export default function SlidingAuth({ status, canResetPassword, defaultMode = 'l
                         {status && <div className="mb-4 text-sm font-medium text-green-500 text-center">{status}</div>}
 
                         <div>
-                            <InputLabel htmlFor="login_email" value="Email" className="text-gray-700" />
+                            <InputLabel htmlFor="login_email" value="Email atau NIK" className="text-gray-700" />
                             <TextInput
                                 id="login_email"
-                                type="email"
+                                type="text"
                                 name="email"
                                 value={loginForm.data.email}
+                                placeholder="nama@email.com atau NIK"
                                 className="mt-1 block w-full bg-white border-gray-300 text-[#1a1a1a] focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                 autoComplete="username"
                                 isFocused={!isRightPanelActive}

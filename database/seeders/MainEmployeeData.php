@@ -96,7 +96,7 @@ class MainEmployeeData extends Seeder
         $positionIds = EmployeePosition::pluck('id', 'name');
         $defaultRankId = EmployeeRank::where('title', 'Associate')->value('id')
             ?? EmployeeRank::orderBy('order')->value('id');
-        $joinDate = Carbon::now()->subYear();
+        $joinDate = Carbon::now();
 
         foreach ($employees as $employee) {
             $nik = (string) $employee['nik'];
