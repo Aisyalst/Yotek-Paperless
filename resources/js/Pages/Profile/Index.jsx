@@ -27,6 +27,11 @@ export default function Index({ auth, userData, totalActiveLeave }) {
                                 displayValue = data.employee_rank?.title || value;
                             }
 
+                            if (key === 'employee_position_id') {
+                                label = 'Employee Position';
+                                displayValue = data.employee_position?.name || value;
+                            }
+
                             return (
                                 <div key={key} className="flex flex-col space-y-1 p-3 rounded-lg hover:bg-[#f8f8f8] transition-colors duration-200">
                                     <span className="text-sm font-semibold text-gray-500">{label}</span>
