@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, useForm } from '@inertiajs/react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Create({ users, roles }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -79,7 +80,7 @@ export default function Create({ users, roles }) {
                                 <label className="block text-sm font-semibold text-[#1a1a1a] mb-1.5">
                                     Tipe Notifikasi <span style={{color: '#e53e3e'}}>*</span>
                                 </label>
-                                <select
+                                <SearchableSelect
                                     className="w-full rounded-xl border-zinc-200 shadow-sm focus:border-[#eaae36] focus:ring focus:ring-[#eaae36] focus:ring-opacity-20 transition-all bg-white"
                                     value={data.type}
                                     onChange={e => setData('type', e.target.value)}
@@ -88,7 +89,7 @@ export default function Create({ users, roles }) {
                                     <option value="success">Success (Hijau)</option>
                                     <option value="warning">Warning (Kuning)</option>
                                     <option value="error">Error (Merah)</option>
-                                </select>
+                                </SearchableSelect>
                                 {errors.type && <p className="mt-1.5 text-sm font-medium text-[#e53e3e]">{errors.type}</p>}
                             </div>
 
@@ -97,7 +98,7 @@ export default function Create({ users, roles }) {
                                 <label className="block text-sm font-semibold text-[#1a1a1a] mb-1.5">
                                     Target Penerima <span style={{color: '#e53e3e'}}>*</span>
                                 </label>
-                                <select
+                                <SearchableSelect
                                     className="w-full rounded-xl border-zinc-200 shadow-sm focus:border-[#eaae36] focus:ring focus:ring-[#eaae36] focus:ring-opacity-20 transition-all bg-white"
                                     value={data.target_type}
                                     onChange={e => {
@@ -108,7 +109,7 @@ export default function Create({ users, roles }) {
                                     <option value="all">Semua Pengguna</option>
                                     <option value="role">Berdasarkan Role</option>
                                     <option value="user">Pengguna Spesifik</option>
-                                </select>
+                                </SearchableSelect>
                                 {errors.target_type && <p className="mt-1.5 text-sm font-medium text-[#e53e3e]">{errors.target_type}</p>}
                             </div>
                         </div>
@@ -119,7 +120,7 @@ export default function Create({ users, roles }) {
                                 <label className="block text-sm font-semibold text-[#1a1a1a] mb-1.5">
                                     Pilih Role <span style={{color: '#e53e3e'}}>*</span>
                                 </label>
-                                <select
+                                <SearchableSelect
                                     className={`w-full rounded-xl border-zinc-200 shadow-sm focus:border-[#eaae36] focus:ring focus:ring-[#eaae36] focus:ring-opacity-20 transition-all ${errors.target_value ? 'border-[#e53e3e] focus:border-[#e53e3e] focus:ring-[#e53e3e]' : ''}`}
                                     value={data.target_value}
                                     onChange={e => setData('target_value', e.target.value)}
@@ -128,7 +129,7 @@ export default function Create({ users, roles }) {
                                     {roles.map(role => (
                                         <option key={role.name} value={role.name}>{role.name}</option>
                                     ))}
-                                </select>
+                                </SearchableSelect>
                                 {errors.target_value && <p className="mt-1.5 text-sm font-medium text-[#e53e3e]">{errors.target_value}</p>}
                             </div>
                         )}
@@ -138,7 +139,7 @@ export default function Create({ users, roles }) {
                                 <label className="block text-sm font-semibold text-[#1a1a1a] mb-1.5">
                                     Pilih Pengguna <span style={{color: '#e53e3e'}}>*</span>
                                 </label>
-                                <select
+                                <SearchableSelect
                                     className={`w-full rounded-xl border-zinc-200 shadow-sm focus:border-[#eaae36] focus:ring focus:ring-[#eaae36] focus:ring-opacity-20 transition-all ${errors.target_value ? 'border-[#e53e3e] focus:border-[#e53e3e] focus:ring-[#e53e3e]' : ''}`}
                                     value={data.target_value}
                                     onChange={e => setData('target_value', e.target.value)}
@@ -147,7 +148,7 @@ export default function Create({ users, roles }) {
                                     {users.map(user => (
                                         <option key={user.id} value={user.id}>{user.name}</option>
                                     ))}
-                                </select>
+                                </SearchableSelect>
                                 {errors.target_value && <p className="mt-1.5 text-sm font-medium text-[#e53e3e]">{errors.target_value}</p>}
                             </div>
                         )}

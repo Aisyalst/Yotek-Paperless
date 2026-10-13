@@ -3,6 +3,7 @@ import DashboardLayout from '@/Layouts/Dashboard';
 import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
 import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
 import { Head, useForm } from '@inertiajs/react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Create({ rooms = [], divisions = [], roles = [], employees = [] }) {
     const [searchDivision, setSearchDivision] = useState('');
@@ -126,7 +127,7 @@ export default function Create({ rooms = [], divisions = [], roles = [], employe
                         <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
                             Tipe Meeting <span style={{ color: '#e53e3e' }}>*</span>
                         </label>
-                        <select
+                        <SearchableSelect
                             value={data.type}
                             onChange={(e) => setData('type', e.target.value)}
                             className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
@@ -136,7 +137,7 @@ export default function Create({ rooms = [], divisions = [], roles = [], employe
                             <option value="online">Online</option>
                             <option value="on_room">On Room (Di Ruangan)</option>
                             <option value="hybrid">Hybrid</option>
-                        </select>
+                        </SearchableSelect>
                         {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
                     </div>
 
@@ -145,7 +146,7 @@ export default function Create({ rooms = [], divisions = [], roles = [], employe
                             <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
                                 Ruangan Rapat <span style={{ color: '#e53e3e' }}>*</span>
                             </label>
-                            <select
+                            <SearchableSelect
                                 value={data.meeting_room_id}
                                 onChange={(e) => setData('meeting_room_id', e.target.value)}
                                 className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
@@ -157,7 +158,7 @@ export default function Create({ rooms = [], divisions = [], roles = [], employe
                                         {room.name} (Kapasitas: {room.capacity})
                                     </option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                             {errors.meeting_room_id && <p className="text-red-500 text-sm mt-1">{errors.meeting_room_id}</p>}
                         </div>
                     )}
@@ -168,7 +169,7 @@ export default function Create({ rooms = [], divisions = [], roles = [], employe
                                 <label className="block text-sm font-medium text-[#1a1a1a] mb-2">
                                     Platform Online <span style={{ color: '#e53e3e' }}>*</span>
                                 </label>
-                                <select
+                                <SearchableSelect
                                     value={data.online_platform}
                                     onChange={(e) => setData('online_platform', e.target.value)}
                                     className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
@@ -179,7 +180,7 @@ export default function Create({ rooms = [], divisions = [], roles = [], employe
                                     <option value="Google Meet">Google Meet</option>
                                     <option value="Ms Teams">Ms Teams</option>
                                     <option value="other">Lainnya</option>
-                                </select>
+                                </SearchableSelect>
                                 {errors.online_platform && <p className="text-red-500 text-sm mt-1">{errors.online_platform}</p>}
                             </div>
 

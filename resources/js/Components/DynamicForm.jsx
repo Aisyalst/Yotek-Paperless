@@ -2,6 +2,7 @@ import React from 'react';
 import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
 import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
 import MultiSelect from '@/Components/MultiSelect';
+import SearchableSelect from '@/Components/SearchableSelect';
 import EmploymentRepeater from '@/Components/EmploymentRepeater';
 
 export default function DynamicForm({
@@ -35,19 +36,13 @@ export default function DynamicForm({
                         </label>
                         
                         {field.type === 'select' ? (
-                            <select
+                            <SearchableSelect
                                 value={data[field.name]}
                                 onChange={(e) => setData(field.name, e.target.value)}
-                                className="w-full bg-[#ffffff] border border-gray-200 text-[#1a1a1a] rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#eaae36] focus:border-transparent"
-                                required={field.required}
-                            >
-                                <option value="">{field.placeholder || `Select ${field.label}`}</option>
-                                {field.options && field.options.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                                options={field.options || []}
+                                placeholder={field.placeholder || `Select ${field.label}`}
+                                searchPlaceholder={field.searchPlaceholder || 'Cari...'}
+                            />
                         ) : field.type === 'multiselect' ? (
                             <MultiSelect
                                 value={data[field.name] || []}

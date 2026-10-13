@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Create({ auth, userData }) {
     const { flash } = usePage().props;
@@ -117,7 +118,7 @@ export default function Create({ auth, userData }) {
                         {/* Jenis Pengajuan */}
                         <div>
                             <InputLabel htmlFor="request_type" value="Jenis Pengajuan" className="text-lg font-bold text-[#eaae36]" required={true} />
-                            <select
+                            <SearchableSelect
                                 id="request_type"
                                 className={inputClasses}
                                 value={data.request_type}
@@ -129,7 +130,7 @@ export default function Create({ auth, userData }) {
                                 <option value="Izin">Izin</option>
                                 <option value="Cuti">Cuti</option>
                                 <option value="Cuti Khusus">Cuti Khusus</option>
-                            </select>
+                            </SearchableSelect>
                             <InputError message={errors.request_type} className="mt-2" />
                         </div>
 
@@ -194,7 +195,7 @@ export default function Create({ auth, userData }) {
                             <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl space-y-4">
                                 <div>
                                     <InputLabel htmlFor="permission_type" value="Kategori Izin" required={true} />
-                                    <select
+                                    <SearchableSelect
                                         id="permission_type"
                                         className={inputClasses}
                                         value={data.permission_type}
@@ -206,7 +207,7 @@ export default function Create({ auth, userData }) {
                                         <option value="Meninggalkan Pekerjaan">Meninggalkan Pekerjaan</option>
                                         <option value="Tidak Masuk Kerja">Tidak Masuk Kerja</option>
                                         <option value="Tugas Kantor">Tugas Kantor</option>
-                                    </select>
+                                    </SearchableSelect>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -220,11 +221,11 @@ export default function Create({ auth, userData }) {
                                 </div>
                                 <div>
                                     <InputLabel htmlFor="deduction_type" value="Sanksi (Bila Ada)" required={true} />
-                                    <select id="deduction_type" className={inputClasses} value={data.deduction_type} onChange={(e) => setData('deduction_type', e.target.value)}>
+                                    <SearchableSelect id="deduction_type" className={inputClasses} value={data.deduction_type} onChange={(e) => setData('deduction_type', e.target.value)}>
                                         <option value="">Tidak Ada</option>
                                         <option value="Potong Gaji">Potong Gaji</option>
                                         <option value="Potong Cuti">Potong Cuti</option>
-                                    </select>
+                                    </SearchableSelect>
                                 </div>
                             </div>
                         )}
@@ -232,7 +233,7 @@ export default function Create({ auth, userData }) {
                         {jenisPengajuan === 'Cuti Khusus' && (
                             <div className="p-4 border-l-4 border-[#eaae36] bg-[#f8f8f8] rounded-r-xl">
                                 <InputLabel htmlFor="special_leave_type" value="Pilih Jenis Cuti Khusus" required={true} />
-                                <select
+                                <SearchableSelect
                                     id="special_leave_type"
                                     className={inputClasses}
                                     value={data.special_leave_type}
@@ -245,7 +246,7 @@ export default function Create({ auth, userData }) {
                                     <option value="Pernikahan Anak Karyawan">Pernikahan anak karyawan (2 Hari)</option>
                                     <option value="Khitanan/Pembaptisan">Khitanan/Pembaptisan anak (2 Hari)</option>
                                     <option value="Istri Melahirkan/Keguguran">Istri melahirkan/keguguran kandungan (2 Hari)</option>
-                                </select>
+                                </SearchableSelect>
                             </div>
                         )}
 

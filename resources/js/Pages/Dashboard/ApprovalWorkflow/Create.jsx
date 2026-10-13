@@ -5,6 +5,7 @@ import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Create({ roles }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -43,7 +44,7 @@ export default function Create({ roles }) {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <InputLabel htmlFor="workflow_type" value="Tipe Workflow" required={true} />
-                        <select
+                        <SearchableSelect
                             id="workflow_type"
                             name="workflow_type"
                             value={data.workflow_type}
@@ -56,7 +57,7 @@ export default function Create({ roles }) {
                                     {type}
                                 </option>
                             ))}
-                        </select>
+                        </SearchableSelect>
                         <InputError message={errors.workflow_type} className="mt-2" />
                     </div>
 

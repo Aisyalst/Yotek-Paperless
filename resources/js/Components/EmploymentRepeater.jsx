@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 const EMPLOYMENT_STATUSES = ['Active', 'Inactive', 'Resigned', 'Terminated'];
 
@@ -70,7 +71,7 @@ export default function EmploymentRepeater({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                             <label className={labelClass}>Perusahaan</label>
-                            <select
+                            <SearchableSelect
                                 value={row.company || ''}
                                 onChange={(e) => updateRow(index, 'company', e.target.value)}
                                 className={inputClass}
@@ -79,12 +80,12 @@ export default function EmploymentRepeater({
                                 {companies.map((c) => (
                                     <option key={c.id} value={c.name}>{c.name}</option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                         </div>
 
                         <div>
                             <label className={labelClass}>Cabang</label>
-                            <select
+                            <SearchableSelect
                                 value={row.branch || ''}
                                 onChange={(e) => updateRow(index, 'branch', e.target.value)}
                                 className={inputClass}
@@ -94,7 +95,7 @@ export default function EmploymentRepeater({
                                 {branchOptions(row.company).map((b, i) => (
                                     <option key={i} value={b}>{b}</option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                         </div>
 
                         <div>
@@ -110,7 +111,7 @@ export default function EmploymentRepeater({
 
                         <div>
                             <label className={labelClass}>Jabatan</label>
-                            <select
+                            <SearchableSelect
                                 value={row.employee_position_id || ''}
                                 onChange={(e) => updateRow(index, 'employee_position_id', e.target.value)}
                                 className={inputClass}
@@ -119,12 +120,12 @@ export default function EmploymentRepeater({
                                 {positions.map((p) => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                         </div>
 
                         <div>
                             <label className={labelClass}>Level</label>
-                            <select
+                            <SearchableSelect
                                 value={row.employee_rank_id || ''}
                                 onChange={(e) => updateRow(index, 'employee_rank_id', e.target.value)}
                                 className={inputClass}
@@ -133,12 +134,12 @@ export default function EmploymentRepeater({
                                 {ranks.map((r) => (
                                     <option key={r.id} value={r.id}>{r.title}</option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                         </div>
 
                         <div>
                             <label className={labelClass}>Atasan Langsung</label>
-                            <select
+                            <SearchableSelect
                                 value={row.direct_supervisor || ''}
                                 onChange={(e) => updateRow(index, 'direct_supervisor', e.target.value)}
                                 className={inputClass}
@@ -147,12 +148,12 @@ export default function EmploymentRepeater({
                                 {allUsers.map((u) => (
                                     <option key={u.nik} value={u.nik}>{u.name} ({u.nik})</option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                         </div>
 
                         <div>
                             <label className={labelClass}>Status Kepegawaian</label>
-                            <select
+                            <SearchableSelect
                                 value={row.employment_status || ''}
                                 onChange={(e) => updateRow(index, 'employment_status', e.target.value)}
                                 className={inputClass}
@@ -161,7 +162,7 @@ export default function EmploymentRepeater({
                                 {EMPLOYMENT_STATUSES.map((s) => (
                                     <option key={s} value={s}>{s}</option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                         </div>
 
                         <div>

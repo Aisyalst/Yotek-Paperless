@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, Link, router } from '@inertiajs/react';
 import SignatureCanvas from 'react-signature-canvas';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Index({ approvals, canSetConsequence }) {
     const sigCanvas = useRef({});
@@ -296,7 +297,7 @@ export default function Index({ approvals, canSetConsequence }) {
                                             <label className="block text-sm font-bold text-gray-700 mb-2">
                                                 Sanksi / Konsekuensi (Bila Ada)
                                             </label>
-                                            <select 
+                                            <SearchableSelect 
                                                 value={consequence}
                                                 onChange={(e) => setConsequence(e.target.value)}
                                                 className="w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-xl shadow-sm text-sm"
@@ -308,7 +309,7 @@ export default function Index({ approvals, canSetConsequence }) {
                                                     <option value="Potong Cuti">Potong Cuti</option>
                                                 )}
                                                 <option value="Potong Cuti dan Gaji">Potong Cuti dan Gaji</option>
-                                            </select>
+                                            </SearchableSelect>
                                         </div>
                                     )}
 

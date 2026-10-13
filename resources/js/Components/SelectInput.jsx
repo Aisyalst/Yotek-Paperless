@@ -1,4 +1,5 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default forwardRef(function SelectInput(
     { className = '', isFocused = false, options = [], ...props },
@@ -10,27 +11,14 @@ export default forwardRef(function SelectInput(
         focus: () => localRef.current?.focus(),
     }));
 
-    useEffect(() => {
-        if (isFocused) {
-            localRef.current?.focus();
-        }
-    }, [isFocused]);
-
     return (
-        <select
+        <SearchableSelect
             {...props}
-            className={
-                'rounded-md border-gray-300 bg-[#ffffff] text-[#1a1a1a] shadow-sm focus:border-[#eaae36] focus:ring-[#eaae36] ' +
-                className
-            }
             ref={localRef}
-        >
-            <option value="" disabled>-- Pilih --</option>
-            {options.map((option, index) => (
-                <option key={index} value={option.id}>
-                    {option.name}
-                </option>
-            ))}
-        </select>
+            options={options}
+            placeholder={props.placeholder ?? '-- Pilih --'}
+            className={className}
+        />
     );
 });
+

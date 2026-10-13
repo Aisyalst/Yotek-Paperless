@@ -117,7 +117,7 @@ export default function MultiSelect({
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder={searchPlaceholder}
-                            className="w-full text-sm focus:outline-none bg-transparent"
+                            className="w-full text-sm focus:outline-none focus:ring-0 focus:border-transparent border-0 p-0 bg-transparent"
                         />
                         {selectedIds.length > 0 && (
                             <button

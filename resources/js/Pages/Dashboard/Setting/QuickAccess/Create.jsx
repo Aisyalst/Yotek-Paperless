@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, useForm, Link } from '@inertiajs/react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Create({ appRoutes = [] }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -49,7 +50,7 @@ export default function Create({ appRoutes = [] }) {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">URL (Pilih Route)</label>
-                        <select
+                        <SearchableSelect
                             value={data.url}
                             onChange={e => setData('url', e.target.value)}
                             className="w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
@@ -60,7 +61,7 @@ export default function Create({ appRoutes = [] }) {
                                     {route.name} ({route.route_name})
                                 </option>
                             ))}
-                        </select>
+                        </SearchableSelect>
                         {errors.url && <p className="text-red-500 text-xs mt-1">{errors.url}</p>}
                         <p className="text-xs text-gray-500 mt-1">Disclaimer: URL diambil dari rute yang sudah terdaftar di dalam sistem.</p>
                     </div>

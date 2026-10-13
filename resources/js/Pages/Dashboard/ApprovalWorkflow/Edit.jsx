@@ -5,6 +5,7 @@ import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Edit({ approvalWorkflow, roles, users }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -73,7 +74,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <InputLabel htmlFor="workflow_type" value="Tipe Workflow" required={true} />
-                            <select
+                            <SearchableSelect
                                 id="workflow_type"
                                 name="workflow_type"
                                 value={data.workflow_type}
@@ -86,7 +87,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                         {type}
                                     </option>
                                 ))}
-                            </select>
+                            </SearchableSelect>
                             <InputError message={errors.workflow_type} className="mt-2" />
                         </div>
 
@@ -183,7 +184,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                             </div>
                             <div>
                                 <InputLabel htmlFor="approver_type" value="Tipe Approver" required={true} />
-                                <select 
+                                <SearchableSelect 
                                     id="approver_type"
                                     value={stepData.approver_type}
                                     onChange={(e) => setStepData({...stepData, approver_type: e.target.value})}
@@ -193,14 +194,14 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                     <option value="specific_user">User Spesifik</option>
                                     <option value="division_head">Kepala Divisi (Dinamis)</option>
                                     <option value="creator">Pembuat Pengajuan (Self)</option>
-                                </select>
+                                </SearchableSelect>
                             </div>
                         </div>
 
                         {stepData.approver_type === 'specific_user' && (
                             <div>
                                 <InputLabel htmlFor="approver_nik" value="Pilih Approver" required={true} />
-                                <select 
+                                <SearchableSelect 
                                     id="approver_nik"
                                     value={stepData.approver_nik}
                                     onChange={(e) => setStepData({...stepData, approver_nik: e.target.value})}
@@ -211,7 +212,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                     {users.map(u => (
                                         <option key={u.id} value={u.nik}>{u.name} ({u.nik})</option>
                                     ))}
-                                </select>
+                                </SearchableSelect>
                             </div>
                         )}
 

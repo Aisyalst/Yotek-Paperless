@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, useForm, Link } from '@inertiajs/react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Edit({ quickAccess, appRoutes = [] }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -46,7 +47,7 @@ export default function Edit({ quickAccess, appRoutes = [] }) {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">URL (Pilih Route)</label>
-                        <select
+                        <SearchableSelect
                             value={data.url}
                             onChange={e => setData('url', e.target.value)}
                             className="w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
@@ -60,7 +61,7 @@ export default function Edit({ quickAccess, appRoutes = [] }) {
                                     {route.name} ({route.route_name})
                                 </option>
                             ))}
-                        </select>
+                        </SearchableSelect>
                         {errors.url && <p className="text-red-500 text-xs mt-1">{errors.url}</p>}
                         <p className="text-xs text-gray-500 mt-1">Disclaimer: Memilih route yang salah dapat membuat tombol rusak atau mengarah ke halaman yang salah. URL saat ini: <strong>{quickAccess.url}</strong>.</p>
                     </div>

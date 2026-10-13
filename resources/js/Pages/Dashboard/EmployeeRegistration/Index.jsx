@@ -6,6 +6,7 @@ import ActionsDropdown from '@/Components/ActionsDropdown';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Index({ employees, filters, filterOptions }) {
     const [searchQuery, setSearchQuery] = useState(filters?.search || '');
@@ -200,7 +201,7 @@ export default function Index({ employees, filters, filterOptions }) {
                         </button>
                     </form>
 
-                    <select
+                    <SearchableSelect
                         name="company"
                         value={company}
                         onChange={handleFilterChange(setCompany)}
@@ -210,9 +211,9 @@ export default function Index({ employees, filters, filterOptions }) {
                         {(options.companies || []).map((c) => (
                             <option key={c} value={c}>{c}</option>
                         ))}
-                    </select>
+                    </SearchableSelect>
 
-                    <select
+                    <SearchableSelect
                         name="department"
                         value={department}
                         onChange={handleFilterChange(setDepartment)}
@@ -222,9 +223,9 @@ export default function Index({ employees, filters, filterOptions }) {
                         {(options.departments || []).map((d) => (
                             <option key={d} value={d}>{d}</option>
                         ))}
-                    </select>
+                    </SearchableSelect>
 
-                    <select
+                    <SearchableSelect
                         name="employee_position_id"
                         value={positionId}
                         onChange={handleFilterChange(setPositionId)}
@@ -234,9 +235,9 @@ export default function Index({ employees, filters, filterOptions }) {
                         {(options.positions || []).map((p) => (
                             <option key={p.id} value={p.id}>{p.name}</option>
                         ))}
-                    </select>
+                    </SearchableSelect>
 
-                    <select
+                    <SearchableSelect
                         name="employee_rank_id"
                         value={rankId}
                         onChange={handleFilterChange(setRankId)}
@@ -246,9 +247,9 @@ export default function Index({ employees, filters, filterOptions }) {
                         {(options.ranks || []).map((r) => (
                             <option key={r.id} value={r.id}>{r.title}</option>
                         ))}
-                    </select>
+                    </SearchableSelect>
 
-                    <select
+                    <SearchableSelect
                         name="employment_status"
                         value={status}
                         onChange={handleFilterChange(setStatus)}
@@ -258,7 +259,7 @@ export default function Index({ employees, filters, filterOptions }) {
                         {(options.statuses || []).map((s) => (
                             <option key={s} value={s}>{s}</option>
                         ))}
-                    </select>
+                    </SearchableSelect>
 
                     {hasActiveFilter && (
                         <button
@@ -275,7 +276,7 @@ export default function Index({ employees, filters, filterOptions }) {
             <div className="mb-4 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Tampilkan</span>
-                    <select
+                    <SearchableSelect
                         value={perPage}
                         onChange={handlePerPageChange}
                         className={filterSelectClass}
@@ -284,7 +285,7 @@ export default function Index({ employees, filters, filterOptions }) {
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                    </select>
+                    </SearchableSelect>
                     <span className="text-sm text-gray-600">entri</span>
                 </div>
 

@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Edit({ auth, personalInformation, employeeInformation }) {
     const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
@@ -129,7 +130,7 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                     
                                     <div>
                                         <InputLabel htmlFor="gender" value="Jenis Kelamin" required />
-                                        <select
+                                        <SearchableSelect
                                             id="gender"
                                             className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                             required
@@ -139,13 +140,13 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                             <option value="">Pilih Jenis Kelamin</option>
                                             <option value="Laki-laki">Laki-laki</option>
                                             <option value="Perempuan">Perempuan</option>
-                                        </select>
+                                        </SearchableSelect>
                                         <InputError className="mt-2" message={errors.gender} />
                                     </div>
 
                                     <div>
                                         <InputLabel htmlFor="marital_status" value="Status Pernikahan" required />
-                                        <select
+                                        <SearchableSelect
                                             id="marital_status"
                                             className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
                                             required
@@ -156,7 +157,7 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                             <option value="Belum Menikah">Belum Menikah</option>
                                             <option value="Menikah">Menikah</option>
                                             <option value="Cerai">Cerai</option>
-                                        </select>
+                                        </SearchableSelect>
                                         <InputError className="mt-2" message={errors.marital_status} />
                                     </div>
 

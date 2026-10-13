@@ -6,6 +6,7 @@ import ActionsDropdown from '@/Components/ActionsDropdown';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Index({ contracts, filters }) {
     const [searchQuery, setSearchQuery] = useState(filters?.search || '');
@@ -87,7 +88,7 @@ export default function Index({ contracts, filters }) {
             <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Tampilkan</span>
-                    <select
+                    <SearchableSelect
                         value={perPage}
                         onChange={handlePerPageChange}
                         className="border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm text-sm"
@@ -96,7 +97,7 @@ export default function Index({ contracts, filters }) {
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                    </select>
+                    </SearchableSelect>
                     <span className="text-sm text-gray-600">entri</span>
                 </div>
 

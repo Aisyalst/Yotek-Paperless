@@ -6,6 +6,7 @@ import ActionsDropdown from '@/Components/ActionsDropdown';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 // Props 'users' di bawah ini otomatis dikirim oleh UserController
 export default function Index({ users, filters }) {
@@ -129,7 +130,7 @@ export default function Index({ users, filters }) {
                 <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Show</span>
-                    <select
+                    <SearchableSelect
                         value={perPage}
                         onChange={handlePerPageChange}
                         className="border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm text-sm"
@@ -138,7 +139,7 @@ export default function Index({ users, filters }) {
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                    </select>
+                    </SearchableSelect>
                     <span className="text-sm text-gray-600">entries</span>
                 </div>
 

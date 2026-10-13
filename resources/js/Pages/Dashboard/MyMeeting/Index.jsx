@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import SearchableSelect from '@/Components/SearchableSelect';
 
 export default function Index({ meetings = [] }) {
     const { auth } = usePage().props;
@@ -62,7 +63,7 @@ export default function Index({ meetings = [] }) {
                     </div>
                     <div className="flex items-center gap-3 w-full sm:w-auto">
                         <span className="text-xs font-medium text-gray-500 hidden sm:block uppercase tracking-wider">Filter Respons:</span>
-                        <select 
+                        <SearchableSelect 
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
                             className="w-full sm:w-auto bg-gray-50/50 border border-gray-200 rounded-lg text-sm py-2 px-3 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#eaae36]/50 focus:border-[#eaae36] transition-all cursor-pointer"
@@ -71,7 +72,7 @@ export default function Index({ meetings = [] }) {
                             <option value="pending">Menunggu Respons</option>
                             <option value="accepted">Hadir</option>
                             <option value="declined">Tidak Hadir</option>
-                        </select>
+                        </SearchableSelect>
                     </div>
                 </div>
 
