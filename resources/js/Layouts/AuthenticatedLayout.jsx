@@ -152,6 +152,24 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('profile.index')}
+                            active={route().current('profile.index')}
+                        >
+                            Profile
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('profile.personal.edit')}
+                            active={route().current('profile.personal.edit')}
+                        >
+                            Data Personal
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('profile.leave-history')}
+                            active={route().current('profile.leave-history')}
+                        >
+                            Riwayat Potong Cuti
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -165,9 +183,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.index')}>
-                                Profile
-                            </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}

@@ -7,16 +7,16 @@ export default function Index({ auth, userData, totalActiveLeave }) {
 
     const renderCard = (title, data, icon) => (
         <div className="bg-white/80 backdrop-blur-lg overflow-hidden shadow-xl sm:rounded-2xl transition-all duration-300 hover:shadow-2xl border border-gray-100/50 hover:border-[#eaae36]/30 group">
-            <div className="p-6 text-gray-900">
+            <div className="p-4 sm:p-6 text-gray-900">
                 <div className="flex items-center space-x-3 mb-6 pb-4 border-b border-gray-100">
-                    <div className="p-2 bg-[#f8f8f8] rounded-xl text-[#eaae36] group-hover:scale-110 transition-transform duration-300">
+                    <div className="p-2 bg-[#f8f8f8] rounded-xl text-[#eaae36] group-hover:scale-110 transition-transform duration-300 shrink-0">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-[#1a1a1a]">{title}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a]">{title}</h3>
                 </div>
 
                 {data ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
                         {Object.entries(data).map(([key, value]) => {
                             if (['id', 'nik', 'created_at', 'updated_at'].includes(key) || typeof value === 'object') return null;
                             let label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -44,7 +44,7 @@ export default function Index({ auth, userData, totalActiveLeave }) {
                             Nama perusahaan di-dedupe: beberapa penempatan bisa
                             berada di perusahaan yang sama (multi-jabatan). */}
                         {Array.isArray(data.employments) && data.employments.length > 0 && (
-                            <div className="md:col-span-2 flex flex-col space-y-2 p-3 rounded-lg hover:bg-[#f8f8f8] transition-colors duration-200">
+                            <div className="sm:col-span-2 flex flex-col space-y-2 p-3 rounded-lg hover:bg-[#f8f8f8] transition-colors duration-200">
                                 <span className="text-sm font-semibold text-gray-500">Penempatan Perusahaan</span>
                                 <div className="flex flex-wrap gap-2">
                                     {Object.values(
@@ -105,27 +105,27 @@ export default function Index({ auth, userData, totalActiveLeave }) {
         >
             <Head title="Profil" />
 
-            <div className="py-12 bg-[#f8f8f8] min-h-screen">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+            <div className="py-6 sm:py-12 bg-[#f8f8f8] min-h-screen">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
 
                     {/* User Summary Card */}
-                    <div className="bg-gradient-to-r from-[#1a1a1a] to-gray-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-                        <div className="absolute top-0 right-0 -mt-16 -mr-16 text-white/5">
-                            <svg className="w-64 h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
+                    <div className="bg-gradient-to-r from-[#1a1a1a] to-gray-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden">
+                        <div className="pointer-events-none absolute top-0 right-0 -mt-16 -mr-16 text-white/5">
+                            <svg className="w-48 h-48 sm:w-64 sm:h-64" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
                         </div>
-                        <div className="relative z-10 flex items-center space-x-6">
-                            <div className="h-24 w-24 rounded-full bg-[#eaae36] flex items-center justify-center text-3xl font-bold text-white shadow-lg ring-4 ring-white/20">
+                        <div className="relative z-10 flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
+                            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#eaae36] text-2xl font-bold text-white shadow-lg ring-4 ring-white/20 sm:h-24 sm:w-24 sm:text-3xl">
                                 {userData.name.charAt(0).toUpperCase()}
                             </div>
-                            <div>
-                                <h1 className="text-3xl font-bold text-white mb-2">{userData.name}</h1>
-                                <div className="flex space-x-4 text-gray-300">
-                                    <span className="flex items-center">
-                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                        {userData.email}
+                            <div className="min-w-0 w-full sm:w-auto">
+                                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 break-words">{userData.name}</h1>
+                                <div className="flex flex-col items-center gap-2 text-gray-300 sm:flex-row sm:items-center sm:gap-4">
+                                    <span className="flex min-w-0 items-center">
+                                        <svg className="w-4 h-4 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                        <span className="break-all">{userData.email}</span>
                                     </span>
                                     <span className="flex items-center">
-                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
+                                        <svg className="w-4 h-4 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
                                         NIK: {userData.nik || '-'}
                                     </span>
                                 </div>
@@ -138,7 +138,7 @@ export default function Index({ auth, userData, totalActiveLeave }) {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                         {renderCard('Informasi Pribadi', personal_information, personalIcon)}
                         {renderCard('Informasi Karyawan', employee_information, employeeIcon)}
 

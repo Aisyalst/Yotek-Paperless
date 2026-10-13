@@ -35,22 +35,22 @@ export default function Edit({ auth, personalInformation, employeeInformation })
         >
             <Head title="Data Personal" />
 
-            <div className="py-12 bg-[#f8f8f8] min-h-screen">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+            <div className="py-6 sm:py-12 bg-[#f8f8f8] min-h-screen">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
                     <div className="bg-white/80 backdrop-blur-lg overflow-hidden shadow-xl sm:rounded-2xl border border-gray-100/50">
-                        <div className="p-8">
-                            <div className="flex items-center space-x-3 mb-6 pb-4 border-b border-gray-100">
-                                <div className="p-2 bg-[#f8f8f8] rounded-xl text-[#eaae36]">
+                        <div className="p-4 sm:p-6 lg:p-8">
+                            <div className="flex items-start space-x-3 mb-6 pb-4 border-b border-gray-100">
+                                <div className="p-2 bg-[#f8f8f8] rounded-xl text-[#eaae36] shrink-0">
                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-bold text-[#1a1a1a]">Edit Data Personal</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-[#1a1a1a]">Edit Data Personal</h3>
                                     <p className="text-sm text-gray-500">Perbarui informasi personal Anda di bawah ini. <span className="text-[#eaae36] font-semibold">Pastikan data yang diisi valid!!</span></p>
                                 </div>
                             </div>
 
                             <form onSubmit={submit} className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
                                         <InputLabel htmlFor="nik" value="NIK" required />
                                         <TextInput
