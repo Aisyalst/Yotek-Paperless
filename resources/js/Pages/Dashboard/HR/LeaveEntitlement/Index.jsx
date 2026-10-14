@@ -1,8 +1,8 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head } from '@inertiajs/react';
 
 export default function Index({ leaveEntitlements = [] }) {
@@ -62,10 +62,13 @@ export default function Index({ leaveEntitlements = [] }) {
             }
         },
         { 
-            header: 'Aksi', 
+            header: 'Aksi',
             render: (item) => (
-                <ActionsDropdown data={item} baseLink="/leave-entitlements" />
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/leave-entitlements/${item.id}/edit`, permission: 'leave-entitlements.edit' },
+                    { label: 'Hapus', href: `/leave-entitlements/${item.id}`, method: 'delete', permission: 'leave-entitlements.destroy', danger: true, confirm: 'Hapus data ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -79,7 +82,7 @@ export default function Index({ leaveEntitlements = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola hak cuti karyawan.</p>
                 </div>
                 
-                <RedirectOutlineButton 
+                <AddButton
                     text="Tambah Hak Cuti"
                     href="/leave-entitlements/create"
                     routeName="leave-entitlements.create"

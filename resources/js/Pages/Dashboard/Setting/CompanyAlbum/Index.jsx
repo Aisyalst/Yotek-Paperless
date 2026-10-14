@@ -1,7 +1,7 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, router, usePage } from '@inertiajs/react';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
+import AddButton from '@/Components/AddButton';
 
 export default function Index({ albums = [] }) {
     const { auth } = usePage().props;
@@ -29,7 +29,7 @@ export default function Index({ albums = [] }) {
                 </div>
 
                 {hasCreatePermission && (
-                    <RedirectOutlineButton
+                    <AddButton
                         text="Tambah Foto"
                         href="/company-albums/create"
                         routeName="company-albums.create"

@@ -18,4 +18,14 @@ class Company extends Model
     protected $casts = [
         'branch' => 'array',
     ];
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class);
+    }
+
+    public function assetRequests()
+    {
+        return $this->hasMany(AssetRequest::class);
+    }
 }

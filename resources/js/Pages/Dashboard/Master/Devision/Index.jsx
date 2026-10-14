@@ -1,7 +1,8 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import AddButton from '@/Components/AddButton';
+import { Head, router, usePage } from '@inertiajs/react';
+import DropdownActions from '@/Components/DropdownActions';
 
 export default function Index({ devisions = [] }) {
     const { auth } = usePage().props;
@@ -26,7 +27,7 @@ export default function Index({ devisions = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola data divisi.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Tambah Divisi"
                     href="/devisions/create"
                     routeName="devisions.create"
@@ -55,24 +56,10 @@ export default function Index({ devisions = [] }) {
                                     <td className="p-4 text-[#1a1a1a] font-medium">{devision.name}</td>
                                     <td className="p-4 text-[#1a1a1a]">{devision.head_employee?.user?.name || '-'}</td>
                                     <td className="p-4">
-                                        <div className="flex items-center gap-2">
-                                            {hasEditPermission && (
-                                                <Link
-                                                    href={`/devisions/${devision.id}/edit`}
-                                                    className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
-                                                >
-                                                    Edit
-                                                </Link>
-                                            )}
-                                            {hasDeletePermission && (
-                                                <button
-                                                    onClick={() => handleDelete(devision)}
-                                                    className="px-3 py-1.5 text-xs font-semibold text-red-400 border border-red-800/80 rounded hover:bg-red-950/30 transition-colors"
-                                                >
-                                                    Hapus
-                                                </button>
-                                            )}
-                                        </div>
+                                        <DropdownActions items={[
+                                            { label: 'Edit', href: `/devisions/${devision.id}/edit`, permission: 'devisions.edit' },
+                                            { label: 'Hapus', onClick: () => handleDelete(devision), permission: 'devisions.destroy', danger: true },
+                                        ]} />
                                     </td>
                                 </tr>
                             ))

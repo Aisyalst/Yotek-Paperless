@@ -1,7 +1,8 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import AddButton from '@/Components/AddButton';
+import { Head, router, usePage } from '@inertiajs/react';
+import DropdownActions from '@/Components/DropdownActions';
 
 export default function Index({ meetingRooms = [] }) {
     const { auth } = usePage().props;
@@ -26,7 +27,7 @@ export default function Index({ meetingRooms = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola data ruangan rapat.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Tambah Ruangan"
                     href="/meeting-rooms/create"
                     routeName="meeting-rooms.create"
@@ -63,24 +64,10 @@ export default function Index({ meetingRooms = [] }) {
                                         </span>
                                     </td>
                                     <td className="p-4">
-                                        <div className="flex items-center gap-2">
-                                            {hasEditPermission && (
-                                                <Link
-                                                    href={`/meeting-rooms/${room.id}/edit`}
-                                                    className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
-                                                >
-                                                    Edit
-                                                </Link>
-                                            )}
-                                            {hasDeletePermission && (
-                                                <button
-                                                    onClick={() => handleDelete(room)}
-                                                    className="px-3 py-1.5 text-xs font-semibold text-red-400 border border-red-800/80 rounded hover:bg-red-950/30 transition-colors"
-                                                >
-                                                    Hapus
-                                                </button>
-                                            )}
-                                        </div>
+                                        <DropdownActions items={[
+                                            { label: 'Edit', href: `/meeting-rooms/${room.id}/edit` },
+                                            { label: 'Hapus', onClick: () => handleDelete(room), danger: true },
+                                        ]} />
                                     </td>
                                 </tr>
                             ))

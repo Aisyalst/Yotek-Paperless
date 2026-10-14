@@ -1,9 +1,10 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
+import AddButton from '@/Components/AddButton';
 import { Head, useForm } from '@inertiajs/react';
 import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
 import SubmitOutlineButton from '@/Components/SubmitOutlineButton';
-import { HiPlus, HiTrash } from 'react-icons/hi';
+import { HiTrash } from 'react-icons/hi';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -77,13 +78,7 @@ export default function Create() {
                     <div className="pt-4 border-t border-gray-100">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-bold text-[#1a1a1a]">Daftar Cabang</h3>
-                            <button
-                                type="button"
-                                onClick={addBranch}
-                                className="flex items-center text-sm bg-[#eaae36] hover:bg-[#d99f2e] text-white px-3 py-1.5 rounded-md transition-colors"
-                            >
-                                <HiPlus className="w-4 h-4 mr-1" /> Tambah Cabang
-                            </button>
+                            <AddButton text="Tambah Cabang" onClick={addBranch} />
                         </div>
 
                         {data.branches.map((branch, index) => (

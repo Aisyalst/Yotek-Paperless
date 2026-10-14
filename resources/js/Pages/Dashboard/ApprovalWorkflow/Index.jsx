@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head, router } from '@inertiajs/react';
 
 export default function Index({ workflows }) {
@@ -24,10 +24,13 @@ export default function Index({ workflows }) {
             )
         },
         { 
-            header: 'Aksi', 
+            header: 'Aksi',
             render: (workflow) => (
-                <ActionsDropdown data={workflow} baseLink="/approval-workflows" />
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/approval-workflows/${workflow.id}/edit`, permission: 'approval-workflows.edit' },
+                    { label: 'Hapus', href: `/approval-workflows/${workflow.id}`, method: 'delete', permission: 'approval-workflows.destroy', danger: true, confirm: 'Hapus data ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -41,7 +44,7 @@ export default function Index({ workflows }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola data approval workflow dan tahapannya.</p>
                 </div>
                 
-                <RedirectOutlineButton 
+                <AddButton
                     text="Tambah Workflow"
                     href="/approval-workflows/create"
                     routeName="approval-workflows.create"

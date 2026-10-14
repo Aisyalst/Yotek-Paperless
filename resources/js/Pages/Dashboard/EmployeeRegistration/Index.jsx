@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
@@ -156,10 +156,13 @@ export default function Index({ employees, filters, filterOptions }) {
             }
         },
         { 
-            header: 'Aksi', 
+            header: 'Aksi',
             render: (emp) => (
-                <ActionsDropdown data={emp} baseLink="/employee-registrations" />
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/employee-registrations/${emp.id}/edit`, permission: 'employee-registrations.edit' },
+                    { label: 'Hapus', href: `/employee-registrations/${emp.id}`, method: 'delete', permission: 'employee-registrations.destroy', danger: true, confirm: 'Hapus data ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -173,7 +176,7 @@ export default function Index({ employees, filters, filterOptions }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola data informasi karyawan perusahaan.</p>
                 </div>
                 
-                <RedirectOutlineButton 
+                <AddButton
                     text="Tambah Karyawan"
                     href="/employee-registrations/create"
                     routeName="employee-registrations.create"

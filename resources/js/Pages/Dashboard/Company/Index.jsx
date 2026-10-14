@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
@@ -69,10 +69,13 @@ export default function Index({ companies, filters }) {
             }
         },
         { 
-            header: 'Aksi', 
+            header: 'Aksi',
             render: (company) => (
-                <ActionsDropdown data={company} baseLink="/companies" />
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/companies/${company.id}/edit`, permission: 'companies.edit' },
+                    { label: 'Hapus', href: `/companies/${company.id}`, method: 'delete', permission: 'companies.destroy', danger: true, confirm: 'Hapus data ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -86,7 +89,7 @@ export default function Index({ companies, filters }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola master data perusahaan dan cabangnya.</p>
                 </div>
                 
-                <RedirectOutlineButton 
+                <AddButton
                     text="Tambah Perusahaan"
                     href="/companies/create"
                     routeName="companies.create"

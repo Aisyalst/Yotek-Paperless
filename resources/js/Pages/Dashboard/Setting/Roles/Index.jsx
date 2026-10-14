@@ -1,8 +1,8 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard'; // Pastikan path import DashboardLayout Anda benar
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head } from '@inertiajs/react';
 
 // Props 'roles' di bawah ini otomatis dikirim oleh RoleController
@@ -31,11 +31,13 @@ export default function Index({ roles }) {
             accessor: 'users_count' 
         },
         { 
-            header: 'Actions', 
-            // Menggunakan komponen dropdown ActionDropdown
+            header: 'Actions',
             render: (role) => (
-                <ActionsDropdown data={role} baseLink="/roles" view="false"/>
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/roles/${role.id}/edit`, permission: 'roles.edit' },
+                    { label: 'Delete', href: `/roles/${role.id}`, method: 'delete', permission: 'roles.destroy', danger: true, confirm: 'Hapus role ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -50,7 +52,7 @@ export default function Index({ roles }) {
                     <p className="text-sm text-gray-600 mt-1">Manage all roles in the system.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Add Role"
                     href="/roles/create"
                     routeName="roles.create"

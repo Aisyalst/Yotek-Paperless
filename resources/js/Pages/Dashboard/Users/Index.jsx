@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard'; // Pastikan path import DashboardLayout Anda benar
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
@@ -100,11 +100,15 @@ export default function Index({ users, filters }) {
             )
         },
         { 
-            header: 'Actions', 
+            header: 'Actions',
             // Menggunakan komponen dropdown ActionDropdown
             render: (user) => (
-                <ActionsDropdown data={user} baseLink="/users" view="true"/>
-            ) 
+                <DropdownActions items={[
+                    { label: 'View', href: `/users/${user.id}`, permission: 'users.show' },
+                    { label: 'Edit', href: `/users/${user.id}/edit`, permission: 'users.edit' },
+                    { label: 'Delete', href: `/users/${user.id}`, method: 'delete', permission: 'users.destroy', danger: true, confirm: 'Hapus user ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -119,7 +123,7 @@ export default function Index({ users, filters }) {
                     <p className="text-sm text-gray-600 mt-1">Manage all user accounts in the system.</p>
                 </div>
                 
-                <RedirectOutlineButton 
+                <AddButton
                     text="Add User"
                     href="/users/create"
                     routeName="users.create"

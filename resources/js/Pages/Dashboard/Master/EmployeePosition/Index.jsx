@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import AddButton from '@/Components/AddButton';
+import { Head, router, usePage } from '@inertiajs/react';
 import * as HiIcons from 'react-icons/hi';
+import DropdownActions from '@/Components/DropdownActions';
 
 export default function Index({ employeePositions = [] }) {
     const { auth } = usePage().props;
@@ -71,7 +72,7 @@ export default function Index({ employeePositions = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola dan seret untuk mengurutkan jabatan karyawan.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Tambah Jabatan"
                     href={route('employee-positions.create')}
                     routeName="employee-positions.create"
@@ -110,24 +111,10 @@ export default function Index({ employeePositions = [] }) {
                                 </div>
                             </div>
                             
-                            <div className="flex items-center gap-2">
-                                {hasEditPermission && (
-                                    <Link
-                                        href={route('employee-positions.edit', position.id)}
-                                        className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
-                                    >
-                                        Edit
-                                    </Link>
-                                )}
-                                {hasDeletePermission && (
-                                    <button
-                                        onClick={() => handleDelete(position)}
-                                        className="px-3 py-1.5 text-xs font-semibold text-red-500 border border-gray-200 rounded hover:bg-red-50 hover:border-red-200 transition-colors"
-                                    >
-                                        Hapus
-                                    </button>
-                                )}
-                            </div>
+                            <DropdownActions items={[
+                                { label: 'Edit', href: route('employee-positions.edit', position.id) },
+                                { label: 'Hapus', onClick: () => handleDelete(position), danger: true },
+                            ]} />
                         </div>
                     ))
                 )}

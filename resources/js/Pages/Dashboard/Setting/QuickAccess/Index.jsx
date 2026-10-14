@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import AddButton from '@/Components/AddButton';
+import { Head, router, usePage } from '@inertiajs/react';
 import * as HiIcons from 'react-icons/hi';
+import DropdownActions from '@/Components/DropdownActions';
 
 const DynamicIcon = ({ iconName }) => {
   const IconComponent = HiIcons[iconName];
@@ -77,7 +78,7 @@ export default function Index({ quickAccesses = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola dan tarik (drag-and-drop) untuk mengurutkan akses cepat di beranda.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Tambah Akses Cepat"
                     href="/quick-accesses/create"
                     routeName="quick-accesses.create"
@@ -121,22 +122,10 @@ export default function Index({ quickAccesses = [] }) {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                    {hasEditPermission && (
-                                        <Link
-                                            href={`/quick-accesses/${item.id}/edit`}
-                                            className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
-                                        >
-                                            Edit
-                                        </Link>
-                                    )}
-                                    {hasDeletePermission && (
-                                        <button
-                                            onClick={() => handleDelete(item)}
-                                            className="px-3 py-1.5 text-xs font-semibold text-red-400 border border-red-800/80 rounded hover:bg-red-950/30 transition-colors"
-                                        >
-                                            Hapus
-                                        </button>
-                                    )}
+                                    <DropdownActions items={[
+                                        { label: 'Edit', href: `/quick-accesses/${item.id}/edit`, permission: 'quick-accesses.edit' },
+                                        { label: 'Hapus', onClick: () => handleDelete(item), permission: 'quick-accesses.destroy', danger: true },
+                                    ]} />
                                 </div>
                             </div>
                         ))

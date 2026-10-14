@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import AddButton from '@/Components/AddButton';
+import { Head, router, usePage } from '@inertiajs/react';
 import * as HiIcons from 'react-icons/hi';
+import DropdownActions from '@/Components/DropdownActions';
 
 // DynamicIcon renders a react-icons/hi component by string name
 const DynamicIcon = ({ iconName }) => {
@@ -183,22 +184,10 @@ export default function Index({ dashboardMenus = [], sections = [] }) {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                        {hasEditPermission && (
-                            <Link
-                                href={`/dashboard-menus/${menu.id}/edit`}
-                                className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
-                            >
-                                Edit
-                            </Link>
-                        )}
-                        {hasDeletePermission && (
-                            <button
-                                onClick={() => handleDelete(menu)}
-                                className="px-3 py-1.5 text-xs font-semibold text-red-400 border border-red-800/80 rounded hover:bg-red-950/30 transition-colors"
-                            >
-                                Delete
-                            </button>
-                        )}
+                        <DropdownActions items={[
+                            { label: 'Edit', href: `/dashboard-menus/${menu.id}/edit`, permission: 'dashboard-menus.edit' },
+                            { label: 'Delete', onClick: () => handleDelete(menu), permission: 'dashboard-menus.destroy', danger: true },
+                        ]} />
                     </div>
                 </div>
 
@@ -223,7 +212,7 @@ export default function Index({ dashboardMenus = [], sections = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Manage and drag-and-drop to reorder all dashboard menus.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Add Dashboard Menu"
                     href="/dashboard-menus/create"
                     routeName="dashboard-menus.create"

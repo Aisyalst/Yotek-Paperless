@@ -1,8 +1,8 @@
 import React from 'react';
 import DashboardLayout from '@/Layouts/Dashboard'; // Pastikan path import DashboardLayout Anda benar
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head } from '@inertiajs/react';
 
 // Props 'routes' di bawah ini otomatis dikirim oleh RouteController
@@ -29,11 +29,12 @@ export default function Index({ routes }) {
             // )
         },
         { 
-            header: 'Actions', 
-            // Menggunakan komponen dropdown ActionDropdown
+            header: 'Actions',
             render: (route) => (
-                <ActionsDropdown data={route} baseLink="/routes" view="false"/>
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/routes/${route.id}/edit`, permission: 'routes.edit' },
+                ]} />
+            )
         }
     ];
 
@@ -49,12 +50,12 @@ export default function Index({ routes }) {
                 </div>
 
                 <div className="flex gap-2">
-                    <RedirectOutlineButton
+                    <AddButton
                         text="Bulk Create Routes"
                         href="/routes/bulk-create"
                         routeName="routes.bulk-create"
                     />
-                    <RedirectOutlineButton
+                    <AddButton
                         text="Add Route"
                         href="/routes/create"
                         routeName="routes.create"

@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RouteSettingSeeder::class,
             MeetingRoomSeeder::class,
+            AssetCategorySeeder::class,
+            GaSetupSeeder::class,
         ]);
     }
 }

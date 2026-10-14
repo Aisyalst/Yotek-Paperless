@@ -137,6 +137,43 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::post('notifications', [App\Http\Controllers\NotificationController::class, 'store'])->name('notifications.store');
     Route::patch('notifications/read-all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
     Route::patch('notifications/{recipient}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    // ==================== MODUL GA (Barang & Aset) ====================
+    // Kategori barang
+    Route::get('asset-categories', [App\Http\Controllers\AssetCategoryController::class, 'index'])->name('asset-categories.index');
+    Route::post('asset-categories', [App\Http\Controllers\AssetCategoryController::class, 'store'])->name('asset-categories.store');
+    Route::put('asset-categories/{assetCategory}', [App\Http\Controllers\AssetCategoryController::class, 'update'])->name('asset-categories.update');
+    Route::delete('asset-categories/{assetCategory}', [App\Http\Controllers\AssetCategoryController::class, 'destroy'])->name('asset-categories.destroy');
+
+    // Master barang/aset
+    Route::get('assets', [App\Http\Controllers\AssetController::class, 'index'])->name('assets.index');
+    Route::get('assets/create', [App\Http\Controllers\AssetController::class, 'create'])->name('assets.create');
+    Route::post('assets', [App\Http\Controllers\AssetController::class, 'store'])->name('assets.store');
+    Route::get('assets/{asset}', [App\Http\Controllers\AssetController::class, 'show'])->name('assets.show');
+    Route::get('assets/{asset}/edit', [App\Http\Controllers\AssetController::class, 'edit'])->name('assets.edit');
+    Route::put('assets/{asset}', [App\Http\Controllers\AssetController::class, 'update'])->name('assets.update');
+    Route::delete('assets/{asset}', [App\Http\Controllers\AssetController::class, 'destroy'])->name('assets.destroy');
+
+    // Penempatan / pemegang barang
+    Route::get('asset-assignments', [App\Http\Controllers\AssetAssignmentController::class, 'index'])->name('asset-assignments.index');
+    Route::post('asset-assignments', [App\Http\Controllers\AssetAssignmentController::class, 'store'])->name('asset-assignments.store');
+    Route::patch('asset-assignments/{assetAssignment}/return', [App\Http\Controllers\AssetAssignmentController::class, 'returnAsset'])->name('asset-assignments.return');
+
+    // Track service barang
+    Route::get('asset-services', [App\Http\Controllers\AssetServiceController::class, 'index'])->name('asset-services.index');
+    Route::post('asset-services', [App\Http\Controllers\AssetServiceController::class, 'store'])->name('asset-services.store');
+    Route::patch('asset-services/{assetService}', [App\Http\Controllers\AssetServiceController::class, 'update'])->name('asset-services.update');
+
+    // Pengajuan barang (multi-item + approval bertingkat)
+    Route::get('asset-requests', [App\Http\Controllers\AssetRequestController::class, 'index'])->name('asset-requests.index');
+    Route::get('asset-requests/create', [App\Http\Controllers\AssetRequestController::class, 'create'])->name('asset-requests.create');
+    Route::post('asset-requests', [App\Http\Controllers\AssetRequestController::class, 'store'])->name('asset-requests.store');
+    Route::get('asset-requests/{assetRequest}', [App\Http\Controllers\AssetRequestController::class, 'show'])->name('asset-requests.show');
+    Route::patch('asset-requests/{assetRequest}/cancel', [App\Http\Controllers\AssetRequestController::class, 'cancel'])->name('asset-requests.cancel');
+
+    // Approval pengajuan barang
+    Route::get('asset-request-approvals', [App\Http\Controllers\AssetRequestApprovalController::class, 'index'])->name('asset-request-approvals.index');
+    Route::patch('asset-request-approvals/{assetRequestApproval}', [App\Http\Controllers\AssetRequestApprovalController::class, 'update'])->name('asset-request-approvals.update');
 });
 
 require __DIR__.'/auth.php';

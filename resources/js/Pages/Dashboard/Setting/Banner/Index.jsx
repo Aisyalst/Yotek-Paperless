@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import AddButton from '@/Components/AddButton';
+import { Head, router, usePage } from '@inertiajs/react';
 import * as HiIcons from 'react-icons/hi';
+import DropdownActions from '@/Components/DropdownActions';
 
 export default function Index({ banners = [] }) {
     const { auth } = usePage().props;
@@ -69,7 +70,7 @@ export default function Index({ banners = [] }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola dan urutkan banner yang tampil di beranda.</p>
                 </div>
 
-                <RedirectOutlineButton
+                <AddButton
                     text="Tambah Banner"
                     href="/banners/create"
                     routeName="banners.create"
@@ -110,22 +111,10 @@ export default function Index({ banners = [] }) {
                                 </div>
 
                                 <div className="flex items-center gap-2 self-end sm:self-center">
-                                    {hasEditPermission && (
-                                        <Link
-                                            href={`/banners/${item.id}/edit`}
-                                            className="px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] border border-gray-200 rounded hover:bg-gray-100 transition-colors"
-                                        >
-                                            Edit
-                                        </Link>
-                                    )}
-                                    {hasDeletePermission && (
-                                        <button
-                                            onClick={() => handleDelete(item)}
-                                            className="px-3 py-1.5 text-xs font-semibold text-red-400 border border-red-800/80 rounded hover:bg-red-950/30 transition-colors"
-                                        >
-                                            Hapus
-                                        </button>
-                                    )}
+                                    <DropdownActions items={[
+                                        { label: 'Edit', href: `/banners/${item.id}/edit`, permission: 'banners.edit' },
+                                        { label: 'Hapus', onClick: () => handleDelete(item), permission: 'banners.destroy', danger: true },
+                                    ]} />
                                 </div>
                             </div>
                         ))

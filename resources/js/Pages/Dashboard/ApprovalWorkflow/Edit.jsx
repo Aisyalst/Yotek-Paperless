@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
+import AddButton from '@/Components/AddButton';
 import { Head, useForm, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
@@ -216,12 +217,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                             </div>
                         )}
 
-                        <button
-                            type="submit"
-                            className="w-full px-4 py-2 bg-[#1a1a1a] text-white border border-transparent rounded-md font-semibold text-xs uppercase hover:bg-[#eaae36] transition"
-                        >
-                            Tambah Langkah
-                        </button>
+                        <AddButton type="submit" text="Tambah Langkah" className="w-full justify-center" />
                     </form>
                 </div>
             </div>

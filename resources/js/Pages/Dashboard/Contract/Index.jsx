@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import Table from '@/Components/Table';
-import RedirectOutlineButton from '@/Components/RedirectOutlineButton';
-import ActionsDropdown from '@/Components/ActionsDropdown';
+import AddButton from '@/Components/AddButton';
+import DropdownActions from '@/Components/DropdownActions';
 import { Head, router } from '@inertiajs/react';
 import TextInput from '@/Components/TextInput';
 import Pagination from '@/Components/Pagination';
@@ -61,10 +61,13 @@ export default function Index({ contracts, filters }) {
             accessor: 'contract_status' 
         },
         { 
-            header: 'Aksi', 
+            header: 'Aksi',
             render: (contract) => (
-                <ActionsDropdown data={contract} baseLink="/contracts" />
-            ) 
+                <DropdownActions items={[
+                    { label: 'Edit', href: `/contracts/${contract.id}/edit`, permission: 'contracts.edit' },
+                    { label: 'Hapus', href: `/contracts/${contract.id}`, method: 'delete', permission: 'contracts.destroy', danger: true, confirm: 'Hapus data ini?' },
+                ]} />
+            )
         }
     ];
 
@@ -78,7 +81,7 @@ export default function Index({ contracts, filters }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola data kontrak kerja karyawan.</p>
                 </div>
                 
-                <RedirectOutlineButton 
+                <AddButton
                     text="Tambah Kontrak"
                     href="/contracts/create"
                     routeName="contracts.create"
