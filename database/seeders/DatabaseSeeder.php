@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             RouteSettingSeeder::class,
             MeetingRoomSeeder::class,
             AssetCategorySeeder::class,
-            GaSetupSeeder::class,
+            RoleAccessSeeder::class,
         ]);
     }
 }

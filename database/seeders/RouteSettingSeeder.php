@@ -5,10 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Route;
-use App\Models\Role;
 use App\Models\DashboardMenu;
 use App\Models\DashboardMenuSection;
-use App\Models\RolePermission;
 
 class RouteSettingSeeder extends Seeder
 {
@@ -167,6 +165,32 @@ class RouteSettingSeeder extends Seeder
             ['name' => 'Perbarui Jabatan Karyawan', 'route_name' => 'employee-positions.update'],
             ['name' => 'Hapus Jabatan Karyawan', 'route_name' => 'employee-positions.destroy'],
             ['name' => 'Urutkan Jabatan Karyawan', 'route_name' => 'employee-positions.reorder'],
+
+            // GA (General Affair) — modul manajemen barang (digabung dari GaSetupSeeder)
+            ['name' => 'Kategori Barang', 'route_name' => 'asset-categories.index'],
+            ['name' => 'Simpan Kategori Barang', 'route_name' => 'asset-categories.store'],
+            ['name' => 'Perbarui Kategori Barang', 'route_name' => 'asset-categories.update'],
+            ['name' => 'Hapus Kategori Barang', 'route_name' => 'asset-categories.destroy'],
+            ['name' => 'Daftar Barang', 'route_name' => 'assets.index'],
+            ['name' => 'Tambah Barang', 'route_name' => 'assets.create'],
+            ['name' => 'Simpan Barang', 'route_name' => 'assets.store'],
+            ['name' => 'Detail Barang', 'route_name' => 'assets.show'],
+            ['name' => 'Edit Barang', 'route_name' => 'assets.edit'],
+            ['name' => 'Perbarui Barang', 'route_name' => 'assets.update'],
+            ['name' => 'Hapus Barang', 'route_name' => 'assets.destroy'],
+            ['name' => 'Penempatan Barang', 'route_name' => 'asset-assignments.index'],
+            ['name' => 'Serahkan Barang', 'route_name' => 'asset-assignments.store'],
+            ['name' => 'Kembalikan Barang', 'route_name' => 'asset-assignments.return'],
+            ['name' => 'Service Barang', 'route_name' => 'asset-services.index'],
+            ['name' => 'Buat Tiket Service', 'route_name' => 'asset-services.store'],
+            ['name' => 'Update Service Barang', 'route_name' => 'asset-services.update'],
+            ['name' => 'Pengajuan Barang', 'route_name' => 'asset-requests.index'],
+            ['name' => 'Buat Pengajuan Barang', 'route_name' => 'asset-requests.create'],
+            ['name' => 'Simpan Pengajuan Barang', 'route_name' => 'asset-requests.store'],
+            ['name' => 'Detail Pengajuan Barang', 'route_name' => 'asset-requests.show'],
+            ['name' => 'Batalkan Pengajuan Barang', 'route_name' => 'asset-requests.cancel'],
+            ['name' => 'Approval Pengajuan Barang', 'route_name' => 'asset-request-approvals.index'],
+            ['name' => 'Proses Approval Pengajuan Barang', 'route_name' => 'asset-request-approvals.update'],
         ];
 
         foreach ($routes as $route) {
@@ -175,12 +199,13 @@ class RouteSettingSeeder extends Seeder
 
         // First make sure we have the sections, or rely on DashboardMenuSectionSeeder being called first.
         // Assuming Tables is ID 1 and Settings is ID 2 if seeded in order. Let's just fetch them to be safe.
+        // Urutan section sidebar: Formulir(1) -> HR(2) -> GA(3) -> Data Master(4) -> Pengaturan Web(5)
         $tablesSection = DashboardMenuSection::firstOrCreate(['name' => 'Formulir'], ['order' => 1]);
-        $masterDataSection = DashboardMenuSection::firstOrCreate(['name' => 'Data Master'], ['order' => 3]);
-        $settingsSection = DashboardMenuSection::firstOrCreate(['name' => 'Pengaturan Web'], ['order' => 4]);
+        $masterDataSection = DashboardMenuSection::firstOrCreate(['name' => 'Data Master'], ['order' => 4]);
+        $settingsSection = DashboardMenuSection::firstOrCreate(['name' => 'Pengaturan Web'], ['order' => 5]);
 
         // 1. Forms Section
-        $formsDropdown = DashboardMenu::create([
+        $formsDropdown = $this->menu([
             'name' => 'Daftar Formulir',
             'icon' => 'HiDocumentDuplicate',
             'section_id' => $tablesSection->id,
@@ -188,7 +213,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Pengajuan Izin',
             'icon' => 'HiDocumentText',
             'route_id' => Route::where('route_name', 'leave-requests.index')->first()?->id ?? 1,
@@ -198,7 +223,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Jadwal Meeting',
             'icon' => 'HiCalendar',
             'route_id' => Route::where('route_name', 'meetings.index')->first()?->id ?? 1,
@@ -208,8 +233,11 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
+        // Catatan: "Pengajuan Barang" ada di section Formulir (dibuat di bawah,
+        // setelah section GA) agar route asset-requests.index sudah terdaftar.
+
         // 2. Web Setting Section (Parent & Children)
-        $settingsParent = DashboardMenu::create([
+        $settingsParent = $this->menu([
             'name' => 'Pengaturan Web',
             'icon' => 'HiCog',
             'section_id' => $settingsSection->id,
@@ -217,7 +245,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Rute',
             'icon' => 'HiLink',
             'route_id' => Route::where('route_name', 'routes.index')->first()?->id ?? 1,
@@ -227,7 +255,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Menu',
             'icon' => 'HiMenuAlt2',
             'route_id' => Route::where('route_name', 'dashboard-menus.index')->first()?->id ?? 1,
@@ -237,7 +265,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Bagian Menu',
             'icon' => 'HiViewGrid',
             'route_id' => Route::where('route_name', 'dashboard-menu-sections.index')->first()?->id ?? 1,
@@ -247,7 +275,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 3,
         ]);
 
-        $dashboardBerandaMenu = DashboardMenu::create([
+        $dashboardBerandaMenu = $this->menu([
             'name' => 'Management Dashboard',
             'icon' => 'HiTemplate',
             'section_id' => $settingsSection->id,
@@ -255,7 +283,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 10,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Banner',
             'icon' => 'HiPhotograph',
             'route_id' => Route::where('route_name', 'banners.index')->first()?->id ?? 1,
@@ -265,7 +293,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Album Perusahaan',
             'icon' => 'HiCamera',
             'route_id' => Route::where('route_name', 'company-albums.index')->first()?->id ?? 1,
@@ -275,7 +303,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Akses Cepat',
             'icon' => 'HiLightningBolt',
             'route_id' => Route::where('route_name', 'quick-accesses.index')->first()?->id ?? 1,
@@ -286,7 +314,7 @@ class RouteSettingSeeder extends Seeder
         ]);
 
         // 3. Master Data Section (Grouped)
-        $masterOrganisasi = DashboardMenu::create([
+        $masterOrganisasi = $this->menu([
             'name' => 'Organisasi',
             'icon' => 'HiLibrary',
             'section_id' => $masterDataSection->id,
@@ -294,7 +322,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Perusahaan',
             'icon' => 'HiOfficeBuilding',
             'route_id' => Route::where('route_name', 'companies.index')->first()?->id ?? 1,
@@ -304,7 +332,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Divisi',
             'icon' => 'HiViewGrid',
             'route_id' => Route::where('route_name', 'devisions.index')->first()?->id ?? 1,
@@ -314,7 +342,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Ruangan Rapat',
             'icon' => 'HiUserGroup',
             'route_id' => Route::where('route_name', 'meeting-rooms.index')->first()?->id ?? 1,
@@ -324,7 +352,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 3,
         ]);
 
-        $masterKepegawaian = DashboardMenu::create([
+        $masterKepegawaian = $this->menu([
             'name' => 'Kepegawaian',
             'icon' => 'HiBriefcase',
             'section_id' => $masterDataSection->id,
@@ -332,7 +360,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Golongan Karyawan',
             'icon' => 'HiIdentification',
             'route_id' => Route::where('route_name', 'employee-ranks.index')->first()?->id ?? 1,
@@ -342,7 +370,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Jabatan Karyawan',
             'icon' => 'HiBadgeCheck',
             'route_id' => Route::where('route_name', 'employee-positions.index')->first()?->id ?? 1,
@@ -352,7 +380,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        $masterKeamanan = DashboardMenu::create([
+        $masterKeamanan = $this->menu([
             'name' => 'Keamanan & Akses',
             'icon' => 'HiShieldCheck',
             'section_id' => $masterDataSection->id,
@@ -360,7 +388,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 3,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Pengguna',
             'icon' => 'HiUser',
             'route_id' => Route::where('route_name', 'users.index')->first()?->id ?? 1,
@@ -370,7 +398,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Peran',
             'icon' => 'HiKey',
             'route_id' => Route::where('route_name', 'roles.index')->first()?->id ?? 1,
@@ -380,7 +408,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Hak Akses',
             'icon' => 'HiLockClosed',
             'route_id' => Route::where('route_name', 'role-permissions.index')->first()?->id ?? 1,
@@ -390,7 +418,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 3,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Alur Persetujuan',
             'icon' => 'HiClipboardList',
             'route_id' => Route::where('route_name', 'approval-workflows.index')->first()?->id ?? 1,
@@ -401,7 +429,7 @@ class RouteSettingSeeder extends Seeder
 
         $hrSection = DashboardMenuSection::firstOrCreate(['name' => 'HR'], ['order' => 2]);
 
-        $hrParent = DashboardMenu::create([
+        $hrParent = $this->menu([
             'name' => 'Karyawan',
             'icon' => 'HiUsers',
             'section_id' => $hrSection->id,
@@ -409,7 +437,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Daftar Karyawan',
             'icon' => 'HiIdentification',
             'route_id' => Route::where('route_name', 'employee-registrations.index')->first()->id ?? 1,
@@ -419,7 +447,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 1,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Manajemen Kontrak',
             'icon' => 'HiDocumentDuplicate',
             'route_id' => Route::where('route_name', 'contracts.index')->first()->id ?? 1,
@@ -429,7 +457,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 2,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Persetujuan Izin',
             'icon' => 'HiCheckCircle',
             'route_id' => Route::where('route_name', 'leave-request-approvals.index')->first()?->id ?? 1,
@@ -439,7 +467,7 @@ class RouteSettingSeeder extends Seeder
             'position' => 3,
         ]);
 
-        DashboardMenu::create([
+        $this->menu([
             'name' => 'Hak Cuti',
             'icon' => 'HiOutlineTicket',
             'route_id' => Route::where('route_name', 'leave-entitlements.index')->first()?->id ?? 1,
@@ -449,13 +477,81 @@ class RouteSettingSeeder extends Seeder
             'position' => 4,
         ]);
 
-        // 3. Assign all routes to Admin role (id = 1)
-        $webdev = Role::where('name', 'Web Dev')->first();
-        foreach (Route::all() as $route) {
-            RolePermission::create([
-                'role_id' => $webdev->id,
-                'route_id' => $route->id,
+        // 4. GA Section (General Affair) — order 3 = tepat di bawah HR
+        $gaSection = DashboardMenuSection::firstOrCreate(['name' => 'GA'], ['order' => 3]);
+
+        $gaParent = $this->menu([
+            'name' => 'Manajemen Barang',
+            'icon' => 'HiCube',
+            'section_id' => $gaSection->id,
+            'type' => 'Dropdown',
+            'position' => 1,
+        ]);
+
+        foreach ([
+            ['Daftar Barang', 'HiClipboardList', 'assets.index', 1],
+            ['Kategori Barang', 'HiTag', 'asset-categories.index', 2],
+            ['Penempatan Barang', 'HiUserAdd', 'asset-assignments.index', 3],
+            ['Service Barang', 'HiCog', 'asset-services.index', 4],
+            ['Approval Barang', 'HiClipboardCheck', 'asset-request-approvals.index', 5],
+        ] as [$name, $icon, $routeName, $position]) {
+            $this->menu([
+                'name' => $name,
+                'icon' => $icon,
+                'route_id' => Route::where('route_name', $routeName)->first()?->id ?? 1,
+                'section_id' => $gaSection->id,
+                'type' => 'Single',
+                'parent_id' => $gaParent->id,
+                'position' => $position,
             ]);
         }
+
+        // "Pengajuan Barang" masuk ke dropdown "Daftar Formulir" (section Formulir).
+        $this->menu([
+            'name' => 'Pengajuan Barang',
+            'icon' => 'HiCube',
+            'route_id' => Route::where('route_name', 'asset-requests.index')->first()?->id ?? 1,
+            'section_id' => $tablesSection->id,
+            'type' => 'Single',
+            'parent_id' => $formsDropdown->id,
+            'position' => 3,
+        ]);
+
+        // Normalisasi urutan section sidebar:
+        // Formulir(1) -> HR(2) -> GA(3) -> Data Master(4) -> Pengaturan Web(5).
+        foreach (['Formulir' => 1, 'HR' => 2, 'GA' => 3, 'Data Master' => 4, 'Pengaturan Web' => 5] as $name => $order) {
+            DashboardMenuSection::where('name', $name)->update(['order' => $order]);
+        }
+
+        // Bersihkan menu "Pengajuan Barang" lama di section GA (dipindah ke Formulir).
+        DashboardMenu::where('section_id', $gaSection->id)
+            ->where('name', 'Pengajuan Barang')
+            ->delete();
+
+        // Catatan: pemberian hak akses (role_permissions) ditangani terpusat
+        // oleh RoleAccessSeeder, yang dijalankan paling akhir di DatabaseSeeder.
+    }
+
+    /**
+     * Buat/perbarui menu dashboard secara idempotent (aman dijalankan berulang).
+     * Kunci unik: name + section_id + parent_id.
+     */
+    private function menu(array $attributes): DashboardMenu
+    {
+        $menu = DashboardMenu::firstOrCreate(
+            [
+                'name' => $attributes['name'],
+                'section_id' => $attributes['section_id'],
+                'parent_id' => $attributes['parent_id'] ?? null,
+            ],
+            $attributes
+        );
+
+        // Pastikan route_id selalu benar (perbaiki data lama yang sempat fallback).
+        if (isset($attributes['route_id']) && $menu->route_id !== $attributes['route_id']) {
+            $menu->update(['route_id' => $attributes['route_id']]);
+        }
+
+        return $menu;
     }
 }

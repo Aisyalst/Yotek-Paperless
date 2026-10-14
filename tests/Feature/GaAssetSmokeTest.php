@@ -15,11 +15,17 @@ class GaAssetSmokeTest extends TestCase
     {
         parent::setUp();
         // Role GA biasanya dibuat oleh seeder data karyawan; di test dibuat manual dulu.
+        $gaDevision = \App\Models\Devision::firstOrCreate(['name' => 'GA']);
         foreach (['Web Dev', 'Admin GA', 'Manager GA', 'Supervisor GA'] as $rn) {
-            \App\Models\Role::firstOrCreate(['name' => $rn]);
+            \App\Models\Role::firstOrCreate(
+                ['name' => $rn],
+                ['devision_id' => $rn === 'Web Dev' ? null : $gaDevision->id]
+            );
         }
-        $this->seed(\Database\Seeders\GaSetupSeeder::class);
+        $this->seed(\Database\Seeders\RouteSettingSeeder::class);
         $this->seed(\Database\Seeders\AssetCategorySeeder::class);
+        // Hak akses terpusat: Web Dev = penuh, role GA = modul GA (via RoleAccessSeeder).
+        $this->seed(\Database\Seeders\RoleAccessSeeder::class);
     }
 
     private function admin(): User
@@ -277,15 +283,24 @@ class GaAssetSmokeTest extends TestCase
             $this->assertSame(count($names), $count, "Permission GA untuk role {$rn} belum lengkap.");
         }
 
-        // Menu GA: dropdown "Manajemen Barang" berisi 6 submenu.
+        // Menu GA: dropdown "Manajemen Barang" berisi 5 submenu
+        // (Pengajuan Barang sudah pindah ke section Formulir -> Daftar Formulir).
         $section = \App\Models\DashboardMenuSection::where('name', 'GA')->firstOrFail();
         $parent = \App\Models\DashboardMenu::where('section_id', $section->id)
             ->where('name', 'Manajemen Barang')->firstOrFail();
         $children = \App\Models\DashboardMenu::where('parent_id', $parent->id)->orderBy('position')->get();
-        $this->assertCount(6, $children);
+        $this->assertCount(5, $children);
         $this->assertSame(
-            ['Daftar Barang', 'Kategori Barang', 'Penempatan Barang', 'Service Barang', 'Pengajuan Barang', 'Approval Barang'],
+            ['Daftar Barang', 'Kategori Barang', 'Penempatan Barang', 'Service Barang', 'Approval Barang'],
             $children->pluck('name')->all()
         );
+
+        // "Pengajuan Barang" ada di section Formulir -> dropdown "Daftar Formulir".
+        $formSection = \App\Models\DashboardMenuSection::where('name', 'Formulir')->firstOrFail();
+        $formDropdown = \App\Models\DashboardMenu::where('section_id', $formSection->id)
+            ->where('name', 'Daftar Formulir')->firstOrFail();
+        $formChildren = \App\Models\DashboardMenu::where('parent_id', $formDropdown->id)
+            ->orderBy('position')->pluck('name')->all();
+        $this->assertContains('Pengajuan Barang', $formChildren);
     }
 }
