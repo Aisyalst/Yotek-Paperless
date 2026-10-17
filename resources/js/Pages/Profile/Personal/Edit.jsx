@@ -21,6 +21,7 @@ export default function Edit({ auth, personalInformation, employeeInformation })
         residential_address: personalInformation?.residential_address || '',
         email: personalInformation?.email || '',
         phone: personalInformation?.phone || '',
+        religion: personalInformation?.religion || '',
         emergency_contact: personalInformation?.emergency_contact || '',
     });
 
@@ -142,6 +143,27 @@ export default function Edit({ auth, personalInformation, employeeInformation })
                                             <option value="Perempuan">Perempuan</option>
                                         </SearchableSelect>
                                         <InputError className="mt-2" message={errors.gender} />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel htmlFor="religion" value="Agama" required />
+                                        <SearchableSelect
+                                            id="religion"
+                                            className="text-black mt-1 block w-full border-gray-300 focus:border-[#eaae36] focus:ring-[#eaae36] rounded-md shadow-sm"
+                                            required
+                                            value={data.religion}
+                                            onChange={(e) => setData('religion', e.target.value)}
+                                        >
+                                            <option value="">Pilih Agama</option>
+                                            <option value="Islam">Islam</option>
+                                            <option value="Kristen Protestan">Kristen Protestan</option>
+                                            <option value="Kristen Katolik">Kristen Katolik</option>
+                                            <option value="Hindu">Hindu</option>
+                                            <option value="Buddha">Buddha</option>
+                                            <option value="Konghucu">Konghucu</option>
+                                            <option value="Lainnya">Lainnya</option>
+                                        </SearchableSelect>
+                                        <InputError className="mt-2" message={errors.religion} />
                                     </div>
 
                                     <div>

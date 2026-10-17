@@ -312,12 +312,85 @@ class EmployeeRegistrationController extends Controller
         return $value;
     }
 
-    /**
-     * Tulis ulang penempatan karyawan di employee_employments.
-     * Baris pertama = penempatan utama (is_primary = true).
-     *
-     * @param  array<int, array<string, mixed>>  $employments
-     */
+    public function export(Request $request)
+    {
+        $search = $request->query('search');
+        $company = $request->query('company');
+        $department = $request->query('department');
+        $positionId = $request->query('employee_position_id');
+        $rankId = $request->query('employee_rank_id');
+        $status = $request->query('employment_status');
+
+        $query = EmployeeInformation::query()->latest();
+
+        if ($search) {
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%");
+            });
+        }
+
+        if ($company) {
+            $query->where(function ($q) use ($company) {
+                $q->where('company', $company)
+                  ->orWhereHas('employments', fn ($e) => $e->where('company', $company));
+            });
+        }
+
+        if ($department) {
+            $query->where(function ($q) use ($department) {
+                $q->where('department', $department)
+                  ->orWhereHas('employments', fn ($e) => $e->where('department', $department));
+            });
+        }
+
+        if ($positionId) {
+            $query->where(function ($q) use ($positionId) {
+                $q->where('employee_position_id', $positionId)
+                  ->orWhereHas('employments', fn ($e) => $e->where('employee_position_id', $positionId));
+            });
+        }
+
+        if ($rankId) {
+            $query->where(function ($q) use ($rankId) {
+                $q->where('employee_rank_id', $rankId)
+                  ->orWhereHas('employments', fn ($e) => $e->where('employee_rank_id', $rankId));
+            });
+        }
+
+        if ($status) {
+            $query->where(function ($q) use ($status) {
+                $q->where('employment_status', $status)
+                  ->orWhereHas('employments', fn ($e) => $e->where('employment_status', $status));
+            });
+        }
+
+        $employees = $query->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="Daftar_Karyawan_' . date('Y-m-d') . '.csv"',
+        ];
+
+        $callback = function() use ($employees) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['NIK', 'Nama', 'Perusahaan', 'Departemen', 'Jabatan', 'Status', 'Tanggal Bergabung']);
+            foreach ($employees as $emp) {
+                fputcsv($file, [
+                    $emp->nik,
+                    $emp->employee_name,
+                    $emp->company,
+                    $emp->department,
+                    $emp->employeePosition ? $emp->employeePosition->name : '-',
+                    $emp->employment_status,
+                    $emp->join_date,
+                ]);
+            }
+            fclose($file);
+        };
+
+        return new \Symfony\Component\HttpFoundation\StreamedResponse($callback, 200, $headers);
+    }
     protected function syncEmployments(string $nik, array $employments): void
     {
         // Tulis ulang agar konsisten dengan pilihan terbaru (menghindari bentrok unique).

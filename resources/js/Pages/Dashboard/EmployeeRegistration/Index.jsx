@@ -159,8 +159,9 @@ export default function Index({ employees, filters, filterOptions }) {
             header: 'Aksi',
             render: (emp) => (
                 <DropdownActions items={[
-                    { label: 'Edit', href: `/employee-registrations/${emp.id}/edit`, permission: 'employee-registrations.edit' },
-                    { label: 'Hapus', href: `/employee-registrations/${emp.id}`, method: 'delete', permission: 'employee-registrations.destroy', danger: true, confirm: 'Hapus data ini?' },
+                    { label: 'Detail', href: route('employee-documents.index', emp.nik) },
+                    { label: 'Edit', href: route('employee-registrations.edit', emp.id), permission: 'employee-registrations.edit' },
+                    { label: 'Hapus', href: route('employee-registrations.destroy', emp.id), method: 'delete', permission: 'employee-registrations.destroy', danger: true, confirm: 'Hapus data ini?' },
                 ]} />
             )
         }
@@ -176,11 +177,19 @@ export default function Index({ employees, filters, filterOptions }) {
                     <p className="text-sm text-gray-600 mt-1">Kelola data informasi karyawan perusahaan.</p>
                 </div>
                 
-                <AddButton
-                    text="Tambah Karyawan"
-                    href="/employee-registrations/create"
-                    routeName="employee-registrations.create"
-                />
+                <div className="flex gap-2">
+                    <a
+                        href={route('employee-registrations.export', buildQuery())}
+                        className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition"
+                    >
+                        Ekspor Excel
+                    </a>
+                    <AddButton
+                        text="Tambah Karyawan"
+                        href="/employee-registrations/create"
+                        routeName="employee-registrations.create"
+                    />
+                </div>
             </div>
 
             {/* Baris filter: pencarian + dropdown filter (perusahaan, departemen,

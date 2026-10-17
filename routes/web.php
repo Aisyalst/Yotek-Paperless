@@ -103,7 +103,15 @@ Route::middleware(['auth', 'role.permission'])->group(function () {
     Route::get('leave-requests/{leaveRequest}/export', [\App\Http\Controllers\LeaveRequestController::class, 'exportPdf'])->name('leave-requests.export');
     Route::post('leave-requests/{leaveRequest}/upload-doctor-note', [\App\Http\Controllers\LeaveRequestController::class, 'uploadDoctorNote'])->name('leave-requests.upload-doctor-note');
 
+    Route::get('employee-registrations/export', [\App\Http\Controllers\EmployeeRegistrationController::class, 'export'])->name('employee-registrations.export');
     Route::resource('employee-registrations', \App\Http\Controllers\EmployeeRegistrationController::class)->except(['show']);
+
+    // Employee Documents routes
+    Route::get('employees/{nik}/detail', [\App\Http\Controllers\EmployeeDocumentController::class, 'index'])->name('employee-documents.index');
+    Route::post('employees/{nik}/documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'store'])->name('employee-documents.store');
+    Route::get('employee-documents/{id}', [\App\Http\Controllers\EmployeeDocumentController::class, 'show'])->name('employee-documents.show');
+    Route::delete('employee-documents/{id}', [\App\Http\Controllers\EmployeeDocumentController::class, 'destroy'])->name('employee-documents.destroy');
+
     Route::resource('contracts', \App\Http\Controllers\ContractController::class)->except(['show']);
     Route::resource('companies', \App\Http\Controllers\CompanyController::class)->except(['show']);
     Route::resource('leave-entitlements', \App\Http\Controllers\LeaveEntitlementController::class)->except(['show']);

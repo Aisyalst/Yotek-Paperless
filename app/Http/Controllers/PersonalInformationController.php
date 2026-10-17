@@ -36,6 +36,7 @@ class PersonalInformationController extends Controller
             'residential_address' => 'required|string',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:255',
+            'religion' => 'required|string|max:255',
             'emergency_contact' => 'required|string|max:255',
         ], [
             'nik.required' => 'NIK wajib diisi.',
@@ -46,6 +47,7 @@ class PersonalInformationController extends Controller
             'birth_place.required' => 'Tempat lahir wajib diisi.',
             'birth_date.required' => 'Tanggal lahir wajib diisi.',
             'gender.required' => 'Jenis kelamin wajib diisi.',
+            'religion.required' => 'Agama wajib diisi.',
             'marital_status.required' => 'Status pernikahan wajib diisi.',
             'ktp_address.required' => 'Alamat KTP wajib diisi.',
             'residential_address.required' => 'Alamat domisili wajib diisi.',
