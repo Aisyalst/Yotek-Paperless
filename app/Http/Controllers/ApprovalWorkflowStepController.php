@@ -15,6 +15,7 @@ class ApprovalWorkflowStepController extends Controller
             'approval_level' => 'required|integer|min:1',
             'approver_type' => 'required|in:specific_user,division_head,creator',
             'approver_nik' => 'required_if:approver_type,specific_user',
+            'can_set_consequence' => 'nullable|boolean',
         ], [
             'approval_workflow_id.required' => 'Workflow ID wajib diisi.',
             'approval_level.required' => 'Level approval wajib diisi.',
@@ -39,6 +40,7 @@ class ApprovalWorkflowStepController extends Controller
             'approver_type' => $request->approver_type,
             'approver_nik' => $approverNik,
             'employee_role' => $employeeRole,
+            'can_set_consequence' => $request->boolean('can_set_consequence'),
         ]);
 
         return redirect()->back()->with('success', 'Langkah approval berhasil ditambahkan.');

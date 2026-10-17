@@ -53,13 +53,8 @@ class LeaveRequestApprovalController extends Controller
             return $approval;
         });
 
-        $canSetConsequence = $user
-            ? $user->hasPermissionTo('leave-request-approvals.set-consequence')
-            : false;
-
         return Inertia::render('Dashboard/LeaveRequestApproval/Index', [
-            'approvals' => $approvals,
-            'canSetConsequence' => $canSetConsequence
+            'approvals' => $approvals
         ]);
     }
 
@@ -118,10 +113,8 @@ class LeaveRequestApprovalController extends Controller
         $leaveRequest = $leaveRequestApproval->leaveRequest;
         $employeeUser = $leaveRequest->employee ? $leaveRequest->employee->user : null;
         
-        $canSetConsequence = Auth::user()
-            ->hasPermissionTo('leave-request-approvals.set-consequence');
-        
-        if ($canSetConsequence && $request->has('consequence') && $request->status === 'Approved') {
+        // Gunakan flag dari approval, bukan permission
+        if ($leaveRequestApproval->can_set_consequence && $request->has('consequence') && $request->status === 'Approved') {
             $consequence = $request->consequence;
             $leaveRequest->update(['consequence' => $consequence]);
         }

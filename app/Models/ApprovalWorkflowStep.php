@@ -9,7 +9,7 @@ class ApprovalWorkflowStep extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['approval_workflow_id', 'approval_level', 'approver_type', 'approver_nik', 'employee_role'];
+    protected $fillable = ['approval_workflow_id', 'approval_level', 'approver_type', 'approver_nik', 'employee_role', 'can_set_consequence'];
 
     public function workflow()
     {

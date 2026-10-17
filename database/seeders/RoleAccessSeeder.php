@@ -47,7 +47,7 @@ class RoleAccessSeeder extends Seeder
      * persetujuan izin, approval barang, dan pengelolaan jadwal meeting.
      */
     private array $approver = [
-        'leave-request-approvals.index', 'leave-request-approvals.update', 'leave-request-approvals.set-consequence',
+        'leave-request-approvals.index', 'leave-request-approvals.update',
         'asset-request-approvals.index', 'asset-request-approvals.update',
         'meetings.create', 'meetings.store', 'meetings.show',
         'meetings.edit', 'meetings.update', 'meetings.destroy',
@@ -71,7 +71,7 @@ class RoleAccessSeeder extends Seeder
         'contracts.edit', 'contracts.update', 'contracts.destroy',
         'leave-entitlements.index', 'leave-entitlements.create', 'leave-entitlements.store',
         'leave-entitlements.edit', 'leave-entitlements.update', 'leave-entitlements.destroy',
-        'leave-request-approvals.index', 'leave-request-approvals.update', 'leave-request-approvals.set-consequence',
+        'leave-request-approvals.index', 'leave-request-approvals.update',
     ];
 
     public function run(): void

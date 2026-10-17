@@ -2,12 +2,49 @@ import React, { useState } from 'react';
 import DashboardLayout from '@/Layouts/Dashboard';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import SearchableSelect from '@/Components/SearchableSelect';
+import Modal from '@/Components/Modal';
 
 export default function Index({ meetings = [] }) {
     const { auth } = usePage().props;
-    
+
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [showParticipants, setShowParticipants] = useState(false);
+    const [selectedMeeting, setSelectedMeeting] = useState(null);
+    const [participantSearch, setParticipantSearch] = useState('');
+
+    const myNik = auth?.user?.nik;
+
+    // Cari data partisipan milik user login (untuk kolom "Respons Saya").
+    const myParticipantOf = (meeting) =>
+        (meeting.participants || []).find((p) => p.employee_nik === myNik);
+
+    const openParticipants = (meeting) => {
+        setSelectedMeeting(meeting);
+        setParticipantSearch('');
+        setShowParticipants(true);
+    };
+
+    const closeParticipants = () => {
+        setShowParticipants(false);
+        setSelectedMeeting(null);
+    };
+
+    const statusLabel = (status) =>
+        ({
+            accepted: 'Hadir',
+            declined: 'Tidak Hadir',
+            tentative: 'Ragu',
+            pending: 'Menunggu',
+        }[status] || 'Menunggu');
+
+    const statusClass = (status) =>
+        ({
+            accepted: 'bg-green-100 text-green-700 border-green-200',
+            declined: 'bg-red-100 text-red-700 border-red-200',
+            tentative: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+            pending: 'bg-gray-100 text-gray-600 border-gray-200',
+        }[status] || 'bg-gray-100 text-gray-600 border-gray-200');
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
@@ -31,7 +68,7 @@ export default function Index({ meetings = [] }) {
 
     const filteredMeetings = meetings.filter(meeting => {
         const matchesSearch = meeting.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const myParticipant = meeting.participants[0];
+        const myParticipant = myParticipantOf(meeting);
         const myStatus = myParticipant ? myParticipant.status : '';
         const matchesStatus = statusFilter === '' || myStatus === statusFilter;
         return matchesSearch && matchesStatus;
@@ -85,6 +122,7 @@ export default function Index({ meetings = [] }) {
                                 <th className="p-4 font-semibold">Tipe & Lokasi</th>
                                 <th className="p-4 font-semibold">Waktu Pelaksanaan</th>
                                 <th className="p-4 font-semibold">Status Meeting</th>
+                                <th className="p-4 font-semibold">Peserta</th>
                                 <th className="p-4 font-semibold rounded-tr-xl">Respons Saya</th>
                             </tr>
                         </thead>
@@ -109,7 +147,7 @@ export default function Index({ meetings = [] }) {
                                 </tr>
                             ) : (
                                 filteredMeetings.map((meeting) => {
-                                    const myParticipant = meeting.participants[0];
+                                    const myParticipant = myParticipantOf(meeting);
                                     const myStatus = myParticipant ? myParticipant.status : 'pending';
 
                                     return (
@@ -163,6 +201,16 @@ export default function Index({ meetings = [] }) {
                                                 </span>
                                             </td>
                                             <td className="p-4">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => openParticipants(meeting)}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#1a1a1a] bg-white border border-gray-300 hover:bg-gray-50 hover:border-[#eaae36] rounded-md transition-colors shadow-sm"
+                                                >
+                                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                                    Peserta ({meeting.participants?.length || 0})
+                                                </button>
+                                            </td>
+                                            <td className="p-4">
                                                 {myStatus === 'pending' ? (
                                                     <div className="flex items-center gap-2">
                                                         <button 
@@ -198,6 +246,119 @@ export default function Index({ meetings = [] }) {
                     </table>
                 </div>
             </div>
+
+            {/* Modal: daftar seluruh peserta meeting */}
+            <Modal show={showParticipants} onClose={closeParticipants} maxWidth="2xl">
+                {selectedMeeting && (() => {
+                    const all = selectedMeeting.participants || [];
+                    const keyword = participantSearch.trim().toLowerCase();
+                    const list = all.filter((p) => {
+                        if (!keyword) return true;
+                        const name = (p.employee?.name || '').toLowerCase();
+                        return name.includes(keyword) || (p.employee_nik || '').toLowerCase().includes(keyword);
+                    });
+                    const count = (st) => all.filter((p) => p.status === st).length;
+
+                    return (
+                        <div className="flex flex-col max-h-[85vh]">
+                            {/* Header */}
+                            <div className="p-5 border-b border-gray-100 flex items-start justify-between gap-4">
+                                <div>
+                                    <h3 className="text-lg font-bold text-[#1a1a1a]">Daftar Peserta Meeting</h3>
+                                    <p className="text-sm text-gray-500 mt-0.5">{selectedMeeting.title}</p>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        {formatDate(selectedMeeting.date)} &bull; {formatTime(selectedMeeting.start_time)} - {formatTime(selectedMeeting.end_time)}
+                                    </p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={closeParticipants}
+                                    className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors shrink-0"
+                                    aria-label="Tutup"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+
+                            {/* Ringkasan status */}
+                            <div className="px-5 py-4 grid grid-cols-2 sm:grid-cols-4 gap-3 border-b border-gray-100 bg-[#f8f8f8]/50">
+                                {[
+                                    { label: 'Total', value: all.length, cls: 'bg-[#1a1a1a] text-white' },
+                                    { label: 'Hadir', value: count('accepted'), cls: 'bg-green-100 text-green-700' },
+                                    { label: 'Tidak Hadir', value: count('declined'), cls: 'bg-red-100 text-red-700' },
+                                    { label: 'Menunggu', value: count('pending') + count('tentative'), cls: 'bg-gray-100 text-gray-600' },
+                                ].map((s) => (
+                                    <div key={s.label} className={`rounded-lg px-3 py-2 text-center ${s.cls}`}>
+                                        <p className="text-lg font-bold leading-tight">{s.value}</p>
+                                        <p className="text-[10px] font-semibold uppercase tracking-wider opacity-90">{s.label}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Pencarian */}
+                            <div className="p-4 border-b border-gray-100">
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        placeholder="Cari nama atau NIK peserta..."
+                                        value={participantSearch}
+                                        onChange={(e) => setParticipantSearch(e.target.value)}
+                                        className="w-full pl-10 pr-4 py-2 bg-gray-50/50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#eaae36]/50 focus:border-[#eaae36] transition-all"
+                                    />
+                                    <svg className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                </div>
+                            </div>
+
+                            {/* Daftar peserta */}
+                            <div className="flex-1 overflow-y-auto">
+                                {list.length > 0 ? (
+                                    <ul className="divide-y divide-gray-100">
+                                        {list.map((participant) => (
+                                            <li key={participant.id} className="p-4 flex items-center justify-between gap-3 hover:bg-[#f8f8f8]/60 transition-colors">
+                                                <div className="flex items-center gap-3 min-w-0">
+                                                    <div className="w-9 h-9 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-xs font-bold text-gray-600 shrink-0">
+                                                        {participant.employee?.name?.charAt(0) || '-'}
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <p className="text-sm font-semibold text-[#1a1a1a] truncate">
+                                                            {participant.employee?.name || participant.employee_nik}
+                                                        </p>
+                                                        <p className="text-xs text-gray-500 mt-0.5 truncate">
+                                                            {participant.employee_nik}
+                                                            {' \u2022 '}{participant.employee?.role?.name || '-'}
+                                                            {' \u2022 '}{participant.employee?.employeeInformation?.department || '-'}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <span className={`shrink-0 inline-flex items-center px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md border ${statusClass(participant.status)}`}>
+                                                    {statusLabel(participant.status)}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="p-12 text-center">
+                                        <p className="text-sm text-gray-500">
+                                            {keyword ? 'Peserta tidak ditemukan.' : 'Belum ada peserta pada meeting ini.'}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Footer */}
+                            <div className="p-4 border-t border-gray-100 flex justify-end">
+                                <button
+                                    type="button"
+                                    onClick={closeParticipants}
+                                    className="px-4 py-2 text-sm font-semibold bg-[#1a1a1a] hover:bg-black text-white rounded-lg transition-colors shadow-sm"
+                                >
+                                    Tutup
+                                </button>
+                            </div>
+                        </div>
+                    );
+                })()}
+            </Modal>
         </DashboardLayout>
     );
 }

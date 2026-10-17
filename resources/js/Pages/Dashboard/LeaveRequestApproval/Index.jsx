@@ -4,7 +4,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import SignatureCanvas from 'react-signature-canvas';
 import SearchableSelect from '@/Components/SearchableSelect';
 
-export default function Index({ approvals, canSetConsequence }) {
+export default function Index({ approvals }) {
     const sigCanvas = useRef({});
     
     // UI State
@@ -292,7 +292,7 @@ export default function Index({ approvals, canSetConsequence }) {
                                         </div>
                                     )}
                                     
-                                    {modalAction === 'Approved' && canSetConsequence && (
+                                    {modalAction === 'Approved' && approvals.find(a => a.id === selectedApprovalId)?.can_set_consequence && (
                                         <div className="mb-6">
                                             <label className="block text-sm font-bold text-gray-700 mb-2">
                                                 Sanksi / Konsekuensi (Bila Ada)

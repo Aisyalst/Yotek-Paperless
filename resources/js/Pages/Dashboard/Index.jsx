@@ -220,9 +220,13 @@ export default function Index({ stats, companies, banners = [], albums = [], qui
                                         <div className="mt-3 flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-[10px] font-semibold bg-blue-100 text-blue-700 px-2 py-1 rounded-md">
-                                                    {meeting.type === 'online' ? meeting.online_platform : 'Offline'}
+                                                    {meeting.type === 'online'
+                                                        ? meeting.online_platform
+                                                        : meeting.type === 'hybrid'
+                                                            ? 'Hybrid'
+                                                            : 'Offline'}
                                                 </span>
-                                                {meeting.type === 'offline' && meeting.room && (
+                                                {['on_room', 'hybrid'].includes(meeting.type) && meeting.room && (
                                                     <span className="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-md">
                                                         {meeting.room.name}
                                                     </span>

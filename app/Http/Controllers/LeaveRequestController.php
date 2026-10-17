@@ -147,6 +147,7 @@ class LeaveRequestController extends Controller
                         'approver_nik' => $approverNik,
                         'approver_role' => $approverRole,
                         'status' => 'Pending',
+                        'can_set_consequence' => $step->can_set_consequence,
                     ]);
                 }
             }

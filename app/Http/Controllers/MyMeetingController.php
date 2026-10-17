@@ -14,19 +14,23 @@ class MyMeetingController extends Controller
     {
         $nik = Auth::user()->nik;
 
-        // Ambil semua meeting di mana user login adalah partisipan
-        $meetings = Meeting::with(['room', 'organizer', 'participants' => function($q) use ($nik) {
-            $q->where('employee_nik', $nik);
-        }])
-        ->whereHas('participants', function($q) use ($nik) {
-            $q->where('employee_nik', $nik);
-        })
-        ->orderBy('date', 'desc')
-        ->orderBy('start_time', 'desc')
-        ->get();
+        // Ambil semua meeting di mana user login adalah partisipan,
+        // beserta SELURUH peserta meeting (untuk modal daftar peserta).
+        $meetings = Meeting::with([
+                'room',
+                'organizer',
+                'participants.employee.employeeInformation',
+                'participants.employee.role',
+            ])
+            ->whereHas('participants', function ($q) use ($nik) {
+                $q->where('employee_nik', $nik);
+            })
+            ->orderBy('date', 'desc')
+            ->orderBy('start_time', 'desc')
+            ->get();
 
         return Inertia::render('Dashboard/MyMeeting/Index', [
-            'meetings' => $meetings
+            'meetings' => $meetings,
         ]);
     }
 

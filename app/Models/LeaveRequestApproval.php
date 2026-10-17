@@ -13,6 +13,7 @@ class LeaveRequestApproval extends Model
         'approver_role',
         'status',
         'signature',
+        'can_set_consequence',
     ];
 
     public function leaveRequest()

@@ -19,7 +19,7 @@ class ProfileController extends Controller
      */
     public function index(Request $request): Response
     {
-        $user = $request->user()->load(['personalInformation', 'employeeInformation.employeeRank', 'employeeInformation.employeePosition', 'employeeInformation.employments', 'contractInformation']);
+        $user = $request->user()->load(['personalInformation', 'employeeInformation.employeeRank', 'employeeInformation.employeePosition', 'employeeInformation.employments', 'contractInformation', 'roles']);
 
         $totalActiveLeave = 0;
         if ($user->nik) {

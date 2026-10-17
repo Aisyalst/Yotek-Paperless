@@ -19,6 +19,7 @@ export default function Edit({ approvalWorkflow, roles, users }) {
         approval_level: '',
         approver_type: 'specific_user',
         approver_nik: '',
+        can_set_consequence: false,
     });
 
     const workflowTypes = ['Cuti', 'Pengajuan Barang'];
@@ -45,9 +46,10 @@ export default function Edit({ approvalWorkflow, roles, users }) {
         router.post(route('approval-workflow-steps.store'), {
             approval_workflow_id: approvalWorkflow.id,
             ...stepData,
+            can_set_consequence: stepData.can_set_consequence,
         }, {
             preserveScroll: true,
-            onSuccess: () => setStepData({ approval_level: '', approver_type: 'specific_user', approver_nik: '' }),
+            onSuccess: () => setStepData({ approval_level: '', approver_type: 'specific_user', approver_nik: '', can_set_consequence: false }),
         });
     };
 
@@ -153,6 +155,11 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                                     <div className="text-xs text-gray-600">Role: {step.employee_role}</div>
                                                 </>
                                             )}
+                                            {step.can_set_consequence && (
+                                                <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                                    Boleh Pilih Sanksi
+                                                </span>
+                                            )}
                                         </div>
                                         <button 
                                             onClick={() => handleDeleteStep(step.id)}
@@ -216,6 +223,19 @@ export default function Edit({ approvalWorkflow, roles, users }) {
                                 </SearchableSelect>
                             </div>
                         )}
+
+                        <div className="flex items-center gap-2 pt-2">
+                            <input
+                                type="checkbox"
+                                id="can_set_consequence"
+                                checked={stepData.can_set_consequence}
+                                onChange={(e) => setStepData({...stepData, can_set_consequence: e.target.checked})}
+                                className="rounded border-gray-300 text-[#eaae36] shadow-sm focus:ring-[#eaae36]"
+                            />
+                            <label htmlFor="can_set_consequence" className="text-sm text-gray-700">
+                                Boleh Pilih Sanksi (Consequence)
+                            </label>
+                        </div>
 
                         <AddButton type="submit" text="Tambah Langkah" className="w-full justify-center" />
                     </form>
